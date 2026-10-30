@@ -1,0 +1,41 @@
+.cmp-footer {
+    max-width: $content-max-width;
+    margin: 0 auto;
+    padding: $gutter-wide $gutter;
+
+    @include tablet-up {
+        padding: $gutter-wide;
+    }
+}
+
+.cmp-footer__nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 $gutter;
+    padding: 0;
+    list-style: none;
+
+    @include tablet-up {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px $gutter-wide;
+    }
+}
+
+.cmp-footer__nav-link {
+    color: $color-background;
+
+    &:focus-visible {
+        outline-color: $color-background;
+    }
+
+    &[target="_blank"]::after {
+        @include new-tab-icon;
+    }
+}
+
+.cmp-footer__copyright {
+    margin: 0;
+    font-size: .875rem;
+}

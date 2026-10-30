@@ -1,8 +1,2 @@
-
-// Stylesheets
+// Site stylesheet. Component behaviour (accordion) comes from the AEM Core Components clientlibs.
 import "./main.scss";
-
-// Javascript or Typescript
-import "./**/*.js";
-import "./**/*.ts";
-import '../components/**/*.js';

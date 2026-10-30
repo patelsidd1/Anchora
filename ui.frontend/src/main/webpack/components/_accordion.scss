@@ -1,10 +1,95 @@
-.cmp-accordion {}
-.cmp-accordion__item {}
-.cmp-accordion__header {}
-.cmp-accordion__button {}
-.cmp-accordion__button--expanded {}
-.cmp-accordion__title {}
-.cmp-accordion__icon {}
-.cmp-accordion__panel {}
-.cmp-accordion__panel--expanded {}
-.cmp-accordion__panel--hidden {}
+.cmp-accordion__section-title {
+    font-size: 1.75rem;
+}
+
+.cmp-accordion__section-intro {
+    max-width: 40em;
+    color: $color-muted;
+}
+
+.cmp-accordion__item {
+    border-bottom: 1px solid $color-border;
+
+    &:first-of-type {
+        border-top: 1px solid $color-border;
+    }
+}
+
+.cmp-accordion__header {
+    margin: 0;
+    font-size: 1.125rem;
+}
+
+.cmp-accordion__button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $gutter;
+    width: 100%;
+    padding: $gutter 4px;
+    font-size: inherit;
+    font-weight: 700;
+    color: $color-brand;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &:hover .cmp-accordion__title {
+        text-decoration: underline;
+    }
+}
+
+// Plus sign when collapsed, minus sign when expanded.
+.cmp-accordion__icon {
+    position: relative;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 2px;
+        background: currentColor;
+        transform: translate(-50%, -50%);
+    }
+
+    &::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+        transition: transform .2s ease;
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+}
+
+.cmp-accordion__button--expanded .cmp-accordion__icon::after {
+    transform: translate(-50%, -50%);
+}
+
+.cmp-accordion__panel {
+    padding: 0 4px $gutter;
+
+    ul {
+        padding-left: 1.25em;
+    }
+
+    p:last-child,
+    ul:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// AC-06: the page editor shows every item, so collapsed items can be edited in place.
+// Preview mode and publish keep the collapsed behaviour.
+.aem-AuthorLayer-Edit .cmp-accordion__panel--hidden {
+    display: block;
+}

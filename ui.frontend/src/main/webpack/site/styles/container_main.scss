@@ -1,6 +1,30 @@
+//== Main content area, used on the page template
 
-//== Container main content style, used on page template
-
+// <main> is also a 12-column grid item, so the grid floats it at full width.
+// The inner container is centred instead, with the same side padding as the header.
 main.container {
-    padding: .5em 1em;
+    padding: 24px 0 $gutter-wide;
+
+    @include tablet-up {
+        padding: $gutter-wide 0 48px;
+    }
+
+    > .cmp-container {
+        max-width: $content-max-width;
+        margin: 0 auto;
+        padding: 0 $gutter;
+
+        @include tablet-up {
+            padding: 0 $gutter-wide;
+        }
+    }
+
+    // Space between the components authors add to the page.
+    .cmp-container .aem-GridColumn + .aem-GridColumn {
+        margin-top: $gutter-wide;
+
+        @include desktop-up {
+            margin-top: 48px;
+        }
+    }
 }

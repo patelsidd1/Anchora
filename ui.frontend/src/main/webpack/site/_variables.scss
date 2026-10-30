@@ -1,18 +1,65 @@
-
 //== Font
 
 $font-family:           "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-size:             16px;
 $font-height:           1.5;
 
-//== Color
+//== Colour (all text colours pass WCAG AA on white)
 
-// Normal mode
-$color-foreground:      #202020;
-$color-background:      #ECECEC;
-$color-link:            #2020E0;
+$color-brand:           #14325c;
+$color-accent:          #e4572e;
+$color-foreground:      #1f2933;
+$color-muted:           #52606d;
+$color-background:      #ffffff;
+$color-surface:         #f1f6fb;
+$color-border:          #d3dce6;
+$color-link:            $color-brand;
+$color-focus:           #1a73e8;
 
-// Dark mode
-$color-foreground-dark: invert($color-foreground);
-$color-background-dark: invert($color-background);
-$color-link-dark:       invert($color-link);
+//== Layout
+
+$content-max-width:     1200px;
+$gutter:                16px;
+$gutter-wide:           32px;
+$radius:                12px;
+
+// Breakpoints, mobile first: the default styles are for 375px phones.
+$bp-tablet:             768px;
+$bp-desktop:            1024px;
+
+@mixin tablet-up {
+    @media (min-width: $bp-tablet) { @content; }
+}
+
+@mixin desktop-up {
+    @media (min-width: $bp-desktop) { @content; }
+}
+
+// One focus style for every interactive element (AC-05).
+@mixin focus-ring {
+    outline: 3px solid $color-focus;
+    outline-offset: 2px;
+}
+
+// Small "opens in a new tab" icon after a link; screen readers get the hidden text instead.
+@mixin new-tab-icon {
+    content: "";
+    display: inline-block;
+    width: .75em;
+    height: .75em;
+    margin-left: .35em;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+// Chevron drawn with borders, so there is no text for screen readers to announce.
+@mixin chevron($rotate) {
+    content: "";
+    display: inline-block;
+    width: .5em;
+    height: .5em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate($rotate);
+}

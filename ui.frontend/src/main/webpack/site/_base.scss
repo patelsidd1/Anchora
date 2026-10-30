@@ -1,26 +1,59 @@
 //== Base
 
-html,
-body {
-    margin: 0;
-    font-size:   $font-size;
-    font-family: $font-family;
-    line-height: $font-height;
-    color:       $color-foreground;
-    background:  $color-background;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
-    @media (prefers-color-scheme: dark) {
-        color:       $color-foreground-dark;
-        background:  $color-background-dark;
+html {
+    scroll-behavior: smooth;
+
+    @media (prefers-reduced-motion: reduce) {
+        scroll-behavior: auto;
     }
 }
 
+body {
+    margin: 0;
+    font-size: $font-size;
+    font-family: $font-family;
+    line-height: $font-height;
+    color: $color-foreground;
+    background: $color-background;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0 0 .5em;
+    line-height: 1.2;
+    color: $color-brand;
+}
+
+p,
+ul {
+    margin: 0 0 1em;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
 
 a {
     color: $color-link;
+    text-underline-offset: .15em;
 
-    @media (prefers-color-scheme: dark) {
-        color: $color-link-dark;
+    &:hover {
+        text-decoration-thickness: 2px;
+    }
+}
+
+a,
+button {
+    &:focus-visible {
+        @include focus-ring;
     }
 }
 
@@ -30,4 +63,41 @@ optgroup,
 select,
 textarea {
     font: inherit;
+}
+
+// Keeps anchor targets (jump links, skip link) clear of the top edge.
+[id] {
+    scroll-margin-top: $gutter;
+}
+
+// Text for screen readers only, e.g. "(opens in a new tab)". The class name is the one Core's link script uses:
+// it skips links that already contain it, and adds it (unstyled) to new-tab links in rich text.
+.cmp-link__screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+//== Skip link (rendered by the Core page component, PT-04)
+
+.cmp-page__skiptomaincontent-link {
+    position: absolute;
+    top: -100px;
+    left: $gutter;
+    z-index: 100;
+    padding: .75em 1em;
+    color: $color-background;
+    background: $color-brand;
+    border-radius: 0 0 $radius $radius;
+
+    &:focus {
+        top: 0;
+        color: $color-background;
+    }
 }
