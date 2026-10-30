@@ -28,8 +28,12 @@ The project uses Maven as the build tool. The following commands are commonly us
 - build and deploy to local AEM SDK: `mvn clean install -PautoInstallSinglePackage`
 - build and deploy a single FileVault content package: `mvn clean install -pl <module> -PautoInstallPackage`
 - build and deploy a single OSGi bundle: `mvn clean install -pl <module> -PautoInstallBundle`
-- build frontend only: `cd ui.frontend && npm run build`
+- build frontend only: `cd ui.frontend && npm run prod` (`npm run dev` for an unminified build)
 - develop frontend locally: `cd ui.frontend && npm start`
+
+## Project conventions
+
+Project-specific rules (Sling Models, tests, policies, front end, accessibility, writing style) are in [`.github/copilot-instructions.md`](.github/copilot-instructions.md). Follow them for every change. `README.md` describes each component and the design decisions.
 
 ## Important resources
 
