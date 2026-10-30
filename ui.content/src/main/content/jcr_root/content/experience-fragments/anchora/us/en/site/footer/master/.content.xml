@@ -12,15 +12,31 @@
         <root
             jcr:primaryType="nt:unstructured"
             sling:resourceType="anchora/components/container"
-            layout="responsiveGrid">
-            <separator
+            layout="simple">
+            <footer
                 jcr:primaryType="nt:unstructured"
-                sling:resourceType="anchora/components/separator"/>
-            <text
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="anchora/components/text"
-                text="&lt;p>Copyright 2026, Anchora.&amp;nbsp;All rights reserved.&lt;/p>&#xd;&#xa;&lt;p>345 Park Avenue,&amp;nbsp;San Jose, CA 95110-2704, USA&lt;/p>&#xd;&#xa;"
-                textIsRich="true"/>
+                sling:resourceType="anchora/components/footer"
+                copyright="© {year} Anchora. Placeholder site built for a technical exercise."
+                navLabel="Footer">
+                <links jcr:primaryType="nt:unstructured">
+                    <item0
+                        jcr:primaryType="nt:unstructured"
+                        label="Flying with children"
+                        link="/content/anchora/us/en/flying-infants-children"/>
+                    <item1
+                        jcr:primaryType="nt:unstructured"
+                        label="Joey Club"
+                        link="/content/anchora/us/en/joey-club"/>
+                    <item2
+                        jcr:primaryType="nt:unstructured"
+                        label="Accessibility"
+                        link="https://www.example.com/accessibility"/>
+                    <item3
+                        jcr:primaryType="nt:unstructured"
+                        label="Privacy"
+                        link="https://www.example.com/privacy"/>
+                </links>
+            </footer>
         </root>
     </jcr:content>
 </jcr:root>

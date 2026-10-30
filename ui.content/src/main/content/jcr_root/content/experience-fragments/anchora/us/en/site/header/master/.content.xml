@@ -13,22 +13,32 @@
             jcr:primaryType="nt:unstructured"
             sling:resourceType="anchora/components/container"
             layout="simple">
-            <navigation
+            <header
                 jcr:primaryType="nt:unstructured"
-                sling:resourceType="anchora/components/navigation"
-                collectAllPages="false"
-                navigationRoot="/content/anchora/us/en"
-                skipNavigationRoot="false"
-                structureDepth="1"/>
-            <languagenavigation
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="anchora/components/languagenavigation"
-                navigationRoot="/content/anchora/us"
-                structureDepth="2"/>
-            <search
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="anchora/components/search"
-                searchRoot="/content/anchora/us"/>
+                sling:resourceType="anchora/components/header"
+                brandLabel="Anchora"
+                brandLink="/content/anchora/us/en"
+                navLabel="Main">
+                <links jcr:primaryType="nt:unstructured">
+                    <item0
+                        jcr:primaryType="nt:unstructured"
+                        label="Home"
+                        link="/content/anchora/us/en"/>
+                    <item1
+                        jcr:primaryType="nt:unstructured"
+                        label="Flying with children"
+                        link="/content/anchora/us/en/flying-infants-children"/>
+                    <item2
+                        jcr:primaryType="nt:unstructured"
+                        label="Joey Club"
+                        link="/content/anchora/us/en/joey-club"/>
+                    <item3
+                        jcr:primaryType="nt:unstructured"
+                        label="Help"
+                        link="https://www.example.com/help"
+                        newTab="{Boolean}true"/>
+                </links>
+            </header>
         </root>
     </jcr:content>
 </jcr:root>

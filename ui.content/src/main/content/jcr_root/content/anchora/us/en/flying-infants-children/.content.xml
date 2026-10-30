@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:template="/conf/anchora/settings/wcm/templates/page-content"
+        jcr:description="Booking, seating and travel information for families flying with babies and young children."
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Flying with infants and children"
+        sling:resourceType="anchora/components/page">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="anchora/components/container"
+            layout="responsiveGrid">
+            <container
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="anchora/components/container"
+                layout="responsiveGrid">
+                <container
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="anchora/components/container"
+                    layout="responsiveGrid">
+                    <hero
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Flying with infants and children"
+                        sling:resourceType="anchora/components/hero"
+                        fileReference="/content/dam/anchora/flying-with-children/flying-with-children-hero.jpg"
+                        intro="Young travellers are always welcome on board. Here is what you need to know about flying with babies and children, from making the booking to settling in for the flight."
+                        isDecorative="{Boolean}false">
+                        <jumpLinks jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                anchor="joey-club"
+                                label="Joey Club"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                anchor="booking-for-infants"
+                                label="Booking for infants"/>
+                        </jumpLinks>
+                    </hero>
+                    <teaser
+                        description="&lt;p>A club made just for kids. Meet the Joey Club family, pick up a kids' activity pack on board and look out for Joey Club play areas in selected lounges.&lt;/p>"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Joey Club"
+                        sling:resourceType="anchora/components/teaser"
+                        fileReference="/content/dam/anchora/flying-with-children/joey-club.jpg"
+                        id="joey-club"
+                        isDecorative="{Boolean}true"
+                        linkLabel="Find out about the Joey Club"
+                        linkNewTab="{Boolean}false"
+                        linkURL="/content/anchora/us/en/joey-club"/>
+                    <accordion
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="anchora/components/accordion"
+                        id="booking-for-infants"
+                        sectionIntro="How to book a baby on a flight, and whether they need their own seat, a bassinet or can sit on your lap."
+                        sectionTitle="Booking for infants (under 2 years)"
+                        singleExpansion="{Boolean}false">
+                        <item_1
+                            cq:panelTitle="Infants on domestic flights"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="anchora/components/text"
+                            text="&lt;p>An infant can fly on the ticket of a parent or guardian when they sit on that adult's lap.&lt;/p>&lt;p>If you want your infant to have a seat of their own, they need a separate ticket. Contact us to book it.&lt;/p>&lt;p>Bassinets are only offered on domestic flights operated by A330 aircraft. Ask for one at check-in; they are subject to availability.&lt;/p>"
+                            textIsRich="true"/>
+                        <item_2
+                            cq:panelTitle="Infants on international flights"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="anchora/components/text"
+                            text="&lt;p>Every infant needs their own ticket on an international flight. The ticket does not include a seat.&lt;/p>&lt;ul>&lt;li>Your infant travels on your lap, or in a bassinet if you booked one and the crew say it is safe to use.&lt;/li>&lt;li>An infant under 2 who does not use a seat pays 10% of the adult fare.&lt;/li>&lt;li>Each adult can travel with one infant on their lap.&lt;/li>&lt;/ul>"
+                            textIsRich="true"/>
+                        <item_3
+                            cq:panelTitle="Booking a seat for your infant"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="anchora/components/text"
+                            text="&lt;p>Infants under 2 do not need a seat. If you would like one for your infant, &lt;a href=&quot;https://www.example.com/contact&quot;>contact us&lt;/a> or your travel agent. Seats for infants cannot be booked online, and a discounted fare applies.&lt;/p>&lt;p>An infant in their own seat must travel in an approved child car seat or restraint.&lt;/p>"
+                            textIsRich="true"/>
+                        <item_4
+                            cq:panelTitle="Travelling with more than one infant per adult"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="anchora/components/text"
+                            text="&lt;p>You can book one infant per adult online.&lt;/p>&lt;p>Each extra infant travelling with the same adult needs their own seat and an approved child car seat or restraint. Contact us to make this booking.&lt;/p>"
+                            textIsRich="true"/>
+                        <item_5
+                            cq:panelTitle="How soon can infants travel after birth?"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="anchora/components/text"
+                            text="&lt;ul>&lt;li>&lt;b>Up to 48 hours old:&lt;/b> too young to fly.&lt;/li>&lt;li>&lt;b>3 to 7 days old:&lt;/b> can fly with medical clearance.&lt;/li>&lt;li>&lt;b>8 days or older:&lt;/b> healthy infants can fly without clearance. Infants born early or with complications need medical clearance.&lt;/li>&lt;/ul>&lt;p>Allow at least 48 hours for a clearance request to be approved.&lt;/p>"
+                            textIsRich="true"/>
+                        <item_6
+                            cq:panelTitle="My infant isn't born yet, how do I book?"
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="anchora/components/text"
+                            text="&lt;p>Book your own flights now. Once your baby is born, contact us to add them to the booking and issue their ticket if they need one.&lt;/p>"
+                            textIsRich="true"/>
+                    </accordion>
+                </container>
+            </container>
+        </root>
+    </jcr:content>
+</jcr:root>
