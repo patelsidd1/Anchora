@@ -7,7 +7,8 @@ $font-height:           1.5;
 //== Colour (all text colours pass WCAG AA on white)
 
 $color-brand:           #14325c;
-$color-accent:          #e4572e;
+$color-accent:          #e4572e; // decoration only: 3.7:1 on white is too low for text
+$color-accent-text:     #c4401b; // the accent for text and links (5.1:1 on white)
 $color-foreground:      #1f2933;
 $color-muted:           #52606d;
 $color-background:      #ffffff;
@@ -22,6 +23,7 @@ $content-max-width:     1200px;
 $gutter:                16px;
 $gutter-wide:           32px;
 $radius:                12px;
+$radius-large:          48px;
 
 // Breakpoints, mobile first: the default styles are for 375px phones.
 $bp-tablet:             768px;
@@ -51,6 +53,17 @@ $bp-desktop:            1024px;
     background-color: currentColor;
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") no-repeat center / contain;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3zM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+// Arrow after a call-to-action link ("Find out more →"); decorative, so drawn in CSS.
+@mixin arrow-icon {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z'/%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
 // Chevron drawn with borders, so there is no text for screen readers to announce.

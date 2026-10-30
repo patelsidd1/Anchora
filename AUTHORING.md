@@ -83,21 +83,27 @@ The large banner at the top of the page. Until you give it a title, it shows as 
 
 ### Teaser
 
-A card with a heading, a short description, an optional image and a link to another page. On the example page, it promotes the Joey Club.
+A card with a heading, an optional subtitle, a short description, an optional image and a link to another page. On the example page, one teaser promotes the Joey Club (image on the left) and another promotes inflight entertainment (image on the right).
+
+On tablets and larger screens the image and the text sit side by side. On phones the image is always above the text, whichever side you pick.
 
 ![Teaser dialog, Text tab](docs/images/dialog-teaser.png)
 
 | Tab | Field | What it does |
 |---|---|---|
 | Text | **Title** | The card heading. You can't choose the heading level. The template sets it (H2 on this site), so headings stay in the right order. |
+| Text | **Subtitle** | Optional. One short line under the title, for example "A club made just for kids.". Plain text only. |
 | Text | **Description** | The card text. You can use bold, italic, links, and bulleted or numbered lists. Keep it to a short paragraph. |
 | Text | **Anchor ID** | Optional. A short ID so a Hero jump link can point to this card, for example `joey-club`. Use lower-case letters, numbers and hyphens, and don't reuse an ID on the same page. |
 | Link | **Link target** | Pick a page on this site, or type a full web address starting with `https://`. |
 | Link | **Link label** | The link text. Say where the link goes, for example "Find out about the Joey Club", not "Click here". **The link isn't shown while this is empty.** |
 | Link | **Open in a new tab** | Use only for other websites. Screen readers announce "(opens in a new tab)" for these links. |
-| Image | **Image**, **Alternative text**, **Image is decorative** | As for the Hero. Use an image at least **1280 pixels wide**. |
+| Image | **Image**, **Alternative text**, **Image is decorative** | As for the Hero. Use an image at least **1280 pixels wide**. The whole image is shown, never cropped. |
+| Image | **Image position** | **Left** (the default) or **Right**: which side of the text the image goes on, on tablets and larger screens. To alternate cards down a page, set every second teaser to **Right**. |
 
-A teaser without a title, description or image doesn't appear on the published page.
+![Teaser dialog, Image tab, with the Image position field](docs/images/dialog-teaser-image.png)
+
+A teaser without a title, subtitle, description or image doesn't appear on the published page.
 
 ### Accordion
 
@@ -224,6 +230,7 @@ Changes you make to the page later are only visible on the live site after you p
 | Problem | What to check |
 |---|---|
 | The teaser link is missing | Fill in **Link label** as well as **Link target**. |
+| A teaser image is above the text even though **Image position** is **Right** | That's expected on phones and narrow windows. The image moves to the side from tablet width up. |
 | A jump link doesn't scroll anywhere | The **Anchor** must exactly match the Teaser's **Anchor ID** or the Accordion's **ID** (without the `#`). |
 | The Hero doesn't show on the published page | Give it a **Title**. |
 | An image has no description for screen readers | Fill in **Alternative text**, or the image's **Description** in Assets, or tick **Image is decorative**. |

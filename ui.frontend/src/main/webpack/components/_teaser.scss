@@ -1,68 +1,88 @@
+// Image and text side by side from tablet width up. Authors choose the image side (imagePosition);
+// on phones the image always sits above the text. The DOM order never changes, only the visual order.
 .cmp-teaser {
     display: grid;
-    overflow: hidden;
-    background: $color-background;
-    border: 1px solid $color-border;
-    border-radius: $radius;
+    gap: 24px;
 
     @include tablet-up {
         &.cmp-teaser--with-image {
-            grid-template-columns: 5fr 7fr;
-            align-items: center;
+            grid-template-columns: 1fr 1fr;
+            align-items: start;
+            gap: $gutter-wide;
+        }
+
+        &.cmp-teaser--with-image.cmp-teaser--image-right .cmp-teaser__media {
+            order: 1;
+        }
+    }
+
+    @include desktop-up {
+        &.cmp-teaser--with-image {
+            gap: 64px;
         }
     }
 }
 
-.cmp-teaser__media {
-    height: 100%;
-}
-
+// The large rounded corner always faces the text.
 .cmp-teaser__image {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.cmp-teaser__content {
-    padding: 24px $gutter;
+    border-radius: $radius $radius $radius-large $radius;
 
     @include tablet-up {
-        padding: $gutter-wide;
+        .cmp-teaser--image-right & {
+            border-radius: $radius $radius $radius $radius-large;
+        }
     }
 }
 
 .cmp-teaser__title {
-    font-size: 1.75rem;
+    margin-bottom: .4em;
+    font-size: 2.25rem;
+    font-weight: 300;
+    line-height: 1.15;
+
+    @include desktop-up {
+        font-size: 3.25rem;
+    }
+}
+
+.cmp-teaser__subtitle {
+    margin-bottom: 1em;
+    font-size: 1.375rem;
+    font-weight: 300;
+    line-height: 1.3;
+
+    @include desktop-up {
+        font-size: 1.875rem;
+    }
 }
 
 .cmp-teaser__description {
-    color: $color-muted;
+    font-size: 1.0625rem;
+    line-height: 1.65;
 }
 
 .cmp-teaser__link {
     display: inline-flex;
     align-items: center;
-    gap: .6em;
-    padding: 12px 20px;
+    gap: .35em;
+    margin-top: 8px;
+    font-size: 1.125rem;
     font-weight: 700;
-    color: $color-background;
+    color: $color-accent-text;
     text-decoration: none;
-    background: $color-brand;
-    border-radius: 999px;
 
     &::after {
-        @include chevron(-45deg);
+        @include arrow-icon;
     }
 
     &[target="_blank"]::after {
         @include new-tab-icon;
-        border: 0;
-        transform: none;
     }
 
     &:hover {
-        color: $color-background;
-        background: darken($color-brand, 8%);
+        color: $color-accent-text;
+        text-decoration: underline;
     }
 }

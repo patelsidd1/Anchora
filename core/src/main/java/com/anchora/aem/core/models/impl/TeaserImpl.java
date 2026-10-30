@@ -32,6 +32,8 @@ public class TeaserImpl implements Teaser {
     static final String PN_TITLE_TYPE = "titleType";
     static final String DEFAULT_HEADING = "h2";
     private static final Set<String> ALLOWED_HEADINGS = Set.of("h2", "h3", "h4", "h5", "h6");
+    static final String IMAGE_LEFT = "left";
+    static final String IMAGE_RIGHT = "right";
 
     @Self
     private SlingHttpServletRequest request;
@@ -52,7 +54,13 @@ public class TeaserImpl implements Teaser {
     private String title;
 
     @ValueMapValue
+    private String subtitle;
+
+    @ValueMapValue
     private String description;
+
+    @ValueMapValue
+    private String imagePosition;
 
     @ValueMapValue
     private String linkLabel;
@@ -91,6 +99,11 @@ public class TeaserImpl implements Teaser {
     }
 
     @Override
+    public String getSubtitle() {
+        return StringUtils.trimToNull(subtitle);
+    }
+
+    @Override
     public String getDescription() {
         return StringUtils.trimToNull(description);
     }
@@ -101,12 +114,17 @@ public class TeaserImpl implements Teaser {
     }
 
     @Override
+    public String getImagePosition() {
+        return IMAGE_RIGHT.equals(imagePosition) ? IMAGE_RIGHT : IMAGE_LEFT;
+    }
+
+    @Override
     public LinkItem getLink() {
         return link;
     }
 
     @Override
     public boolean isEmpty() {
-        return getTitle() == null && getDescription() == null && image == null;
+        return getTitle() == null && getSubtitle() == null && getDescription() == null && image == null;
     }
 }

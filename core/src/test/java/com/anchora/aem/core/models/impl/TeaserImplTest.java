@@ -47,21 +47,44 @@ class TeaserImplTest {
         Teaser teaser = adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE,
                 "id", "joey-club",
                 "jcr:title", "Joey Club",
+                "subtitle", " A club just for kids. ",
                 "description", "<p>Activities for <b>kids</b>.</p>",
                 "fileReference", ASSET,
                 "alt", "Balloons",
+                "imagePosition", "right",
                 "linkLabel", "Find out about the Joey Club",
                 "linkURL", "/content/anchora/us/en/joey-club");
 
         assertEquals("joey-club", teaser.getId());
         assertEquals("Joey Club", teaser.getTitle());
+        assertEquals("A club just for kids.", teaser.getSubtitle());
         assertEquals("<p>Activities for <b>kids</b>.</p>", teaser.getDescription());
         assertEquals("Balloons", teaser.getImage().getAlt());
+        assertEquals("right", teaser.getImagePosition());
         LinkItem link = teaser.getLink();
         assertEquals("Find out about the Joey Club", link.getLabel());
         assertEquals("/content/anchora/us/en/joey-club.html", link.getHref());
         assertNull(link.getRel());
         assertFalse(teaser.isEmpty());
+    }
+
+    @Test
+    void imageIsOnTheLeftByDefault() {
+        assertEquals("left", adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE, "fileReference", ASSET)
+                .getImagePosition());
+    }
+
+    @Test
+    void unknownImagePositionFallsBackToLeft() {
+        assertEquals("left", adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE,
+                "fileReference", ASSET, "imagePosition", "top").getImagePosition());
+    }
+
+    @Test
+    void subtitleAloneIsNotEmpty() {
+        Teaser teaser = adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE, "subtitle", "Just for kids");
+        assertFalse(teaser.isEmpty());
+        assertNull(teaser.getTitle());
     }
 
     @Test
@@ -101,10 +124,11 @@ class TeaserImplTest {
     }
 
     @Test
-    void isEmptyWithoutTitleDescriptionOrImage() {
+    void isEmptyWithoutTextOrImage() {
         Teaser teaser = adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE, "linkLabel", "Orphan link");
         assertTrue(teaser.isEmpty());
         assertNull(teaser.getId());
+        assertNull(teaser.getSubtitle());
         assertNull(teaser.getImage());
     }
 

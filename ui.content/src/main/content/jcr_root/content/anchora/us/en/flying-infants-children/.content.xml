@@ -33,21 +33,39 @@
                                 label="Joey Club"/>
                             <item1
                                 jcr:primaryType="nt:unstructured"
+                                anchor="inflight-entertainment"
+                                label="Inflight entertainment"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
                                 anchor="booking-for-infants"
                                 label="Booking for infants"/>
                         </jumpLinks>
                     </hero>
                     <teaser
-                        description="&lt;p>A club made just for kids. Meet the Joey Club family, pick up a kids' activity pack on board and look out for Joey Club play areas in selected lounges.&lt;/p>"
+                        description="&lt;p>Meet the Joey Club family, pick up a kids' activity pack on board and look out for Joey Club play areas in selected lounges.&lt;/p>"
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Joey Club"
                         sling:resourceType="anchora/components/teaser"
                         fileReference="/content/dam/anchora/flying-with-children/joey-club.jpg"
                         id="joey-club"
+                        imagePosition="left"
                         isDecorative="{Boolean}true"
                         linkLabel="Find out about the Joey Club"
                         linkNewTab="{Boolean}false"
-                        linkURL="/content/anchora/us/en/joey-club"/>
+                        linkURL="/content/anchora/us/en/joey-club"
+                        subtitle="A club made just for kids."/>
+                    <teaser_inflight
+                        description="&lt;p>Kids' movies, TV shows, music and games are ready to play on selected flights, so there is always something to watch or listen to on the way.&lt;/p>"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Inflight entertainment for kids"
+                        sling:resourceType="anchora/components/teaser"
+                        fileReference="/content/dam/anchora/flying-with-children/inflight-entertainment.jpg"
+                        id="inflight-entertainment"
+                        imagePosition="right"
+                        isDecorative="{Boolean}true"
+                        linkLabel="Explore inflight entertainment"
+                        linkNewTab="{Boolean}false"
+                        linkURL="/content/anchora/us/en/inflight-entertainment"/>
                     <accordion
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="anchora/components/accordion"

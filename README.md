@@ -55,7 +55,7 @@ This repository rebuilds the [Qantas "Flying with infants and children"](https:/
    ```
 
    This single command does the following:
-   - compiles the `core` bundle and runs its 38 unit tests (the build stops if one fails);
+   - compiles the `core` bundle and runs its 41 unit tests (the build stops if one fails);
    - downloads Node and runs `npm ci` and the webpack production build in `ui.frontend`, then copies the client libraries into `ui.apps`;
    - packages everything into `all/target/anchora.all-1.0.0-SNAPSHOT.zip` and installs it on `localhost:4502` as `admin`/`admin`.
 
@@ -67,6 +67,7 @@ This repository rebuilds the [Qantas "Flying with infants and children"](https:/
    | Page in the editor | <http://localhost:4502/editor.html/content/anchora/us/en/flying-infants-children.html> |
    | Page as published (no editor) | <http://localhost:4502/content/anchora/us/en/flying-infants-children.html?wcmmode=disabled> |
    | Joey Club placeholder page | <http://localhost:4502/editor.html/content/anchora/us/en/joey-club.html> |
+   | Inflight entertainment placeholder page | <http://localhost:4502/editor.html/content/anchora/us/en/inflight-entertainment.html> |
    | Header experience fragment | <http://localhost:4502/editor.html/content/experience-fragments/anchora/us/en/site/header/master.html> |
    | Footer experience fragment | <http://localhost:4502/editor.html/content/experience-fragments/anchora/us/en/site/footer/master.html> |
    | Template structure | <http://localhost:4502/editor.html/conf/anchora/settings/wcm/templates/page-content/structure.html> |
@@ -118,7 +119,7 @@ Only the modules below were changed. `ui.apps.structure`, `ui.config`, `all`, `i
 | Root `pom.xml` | Pinned `aem.sdk.api`. Moved Node to v24.21.0 with its bundled npm. Removed the `junit-addons` test dependency. | Match the local SDK. Node 16 / npm 8 from the archetype are end of life. `junit-addons` was only used by the deleted sample tests. |
 | `core` | Removed the sample servlet, filter, listener, scheduler and HelloWorld model (and their tests). Added the models in `com.anchora.aem.core.models` (interfaces), `…models.impl` (implementations and helpers), and their tests. | All rendering logic lives in Sling Models behind interfaces (HB-05). |
 | `ui.apps` | Added `hero`, `teaser`, `header` and `footer`. Extended `accordion`. Added a favicon link to the page and XF page head. Removed `helloworld`. | The components the page needs (HB, TS, AC, PT). |
-| `ui.content` | Template structure and policies. The Home, Flying with infants and children, and Joey Club pages. Header and footer experience fragments. Two DAM images. Removed the sample asset. | The page ships with the code (EN-04), so a reviewer sees it after one install. |
+| `ui.content` | Template structure and policies. The Home, Flying with infants and children, Joey Club and Inflight entertainment pages. Header and footer experience fragments. Three DAM images. Removed the sample asset. | The page ships with the code (EN-04), so a reviewer sees it after one install. |
 | `ui.frontend` | Site variables, base styles (skip link, focus, visually-hidden text), and component SCSS. Removed unused sample styles and scripts. Fixed the `svgo` option in `webpack.prod.js`. | All CSS ships as the `anchora.site` client library (PT-06). No custom JavaScript is needed, because the accordion uses the Core Components script. |
 
 Java code:
@@ -163,10 +164,11 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 | Build | Custom; no supertype (see [Design decisions](#design-decisions)) |
 | Group | Anchora - Content |
 | Sling Model | `Teaser` → `TeaserImpl` (uses `Links` and `ResponsiveImages`) |
-| Dialog | **Text**: Title (`./jcr:title`), Description (`./description`, rich text: bold, italic, link, lists), Anchor ID (`./id`). **Link**: Link target (`./linkURL`, a page or an external URL), Link label (`./linkLabel`), Open in a new tab (`./linkNewTab`). **Image**: Image (`./fileReference`), Alternative text (`./alt`), Image is decorative (`./isDecorative`). |
+| Dialog | **Text**: Title (`./jcr:title`), Subtitle (`./subtitle`, plain text), Description (`./description`, rich text: bold, italic, link, lists), Anchor ID (`./id`). **Link**: Link target (`./linkURL`, a page or an external URL), Link label (`./linkLabel`), Open in a new tab (`./linkNewTab`). **Image**: Image (`./fileReference`), Alternative text (`./alt`), Image is decorative (`./isDecorative`), Image position (`./imagePosition`: `left`, the default, or `right`). |
 | Design dialog | Title heading level (`titleType`, H2–H6) |
 | Policy | `anchora/components/teaser/policy_1575031387650` "Content Teaser": `titleType=h2` (TS-02) |
-| Markup | Heading at the policy level (only H2–H6 are accepted; anything else falls back to H2), HTML description, link with `rel="noopener noreferrer"` and visually hidden "(opens in a new tab)" text when opened in a new tab, and a lazy-loaded image. |
+| Markup | Heading at the policy level (only H2–H6 are accepted; anything else falls back to H2), optional subtitle `<p>`, HTML description, link with an arrow icon, `rel="noopener noreferrer"` and visually hidden "(opens in a new tab)" text when opened in a new tab, and a lazy-loaded image. The root gets `cmp-teaser--image-left` or `cmp-teaser--image-right`. |
+| Layout | Phones: image above the text. From 768 px: image and text side by side, and the image goes on the side the author chose. The image keeps its first place in the HTML; only CSS `order` moves it, and nothing in it can take focus, so the reading and tab order stay the same. The large rounded corner of the image always faces the text. |
 
 ### Accordion – `anchora/components/accordion`
 
@@ -225,7 +227,8 @@ root (container, locked)
 | Component | Choice | Reason |
 |---|---|---|
 | Hero | **Custom** | Core has no hero. Making a Core Teaser behave like a hero (H1, jump-link list, DAM alt fallback) would take more overrides than a small model does. |
-| Teaser | **Custom, built from scratch** (TS-04) | The brief needs a narrow set of features: a policy-driven heading, simple link handling with `noopener noreferrer`, DAM alt fallback and a decorative flag. Core Teaser v2 also brings actions, pre-titles, inheriting the title and image from the linked page, and image rendering through a delegated Core Image with its own servlet. That is a lot of behaviour to override or explain for one card. The custom model is about 100 lines with 8 tests. The policy property is called `titleType`, like Core's, so switching to the Core Teaser later wouldn't need a content migration for the heading level. Trade-off: no Core data layer or Style System options on this component. |
+| Teaser | **Custom, built from scratch** (TS-04) | The brief needs a narrow set of features: a policy-driven heading, simple link handling with `noopener noreferrer`, DAM alt fallback and a decorative flag. Core Teaser v2 also brings actions, pre-titles, inheriting the title and image from the linked page, and image rendering through a delegated Core Image with its own servlet. That is a lot of behaviour to override or explain for one card. The custom model is about 130 lines with 11 tests. The policy property is called `titleType`, like Core's, so switching to the Core Teaser later wouldn't need a content migration for the heading level. Trade-off: no Core data layer or Style System options on this component. |
+| Teaser image position | **One teaser with a dialog select**, not two components and not a Style System style | It is the same card either way, so a second component would only copy code. The side is a choice about each piece of content (for example, alternating cards down the page), so it belongs in the dialog next to the image rather than in the style menu, which is for site-wide looks set up by template authors. It is also a plain property that the model checks: anything other than `right` means `left`, and that is unit tested. |
 | Accordion | **Extend Core Accordion v1** (AC-07) | Core already provides what is hard to get right: the panel-container editing (Items tab, "Select panel", insert and reorder), an accessible button/region pattern with full keyboard support, and the data layer. The extension only adds the section heading and intro, and forces everything to start collapsed. Trade-off: `accordion.html` is a copy of Core's, so it must be compared again when Core is upgraded. |
 | Header / footer | **Custom components inside experience fragments**, placed by locked Core XF components in the template structure (PT-02) | Each is authored once, appears on every page from the template, and can't be edited from the page. Core Navigation was not used because it builds menus from the page tree, while this site needs a short, hand-picked list of links. |
 | Title / Text | **Core proxies with policies** | No custom behaviour needed. Policies keep H1 for the hero and limit the rich-text tools. |
@@ -240,12 +243,12 @@ mvn -pl core test          # unit tests only
 mvn clean install          # full build; also runs the tests and fails if any test fails (EN-03)
 ```
 
-There are 38 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
+There are 41 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
 
 | Test class | Tests | What it checks |
 |---|---|---|
 | `HeroImplTest` | 3 | Reads title, intro, image and jump links (with or without `#`, incomplete items skipped). Empty without a title. Renders with no image when the asset is missing. |
-| `TeaserImplTest` | 8 | Reads authored content. Heading defaults to H2 without a policy, comes from the policy when set, and can't be made H1. New-tab external link has `noopener`. A link with no label isn't rendered. Empty and image-only states. |
+| `TeaserImplTest` | 11 | Reads authored content, including a trimmed subtitle. Image position defaults to left, and an unknown value falls back to left. Heading defaults to H2 without a policy, comes from the policy when set, and can't be made H1. New-tab external link has `noopener`. A link with no label isn't rendered. Empty, image-only and subtitle-only states. |
 | `SectionAccordionImplTest` | 5 | Section heading and intro. Items, single-expansion and heading element are delegated to Core. All items start collapsed even when expanded items were saved. Exports its own resource type. Section fields are optional. |
 | `HeaderFooterImplTest` | 4 | Header brand, link and navigation, and defaults. Footer `{year}` replacement and the no-copyright case. |
 | `LinksTest` | 9 | Internal paths get `.html` (fragment and query kept). External, `mailto:` and blank links. `target` and `rel` for new tabs. Multifield reading, order and skipping. |
@@ -261,6 +264,7 @@ They don't test HTL output, dialogs, policies, the template, CSS, or the Core ac
 - header, three `nav` elements with labels, `main` and footer landmarks; the skip link is the first tab stop;
 - the accordion opens and closes with Enter, Space, the arrow keys, Home and End, and has a visible focus outline;
 - no horizontal scrolling at 375 px;
+- teaser images sit above the text at 375 px and on the chosen side at 768 px and 1280 px, and changing **Image position** in the dialog moves the image;
 - every dialog opens, and each container allows only the expected components.
 
 `it.tests` and `ui.tests` (Cypress) are the archetype's defaults, and I didn't extend them.
@@ -297,7 +301,7 @@ Paths are shortened: `apps/…` means `ui.apps/src/main/content/jcr_root/apps/an
 | PT-06 | Met | All CSS comes from `ui.frontend` → `anchora.site`; no `style` attributes or `<script>` blocks in our HTL |
 | EN-01 | Met | [Archetype](#archetype); `archetype.properties` |
 | EN-02 | Met | `mvn clean install -PautoInstallSinglePackage` passes and installs. It was tested on my local SDK, which also hosts other projects, not on a brand-new instance. |
-| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (38 tests) cover every model |
+| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (41 tests) cover every model |
 | EN-04 | Met | `ui.content` ships the pages, experience fragments, template, policies and DAM images |
 | EN-05 | Met | Commits on `feature/flying-infants-children`, merged to `main` through a pull request |
 | EN-06 | Met | Checked as listed under [Testing](#testing) |
@@ -313,7 +317,7 @@ None of the optional stretch work was attempted.
 
 - **Content.** All copy is paraphrased and shortened from the reference page, not copied. The brand is "Anchora", and the images are illustrations made for this exercise. The copy hasn't been checked against any airline's actual policy.
 - **Placeholder links.** Help, Accessibility, Privacy and "contact us" point to `https://www.example.com/`. Deeper example.com paths return 404, and AEM's link checker removes links that fail, so they would disappear from the published page.
-- **Scope of the page.** Only the hero, Joey Club teaser and "Booking for infants" accordion from the reference page were rebuilt. The template allows only Hero, Teaser, Accordion, Title and Text, and accordion items can only be Text.
+- **Scope of the page.** Only the hero, the Joey Club and inflight entertainment teasers, and the "Booking for infants" accordion from the reference page were rebuilt. The "Back to top" link under each reference section wasn't added. The template allows only Hero, Teaser, Accordion, Title and Text, and accordion items can only be Text.
 - **Headings.** The section heading is H2 and item titles are fixed at H3 by policy. Authors don't choose heading levels.
 - **Collapsed state.** All items always start collapsed, so the Core "Expanded items" settings are hidden rather than ignored silently.
 - **Site path.** `/content/anchora/us/en`, from the archetype defaults (see [Archetype](#archetype)).
@@ -334,7 +338,7 @@ None of the optional stretch work was attempted.
 1. Turn the manual Playwright checks into `ui.tests` with an axe-core scan and the accordion keyboard tests (stretch option 2).
 2. Set up a local publish instance and Dispatcher, and check the page end to end (stretch option 1).
 3. Move images to AEMaaCS web-optimised image delivery (or Dynamic Media), so widths aren't limited to stored renditions.
-4. Remove the unused archetype proxies and policies, and add Style System options (for example, image left or right on the teaser).
+4. Remove the unused archetype proxies and policies, and add Style System options for site-wide looks (for example, a tinted background behind a teaser).
 5. Add an i18n dictionary for the two UI strings ("On this page" and "(opens in a new tab)") and an `en-au` site.
 
 ## Open-source libraries and licences

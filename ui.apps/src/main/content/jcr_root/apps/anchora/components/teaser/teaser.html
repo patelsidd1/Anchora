@@ -2,12 +2,12 @@
      data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
      data-sly-test="${!teaser.empty}"
      id="${teaser.id}"
-     class="cmp-teaser ${teaser.image ? 'cmp-teaser--with-image' : ''}">
+     class="cmp-teaser cmp-teaser--image-${teaser.imagePosition} ${teaser.image ? 'cmp-teaser--with-image' : ''}">
     <div class="cmp-teaser__media" data-sly-test.image="${teaser.image}">
         <img class="cmp-teaser__image"
              src="${image.src}"
              srcset="${image.srcset}"
-             sizes="(min-width: 1280px) 475px, (min-width: 768px) 40vw, 100vw"
+             sizes="(min-width: 1280px) 536px, (min-width: 768px) 45vw, 100vw"
              width="${image.width}"
              height="${image.height}"
              alt="${image.alt || true}"
@@ -17,6 +17,7 @@
         <h2 class="cmp-teaser__title"
             data-sly-test="${teaser.title}"
             data-sly-element="${teaser.headingElement}">${teaser.title}</h2>
+        <p class="cmp-teaser__subtitle" data-sly-test="${teaser.subtitle}">${teaser.subtitle}</p>
         <div class="cmp-teaser__description" data-sly-test="${teaser.description}">${teaser.description @ context='html'}</div>
         <a class="cmp-teaser__link"
            data-sly-test.link="${teaser.link}"

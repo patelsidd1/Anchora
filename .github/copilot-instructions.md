@@ -28,6 +28,7 @@ These rules apply to every change in this repository. Read `AGENTS.md` for the m
 - Content components go in the group "Anchora - Content"; header and footer in "Anchora - Structure". Page-level components stay in `.hidden`.
 - Heading levels come from policies, not dialogs. The Hero title is the only H1. Title is H2–H6; Teaser default H2; accordion section heading H2 and items H3.
 - Dialogs: short, plain-English labels and a `fieldDescription` that tells the author what to enter (sizes, examples). Mark truly required fields `required="{Boolean}true"`.
+- A layout choice made per component on the page (such as the teaser's image position) is a dialog field read by the model, with a safe default and a test. Keep the Style System for site-wide looks.
 - The page template `page-content` keeps header and footer as locked experience fragments, and one unlocked container that allows only hero, teaser, accordion, title and text. Change allowed components in the "Page Content" policy.
 - `ui.content` filters are `mode="merge"`. A redeploy won't overwrite existing nodes; delete the node first if the shipped version must replace it.
 - Placeholder external links must resolve (use `https://www.example.com/`). AEM's link checker removes anchors to URLs that return errors.
@@ -35,7 +36,7 @@ These rules apply to every change in this repository. Read `AGENTS.md` for the m
 ## Front end (`ui.frontend`)
 
 - All CSS comes from `ui.frontend` and ships as the `anchora.site` client library. No inline `style` attributes, no `<script>` blocks, no CSS or JS in `ui.apps` except Core clientlibs embedded in `anchora.base`.
-- SCSS is mobile-first. Use the variables and mixins in `site/_variables.scss` (`tablet-up`, `desktop-up`, `focus-ring`, `chevron`). Component styles go in `components/_<name>.scss`. Check at 375 px and 1280 px with no horizontal scroll.
+- SCSS is mobile-first. Use the variables and mixins in `site/_variables.scss` (`tablet-up`, `desktop-up`, `focus-ring`, `chevron`, `arrow-icon`). Component styles go in `components/_<name>.scss`. Check at 375 px and 1280 px with no horizontal scroll.
 - Class names follow Core's BEM style: `cmp-<component>__<element>--<modifier>`.
 - No custom JavaScript unless Core can't do it. The accordion uses the Core `accordion.v1` script.
 
@@ -45,6 +46,7 @@ These rules apply to every change in this repository. Read `AGENTS.md` for the m
 - Images: authored alt text, else the DAM description, else empty `alt=""` when marked decorative. Always output `width` and `height`.
 - Links that open in a new tab get a visually hidden `<span class="cmp-link__screen-reader-only"> (opens in a new tab)</span>`. Use exactly this class; Core's link script adds a second span otherwise.
 - Every interactive element has a visible `:focus-visible` outline.
+- Text and links in the brand coral use `$color-accent-text`. `$color-accent` is for decoration only; its contrast on white is too low for text.
 
 ## Writing
 

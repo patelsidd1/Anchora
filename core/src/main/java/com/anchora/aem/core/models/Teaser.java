@@ -13,10 +13,16 @@ public interface Teaser {
     /** {@code h2}-{@code h6} from the template policy ({@code titleType}), defaulting to {@code h2}. */
     String getHeadingElement();
 
+    /** Optional plain-text line shown under the title. */
+    String getSubtitle();
+
     /** Rich text (HTML) from the RTE. */
     String getDescription();
 
     ResponsiveImage getImage();
+
+    /** Side the image sits on from tablet width up: {@code left} (default) or {@code right}. */
+    String getImagePosition();
 
     /** The call to action, or null when the label or target is missing. */
     LinkItem getLink();
