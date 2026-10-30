@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Header"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container"
+        margin="{Boolean}true">
+        <items jcr:primaryType="nt:unstructured">
+            <brandLabel
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                emptyText="Anchora"
+                fieldLabel="Logo text"
+                name="./brandLabel"/>
+            <brandLink
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                fieldDescription="Page the logo links to, usually the home page."
+                fieldLabel="Logo link"
+                name="./brandLink"
+                rootPath="/content"/>
+            <navLabel
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                emptyText="Main"
+                fieldDescription="Name that screen readers announce for this navigation."
+                fieldLabel="Navigation name"
+                name="./navLabel"/>
+            <links
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                composite="{Boolean}true"
+                fieldDescription="Three or four links. Drag the handle to reorder."
+                fieldLabel="Navigation links">
+                <field
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/container"
+                    name="./links">
+                    <items jcr:primaryType="nt:unstructured">
+                        <label
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                            fieldLabel="Label"
+                            name="./label"
+                            required="{Boolean}true"/>
+                        <link
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                            fieldDescription="A page in this site or a full external URL."
+                            fieldLabel="Link"
+                            name="./link"
+                            required="{Boolean}true"
+                            rootPath="/content"/>
+                        <newTab
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                            name="./newTab"
+                            text="Open in a new tab"
+                            uncheckedValue="{Boolean}false"
+                            value="{Boolean}true"/>
+                    </items>
+                </field>
+            </links>
+        </items>
+    </content>
+</jcr:root>

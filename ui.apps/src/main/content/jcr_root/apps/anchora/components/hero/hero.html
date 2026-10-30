@@ -1,0 +1,30 @@
+<div data-sly-use.hero="com.anchora.aem.core.models.Hero"
+     data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
+     data-sly-test="${!hero.empty}"
+     class="cmp-hero ${hero.image ? 'cmp-hero--with-image' : 'cmp-hero--text-only'}">
+    <div class="cmp-hero__content">
+        <h1 class="cmp-hero__title">${hero.title}</h1>
+        <p class="cmp-hero__intro" data-sly-test="${hero.intro}">${hero.intro}</p>
+        <nav class="cmp-hero__jump-links"
+             data-sly-test="${hero.jumpLinks}"
+             aria-label="${'On this page' @ i18n}">
+            <h2 class="cmp-hero__jump-links-title">${'On this page' @ i18n}</h2>
+            <ul class="cmp-hero__jump-links-list">
+                <li class="cmp-hero__jump-links-item" data-sly-repeat="${hero.jumpLinks}">
+                    <a class="cmp-hero__jump-link" href="${item.href}">${item.label}</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="cmp-hero__media" data-sly-test.image="${hero.image}">
+        <img class="cmp-hero__image"
+             src="${image.src}"
+             srcset="${image.srcset}"
+             sizes="(min-width: 1280px) 520px, (min-width: 1024px) 42vw, 100vw"
+             width="${image.width}"
+             height="${image.height}"
+             alt="${image.alt || true}"
+             fetchpriority="high"/>
+    </div>
+</div>
+<sly data-sly-call="${templates.placeholder @ isEmpty=hero.empty, classAppend='cmp-hero'}"></sly>

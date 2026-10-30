@@ -1,0 +1,28 @@
+<div data-sly-use.teaser="com.anchora.aem.core.models.Teaser"
+     data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
+     data-sly-test="${!teaser.empty}"
+     id="${teaser.id}"
+     class="cmp-teaser ${teaser.image ? 'cmp-teaser--with-image' : ''}">
+    <div class="cmp-teaser__media" data-sly-test.image="${teaser.image}">
+        <img class="cmp-teaser__image"
+             src="${image.src}"
+             srcset="${image.srcset}"
+             sizes="(min-width: 1280px) 475px, (min-width: 768px) 40vw, 100vw"
+             width="${image.width}"
+             height="${image.height}"
+             alt="${image.alt || true}"
+             loading="lazy"/>
+    </div>
+    <div class="cmp-teaser__content">
+        <h2 class="cmp-teaser__title"
+            data-sly-test="${teaser.title}"
+            data-sly-element="${teaser.headingElement}">${teaser.title}</h2>
+        <div class="cmp-teaser__description" data-sly-test="${teaser.description}">${teaser.description @ context='html'}</div>
+        <a class="cmp-teaser__link"
+           data-sly-test.link="${teaser.link}"
+           href="${link.href}"
+           target="${link.target}"
+           rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+    </div>
+</div>
+<sly data-sly-call="${templates.placeholder @ isEmpty=teaser.empty, classAppend='cmp-teaser'}"></sly>

@@ -1,0 +1,14 @@
+<div data-sly-use.header="com.anchora.aem.core.models.Header" class="cmp-header">
+    <a class="cmp-header__brand" data-sly-test="${header.brandHref}" href="${header.brandHref}">${header.brandLabel}</a>
+    <span class="cmp-header__brand" data-sly-test="${!header.brandHref}">${header.brandLabel}</span>
+    <nav class="cmp-header__nav" data-sly-test="${header.links}" aria-label="${header.navLabel}">
+        <ul class="cmp-header__nav-list">
+            <li class="cmp-header__nav-item" data-sly-repeat.link="${header.links}">
+                <a class="cmp-header__nav-link"
+                   href="${link.href}"
+                   target="${link.target}"
+                   rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+            </li>
+        </ul>
+    </nav>
+</div>

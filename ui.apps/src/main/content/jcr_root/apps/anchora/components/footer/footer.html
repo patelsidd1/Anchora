@@ -1,0 +1,13 @@
+<div data-sly-use.footer="com.anchora.aem.core.models.Footer" class="cmp-footer">
+    <nav class="cmp-footer__nav" data-sly-test="${footer.links}" aria-label="${footer.navLabel}">
+        <ul class="cmp-footer__nav-list">
+            <li class="cmp-footer__nav-item" data-sly-repeat.link="${footer.links}">
+                <a class="cmp-footer__nav-link"
+                   href="${link.href}"
+                   target="${link.target}"
+                   rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+            </li>
+        </ul>
+    </nav>
+    <p class="cmp-footer__copyright" data-sly-test="${footer.copyright}">${footer.copyright}</p>
+</div>
