@@ -1,0 +1,86 @@
+package com.anchora.aem.core.models.impl;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
+
+import com.anchora.aem.core.models.LinkItem;
+
+/**
+ * Turns authored link values into hrefs and reads link multifields.
+ */
+final class Links {
+
+    static final String PN_LABEL = "label";
+    static final String PN_LINK = "link";
+    static final String PN_NEW_TAB = "newTab";
+
+    private static final String CONTENT_ROOT = "/content/";
+    private static final String DAM_ROOT = "/content/dam/";
+
+    private Links() {
+    }
+
+    /**
+     * Internal page paths (under /content, outside the DAM, without an extension) are mapped and get
+     * ".html"; any "#fragment" or "?query" is kept. Everything else (external URLs, "#anchors",
+     * "mailto:", "tel:", assets) is returned unchanged.
+     *
+     * @return the href, or null when the link is blank
+     */
+    static String resolve(SlingHttpServletRequest request, String link) {
+        String value = StringUtils.trimToNull(link);
+        if (value == null) {
+            return null;
+        }
+        int suffixStart = StringUtils.indexOfAny(value, '#', '?');
+        String path = suffixStart < 0 ? value : value.substring(0, suffixStart);
+        String suffix = suffixStart < 0 ? "" : value.substring(suffixStart);
+        if (!isInternalPagePath(path)) {
+            return value;
+        }
+        return request.getResourceResolver().map(request, path) + ".html" + suffix;
+    }
+
+    /**
+     * @return the link, or null when the label or target is blank
+     */
+    static LinkItem create(SlingHttpServletRequest request, String label, String link, boolean newTab) {
+        String text = StringUtils.trimToNull(label);
+        String href = resolve(request, link);
+        return text == null || href == null ? null : new LinkItem(text, href, newTab);
+    }
+
+    /**
+     * Reads a composite multifield ({@code item0}, {@code item1}...) with label, link and newTab
+     * properties. Incomplete items are skipped.
+     */
+    static List<LinkItem> fromMultifield(SlingHttpServletRequest request, Resource multifield) {
+        if (multifield == null) {
+            return Collections.emptyList();
+        }
+        List<LinkItem> links = new ArrayList<>();
+        for (Resource item : multifield.getChildren()) {
+            ValueMap props = item.getValueMap();
+            LinkItem link = create(request, props.get(PN_LABEL, String.class), props.get(PN_LINK, String.class),
+                    props.get(PN_NEW_TAB, false));
+            if (link != null) {
+                links.add(link);
+            }
+        }
+        return Collections.unmodifiableList(links);
+    }
+
+    private static boolean isInternalPagePath(String path) {
+        if (!path.startsWith(CONTENT_ROOT) || path.startsWith(DAM_ROOT)) {
+            return false;
+        }
+        String lastSegment = path.substring(path.lastIndexOf('/') + 1);
+        return !lastSegment.contains(".");
+    }
+}
