@@ -30,11 +30,11 @@
                     <item2
                         jcr:primaryType="nt:unstructured"
                         label="Accessibility"
-                        link="https://www.example.com/accessibility"/>
+                        link="https://www.example.com/"/>
                     <item3
                         jcr:primaryType="nt:unstructured"
                         label="Privacy"
-                        link="https://www.example.com/privacy"/>
+                        link="https://www.example.com/"/>
                 </links>
             </footer>
         </root>

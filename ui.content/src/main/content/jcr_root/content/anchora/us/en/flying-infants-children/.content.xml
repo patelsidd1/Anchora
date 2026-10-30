@@ -71,7 +71,7 @@
                             cq:panelTitle="Booking a seat for your infant"
                             jcr:primaryType="nt:unstructured"
                             sling:resourceType="anchora/components/text"
-                            text="&lt;p>Infants under 2 do not need a seat. If you would like one for your infant, &lt;a href=&quot;https://www.example.com/contact&quot;>contact us&lt;/a> or your travel agent. Seats for infants cannot be booked online, and a discounted fare applies.&lt;/p>&lt;p>An infant in their own seat must travel in an approved child car seat or restraint.&lt;/p>"
+                            text="&lt;p>Infants under 2 do not need a seat. If you would like one for your infant, &lt;a href=&quot;https://www.example.com/&quot;>contact us&lt;/a> or your travel agent. Seats for infants cannot be booked online, and a discounted fare applies.&lt;/p>&lt;p>An infant in their own seat must travel in an approved child car seat or restraint.&lt;/p>"
                             textIsRich="true"/>
                         <item_4
                             cq:panelTitle="Travelling with more than one infant per adult"
