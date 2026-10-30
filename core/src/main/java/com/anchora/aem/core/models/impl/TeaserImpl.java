@@ -34,6 +34,7 @@ public class TeaserImpl implements Teaser {
     private static final Set<String> ALLOWED_HEADINGS = Set.of("h2", "h3", "h4", "h5", "h6");
     static final String IMAGE_LEFT = "left";
     static final String IMAGE_RIGHT = "right";
+    static final String DEFAULT_BACK_TO_TOP_LABEL = "Back to top";
 
     @Self
     private SlingHttpServletRequest request;
@@ -70,6 +71,12 @@ public class TeaserImpl implements Teaser {
 
     @ValueMapValue
     private boolean linkNewTab;
+
+    @ValueMapValue
+    private boolean backToTop;
+
+    @ValueMapValue
+    private String backToTopLabel;
 
     private String headingElement;
     private ResponsiveImage image;
@@ -121,6 +128,16 @@ public class TeaserImpl implements Teaser {
     @Override
     public LinkItem getLink() {
         return link;
+    }
+
+    @Override
+    public boolean isBackToTop() {
+        return backToTop;
+    }
+
+    @Override
+    public String getBackToTopLabel() {
+        return StringUtils.defaultIfBlank(StringUtils.trim(backToTopLabel), DEFAULT_BACK_TO_TOP_LABEL);
     }
 
     @Override

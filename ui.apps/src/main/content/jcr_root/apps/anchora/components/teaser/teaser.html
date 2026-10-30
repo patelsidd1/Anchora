@@ -25,5 +25,6 @@
            target="${link.target}"
            rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
     </div>
+    <a class="cmp-teaser__back-to-top" data-sly-test="${teaser.backToTop}" href="#top">${teaser.backToTopLabel}</a>
 </div>
 <sly data-sly-call="${templates.placeholder @ isEmpty=teaser.empty, classAppend='cmp-teaser'}"></sly>

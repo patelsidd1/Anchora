@@ -124,6 +124,27 @@ class TeaserImplTest {
     }
 
     @Test
+    void backToTopIsOffByDefault() {
+        Teaser teaser = adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE, "jcr:title", "T");
+        assertFalse(teaser.isBackToTop());
+        assertEquals("Back to top", teaser.getBackToTopLabel());
+    }
+
+    @Test
+    void backToTopUsesTheAuthoredLabel() {
+        Teaser teaser = adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE,
+                "jcr:title", "T", "backToTop", true, "backToTopLabel", " Top of page ");
+        assertTrue(teaser.isBackToTop());
+        assertEquals("Top of page", teaser.getBackToTopLabel());
+    }
+
+    @Test
+    void blankBackToTopLabelFallsBackToTheDefault() {
+        assertEquals("Back to top", adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE,
+                "jcr:title", "T", "backToTop", true, "backToTopLabel", "   ").getBackToTopLabel());
+    }
+
+    @Test
     void isEmptyWithoutTextOrImage() {
         Teaser teaser = adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE, "linkLabel", "Orphan link");
         assertTrue(teaser.isEmpty());

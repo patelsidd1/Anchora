@@ -121,8 +121,12 @@ On tablets and larger screens the image and the text sit side by side. On phones
 | Link | **Link target** | Pick a page on this site, or type a full web address starting with `https://`. |
 | Link | **Link label** | The link text. Say where the link goes, for example "Find out about the Joey Club", not "Click here". **The link isn't shown while this is empty.** |
 | Link | **Open in a new tab** | Use only for other websites. Screen readers announce "(opens in a new tab)" for these links. |
+| Link | **Show a "Back to top" link under the teaser** | Adds a small "↑ Back to top" link below the image and text that takes readers back to the top of the page. Use it on long pages, for example at the end of each section. |
+| Link | **Back to top label** | Optional. Leave it blank to use "Back to top". Only shown when the box above is ticked. |
 | Image | **Image**, **Alternative text**, **Image is decorative** | As for the Hero. Use an image at least **1280 pixels wide**. The whole image is shown, never cropped. |
 | Image | **Image position** | **Left** (the default) or **Right**: which side of the text the image goes on, on tablets and larger screens. To alternate cards down a page, set every second teaser to **Right**. |
+
+![Teaser dialog, Link tab, with the Back to top fields](docs/images/dialog-teaser-link.png)
 
 ![Teaser dialog, Image tab, with the Image position field](docs/images/dialog-teaser-image.png)
 
@@ -253,6 +257,7 @@ Changes you make to the page later are only visible on the live site after you p
 | Problem | What to check |
 |---|---|
 | The teaser link is missing | Fill in **Link label** as well as **Link target**. |
+| A teaser has no "Back to top" link | Tick **Show a "Back to top" link under the teaser** on the **Link** tab. A label on its own doesn't show the link. |
 | A teaser image is above the text even though **Image position** is **Right** | That's expected on phones and narrow windows. The image moves to the side from tablet width up. |
 | A jump link doesn't scroll anywhere | The **Anchor** must exactly match the Teaser's **Anchor ID** or the Accordion's **ID** (without the `#`). |
 | The Hero doesn't show on the published page | Give it a **Title**. |

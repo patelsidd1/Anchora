@@ -86,3 +86,27 @@
         text-decoration: underline;
     }
 }
+
+// Spans the full row under the image and text. order: 2 keeps it last when the image is on the right (order: 1).
+// href="#top" scrolls to the top of the document without any JavaScript.
+.cmp-teaser__back-to-top {
+    display: inline-flex;
+    grid-column: 1 / -1;
+    order: 2;
+    justify-self: start;
+    align-items: center;
+    gap: .35em;
+    font-size: 1rem;
+    color: $color-accent-text;
+    text-decoration: none;
+
+    &::before {
+        @include arrow-icon;
+        transform: rotate(-90deg);
+    }
+
+    &:hover {
+        color: $color-accent-text;
+        text-decoration: underline;
+    }
+}

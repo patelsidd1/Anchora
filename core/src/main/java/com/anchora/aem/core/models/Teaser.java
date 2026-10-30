@@ -27,5 +27,11 @@ public interface Teaser {
     /** The call to action, or null when the label or target is missing. */
     LinkItem getLink();
 
+    /** True when the author ticked "Show a Back to top link" under the teaser. */
+    boolean isBackToTop();
+
+    /** Text of the Back to top link, defaulting to "Back to top". */
+    String getBackToTopLabel();
+
     boolean isEmpty();
 }
