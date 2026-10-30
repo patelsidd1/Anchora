@@ -16,24 +16,146 @@
             <footer
                 jcr:primaryType="nt:unstructured"
                 sling:resourceType="anchora/components/footer"
+                acknowledgement="Anchora recognises the Traditional Owners of the lands where we live, work and travel, and honours their Elders past and present."
+                backToTop="{Boolean}true"
+                brandLabel="Anchora"
+                brandLink="/content/anchora/us/en"
                 copyright="© {year} Anchora. Placeholder site built for a technical exercise."
-                navLabel="Footer">
+                fileReference="/content/dam/anchora/brand/anchora-logo.png"
+                navLabel="Footer"
+                socialTitle="Connect with us">
+                <columns jcr:primaryType="nt:unstructured">
+                    <item0
+                        jcr:primaryType="nt:unstructured"
+                        title="About us">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="About Anchora"
+                                link="https://www.example.com/"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Careers"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Newsroom"
+                                link="https://www.example.com/"/>
+                            <item3
+                                jcr:primaryType="nt:unstructured"
+                                label="Sustainability"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item0>
+                    <item1
+                        jcr:primaryType="nt:unstructured"
+                        title="Anchora Group">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Anchora Holidays"
+                                link="https://www.example.com/"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Anchora Freight"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Anchora Rewards"
+                                link="https://www.example.com/"/>
+                            <item3
+                                jcr:primaryType="nt:unstructured"
+                                label="Investors"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item1>
+                    <item2
+                        jcr:primaryType="nt:unstructured"
+                        title="Support">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Help centre"
+                                link="https://www.example.com/"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Contact us"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Flying with children"
+                                link="/content/anchora/us/en/flying-infants-children"/>
+                            <item3
+                                jcr:primaryType="nt:unstructured"
+                                label="Joey Club"
+                                link="/content/anchora/us/en/joey-club"/>
+                        </links>
+                    </item2>
+                    <item3
+                        jcr:primaryType="nt:unstructured"
+                        title="Anchora App">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Download on the App Store"
+                                link="https://www.apple.com/app-store/"
+                                newTab="{Boolean}true"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Get it on Google Play"
+                                link="https://play.google.com/store"
+                                newTab="{Boolean}true"/>
+                        </links>
+                    </item3>
+                </columns>
+                <socialLinks jcr:primaryType="nt:unstructured">
+                    <item0
+                        jcr:primaryType="nt:unstructured"
+                        link="https://www.facebook.com/"
+                        newTab="{Boolean}true"
+                        platform="facebook"/>
+                    <item1
+                        jcr:primaryType="nt:unstructured"
+                        link="https://x.com/"
+                        newTab="{Boolean}true"
+                        platform="x"/>
+                    <item2
+                        jcr:primaryType="nt:unstructured"
+                        link="https://www.linkedin.com/"
+                        newTab="{Boolean}true"
+                        platform="linkedin"/>
+                    <item3
+                        jcr:primaryType="nt:unstructured"
+                        link="https://www.tiktok.com/"
+                        newTab="{Boolean}true"
+                        platform="tiktok"/>
+                    <item4
+                        jcr:primaryType="nt:unstructured"
+                        link="https://www.instagram.com/"
+                        newTab="{Boolean}true"
+                        platform="instagram"/>
+                    <item5
+                        jcr:primaryType="nt:unstructured"
+                        link="https://www.youtube.com/"
+                        newTab="{Boolean}true"
+                        platform="youtube"/>
+                </socialLinks>
                 <links jcr:primaryType="nt:unstructured">
                     <item0
                         jcr:primaryType="nt:unstructured"
-                        label="Flying with children"
-                        link="/content/anchora/us/en/flying-infants-children"/>
+                        label="Accessibility"
+                        link="https://www.example.com/"/>
                     <item1
                         jcr:primaryType="nt:unstructured"
-                        label="Joey Club"
-                        link="/content/anchora/us/en/joey-club"/>
+                        label="Privacy"
+                        link="https://www.example.com/"/>
                     <item2
                         jcr:primaryType="nt:unstructured"
-                        label="Accessibility"
+                        label="Terms of use"
                         link="https://www.example.com/"/>
                     <item3
                         jcr:primaryType="nt:unstructured"
-                        label="Privacy"
+                        label="Site map"
                         link="https://www.example.com/"/>
                 </links>
             </footer>

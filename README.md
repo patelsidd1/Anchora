@@ -55,7 +55,7 @@ This repository rebuilds the [Qantas "Flying with infants and children"](https:/
    ```
 
    This single command does the following:
-   - compiles the `core` bundle and runs its 46 unit tests (the build stops if one fails);
+   - compiles the `core` bundle and runs its 50 unit tests (the build stops if one fails);
    - downloads Node and runs `npm ci` and the webpack production build in `ui.frontend`, then copies the client libraries into `ui.apps`;
    - packages everything into `all/target/anchora.all-1.0.0-SNAPSHOT.zip` and installs it on `localhost:4502` as `admin`/`admin`.
 
@@ -119,7 +119,7 @@ Only the modules below were changed. `ui.apps.structure`, `ui.config`, `all`, `i
 | Root `pom.xml` | Pinned `aem.sdk.api`. Moved Node to v24.21.0 with its bundled npm. Removed the `junit-addons` test dependency. | Match the local SDK. Node 16 / npm 8 from the archetype are end of life. `junit-addons` was only used by the deleted sample tests. |
 | `core` | Removed the sample servlet, filter, listener, scheduler and HelloWorld model (and their tests). Added the models in `com.anchora.aem.core.models` (interfaces), `…models.impl` (implementations and helpers), and their tests. | All rendering logic lives in Sling Models behind interfaces (HB-05). |
 | `ui.apps` | Added `hero`, `teaser`, `header` and `footer`. Extended `accordion`. Added a favicon link to the page and XF page head. Removed `helloworld`. | The components the page needs (HB, TS, AC, PT). |
-| `ui.content` | Template structure (including a Core breadcrumb) and policies. The Home, Flying with infants and children, Joey Club and Inflight entertainment pages. Header and footer experience fragments. Three DAM images. Removed the sample asset. | The page ships with the code (EN-04), so a reviewer sees it after one install. |
+| `ui.content` | Template structure (including a Core breadcrumb) and policies. The Home, Flying with infants and children, Joey Club and Inflight entertainment pages. Header and footer experience fragments. Three DAM images and a placeholder logo (`/content/dam/anchora/brand`). Removed the sample asset. | The page ships with the code (EN-04), so a reviewer sees it after one install. |
 | `ui.frontend` | Site variables, base styles (skip link, focus, visually-hidden text), and component SCSS. Removed unused sample styles and scripts. Fixed the `svgo` option in `webpack.prod.js`. | All CSS ships as the `anchora.site` client library (PT-06). No custom JavaScript is needed, because the accordion uses the Core Components script. |
 
 Java code:
@@ -127,7 +127,7 @@ Java code:
 ```
 core/src/main/java/com/anchora/aem/core/models/
 ├── Hero.java, Teaser.java, SectionAccordion.java, Header.java, Footer.java   (model interfaces used by HTL)
-├── LinkItem.java, ResponsiveImage.java                                     (simple value objects)
+├── LinkItem.java, ResponsiveImage.java, LinkGroup.java, SocialLink.java   (simple value objects)
 └── impl/
     ├── HeroImpl, TeaserImpl, SectionAccordionImpl, HeaderImpl, FooterImpl  (Sling Models)
     ├── Links.java             link resolution: internal page → .html, new tab → target + rel
@@ -200,7 +200,8 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 | Build | Custom; no supertype. Used only inside the footer experience fragment. |
 | Group | Anchora - Structure |
 | Sling Model | `Footer` → `FooterImpl` |
-| Dialog | Navigation name (`./navLabel`, default "Footer"), Footer links multifield (`./links`: Label, Link, Open in a new tab), Copyright line (`./copyright`; `{year}` is replaced with the current year). |
+| Dialog | **General**: Show a "Back to top" link (`./backToTop`), Back to top label (`./backToTopLabel`, default "Back to top"), Logo (`./fileReference`), Logo text (`./brandLabel`, default "Anchora"; the logo's alt text, or shown as text when there is no logo), Logo link (`./brandLink`). **Link columns**: Navigation name (`./navLabel`, default "Footer"), Columns multifield (`./columns`: Heading, and a nested Links multifield with Label, Link, Open in a new tab). **Social**: Heading (`./socialTitle`, default "Connect with us"), Social links multifield (`./socialLinks`: Platform select, Link, Open in a new tab). **Legal**: Legal links multifield (`./links`), Copyright line (`./copyright`; `{year}` is replaced with the current year), Acknowledgement (`./acknowledgement`). |
+| Markup | Back to top (`href="#top"`), then the logo and one `<nav>` holding the columns (each an `<h2>` and a list), then the social icons (an `<h2>` and a list; each link's name is the platform, in visually hidden text), then the legal links and copyright, then the acknowledgement in a full-width band. Each part is left out when it has no content. |
 | Policy | "Page Footer" policy on the XF component, which renders it as `<footer>` |
 
 ### Core proxies used on the page
@@ -235,6 +236,8 @@ root (container, locked)
 | Teaser "Back to top" | **A teaser option (checkbox and label)**, not a separate component, and a plain `href="#top"` link | On the reference page it closes each section, so it belongs to the card. Authors tick it per teaser instead of placing and lining up an extra component. Browsers scroll to the top of the page for `#top` without any JavaScript, and the site's smooth scrolling already turns off for users who prefer reduced motion. |
 | Accordion | **Extend Core Accordion v1** (AC-07) | Core already provides what is hard to get right: the panel-container editing (Items tab, "Select panel", insert and reorder), an accessible button/region pattern with full keyboard support, and the data layer. The extension only adds the section heading and intro, and forces everything to start collapsed. Trade-off: `accordion.html` is a copy of Core's, so it must be compared again when Core is upgraded. |
 | Header / footer | **Custom components inside experience fragments**, placed by locked Core XF components in the template structure (PT-02) | Each is authored once, appears on every page from the template, and can't be edited from the page. Core Navigation was not used because it builds menus from the page tree, while this site needs a short, hand-picked list of links. |
+| Footer link columns | **A composite multifield with a nested Links multifield** | Authors add, reorder and fill whole columns in one dialog, and the column count isn't fixed. The nested links reuse `Links.fromMultifield`, so they get the same `.html`, new-tab and skipping rules as every other link list. |
+| Footer social icons | **A platform select plus CSS mask icons** (Bootstrap Icons, MIT, inlined in `_footer.scss`) | Authors only pick a platform and paste a URL, and can't upload an icon in the wrong size or colour. The model only accepts the six known platforms and uses the platform name as the link's accessible name. The icons inherit the link colour, so hover and focus work like any other link, with no icon font or extra request. |
 | Title / Text | **Core proxies with policies** | No custom behaviour needed. Policies keep H1 for the hero and limit the rich-text tools. |
 | Breadcrumb | **Core Breadcrumb v3 in the template structure**, not part of the hero | Every content page needs it, and Core already builds the trail from the page tree with the right `nav`/`aria-current` markup. Putting it in the structure means authors can't forget or delete it, but it stays unlocked so a page can change its settings (the Home page hides itself). Only SCSS was added. |
 | Hero jump-links heading | **Authored field with a default**, not a fixed i18n string | The screenshot shows the heading as page content. A field lets each language copy or page word it differently, and the model falls back to "On this page" when it is empty. |
@@ -249,14 +252,14 @@ mvn -pl core test          # unit tests only
 mvn clean install          # full build; also runs the tests and fails if any test fails (EN-03)
 ```
 
-There are 46 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
+There are 50 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
 
 | Test class | Tests | What it checks |
 |---|---|---|
 | `HeroImplTest` | 5 | Reads title, intro, image and jump links (with or without `#`, incomplete items skipped). Empty without a title. Renders with no image when the asset is missing. The jump-links heading is trimmed, and defaults to "On this page" when blank. |
 | `TeaserImplTest` | 14 | Reads authored content, including a trimmed subtitle. Image position defaults to left, and an unknown value falls back to left. Heading defaults to H2 without a policy, comes from the policy when set, and can't be made H1. New-tab external link has `noopener`. A link with no label isn't rendered. Back to top is off by default, uses a trimmed authored label, and falls back to "Back to top" when the label is blank. Empty, image-only and subtitle-only states. |
 | `SectionAccordionImplTest` | 5 | Section heading and intro. Items, single-expansion and heading element are delegated to Core. All items start collapsed even when expanded items were saved. Exports its own resource type. Section fields are optional. |
-| `HeaderFooterImplTest` | 4 | Header brand, link and navigation, and defaults. Footer `{year}` replacement and the no-copyright case. |
+| `HeaderFooterImplTest` | 8 | Header brand, link and navigation, and defaults. Footer `{year}` replacement and the no-copyright case. Footer defaults; logo, back to top and acknowledgement; nested link columns (empty columns skipped); social links (unknown platforms and missing links skipped). |
 | `LinksTest` | 9 | Internal paths get `.html` (fragment and query kept). External, `mailto:` and blank links. `target` and `rel` for new tabs. Multifield reading, order and skipping. |
 | `ResponsiveImagesTest` | 9 | Missing asset. srcset built from renditions, never wider than the original, and the original used when there are no renditions. Authored alt, DAM fallback, decorative, and no alt available. Fitted-width maths. |
 
@@ -273,7 +276,9 @@ They don't test HTL output, dialogs, policies, the template, CSS, or the Core ac
 - the accordion opens and closes with Enter, Space, the arrow keys, Home and End, and has a visible focus outline;
 - no horizontal scrolling at 375 px;
 - teaser images sit above the text at 375 px and on the chosen side at 768 px and 1280 px, and changing **Image position** in the dialog moves the image;
-- each teaser's "Back to top" link sits under both columns at the teaser's left edge at every width, and clicking it scrolls back to the top of the page;- every dialog opens, and each container allows only the expected components.
+- each teaser's "Back to top" link sits under both columns at the teaser's left edge at every width, and clicking it scrolls back to the top of the page;
+- the footer shows two link columns on phones and four next to the logo on desktop, keeps the six social icons on one row at 375 px, gives each icon the platform name as its accessible name, and shows the focus outline when tabbing through its links;
+- every dialog opens, and each container allows only the expected components.
 
 `it.tests` and `ui.tests` (Cypress) are the archetype's defaults, and I didn't extend them.
 
@@ -309,8 +314,8 @@ Paths are shortened: `apps/…` means `ui.apps/src/main/content/jcr_root/apps/an
 | PT-06 | Met | All CSS comes from `ui.frontend` → `anchora.site`; no `style` attributes or `<script>` blocks in our HTL |
 | EN-01 | Met | [Archetype](#archetype); `archetype.properties` |
 | EN-02 | Met | `mvn clean install -PautoInstallSinglePackage` passes and installs. It was tested on my local SDK, which also hosts other projects, not on a brand-new instance. |
-| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (46 tests) cover every model |
-| EN-04 | Met | `ui.content` ships the pages, experience fragments, template, policies and DAM images |
+| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (50 tests) cover every model |
+| EN-04 | Met | `ui.content` ships the pages, experience fragments, template, policies, DAM images and logo |
 | EN-05 | Met | Commits on `feature/flying-infants-children`, merged to `main` through a pull request |
 | EN-06 | Met | Checked as listed under [Testing](#testing) |
 | AI-01 | Met | [`.github/copilot-instructions.md`](.github/copilot-instructions.md), `AGENTS.md`, `CLAUDE.md` |
@@ -323,8 +328,8 @@ None of the optional stretch work was attempted.
 
 ### Assumptions
 
-- **Content.** All copy is paraphrased and shortened from the reference page, not copied. The brand is "Anchora", and the images are illustrations made for this exercise. The copy hasn't been checked against any airline's actual policy.
-- **Placeholder links.** Help, Accessibility, Privacy and "contact us" point to `https://www.example.com/`. Deeper example.com paths return 404, and AEM's link checker removes links that fail, so they would disappear from the published page.
+- **Content.** All copy is paraphrased and shortened from the reference page, not copied. The brand is "Anchora", and the images and logo are made for this exercise. The copy hasn't been checked against any airline's actual policy.
+- **Placeholder links.** Help, Accessibility, Privacy, "contact us" and most footer links point to `https://www.example.com/`. The footer's social links go to each platform's home page. Deeper example.com paths return 404, and AEM's link checker removes links that fail, so they would disappear from the published page.
 - **Scope of the page.** Only the hero, the Joey Club and inflight entertainment teasers, and the "Booking for infants" accordion from the reference page were rebuilt. The "Back to top" link that ends each reference section is a Teaser option, so the accordion section doesn't have one. From the reference hero, the information box under the jump links, the "Travel information" breadcrumb level (it would add a level to every URL), and the image running wider than the text column were also not added. The template allows only Hero, Teaser, Accordion, Title and Text, and accordion items can only be Text.
 - **Headings.** The section heading is H2 and item titles are fixed at H3 by policy. Authors don't choose heading levels.
 - **Collapsed state.** All items always start collapsed, so the Core "Expanded items" settings are hidden rather than ignored silently.
@@ -337,6 +342,7 @@ None of the optional stretch work was attempted.
 - The responsive widths come from the DAM renditions in the content package (640, 1280 and the original). On a real AEMaaCS environment, the default processing profile does not create a 640 rendition, so the srcset would have fewer widths unless a processing profile is added.
 - The accordion's data-layer `@type` reports the Core resource type, because the data comes from the Core delegate. The JSON exporter reports `anchora/components/accordion` correctly.
 - Installing the content package logs the harmless warning "Ancestor node /content/dam/anchora not covered by any filter".
+- On the local SDK, installing the DAM assets can log `IllegalArgumentException: width or height <= 0` from AEM's folder-thumbnail job (`FolderPreviewUpdaterImpl`). It comes from the SDK's own asset processing, not from project code, and only affects the folder's preview tile in Assets.
 - On a very short page (for example, Joey Club), the footer doesn't stick to the bottom of the window.
 - The npm install logs peer-dependency warnings from the archetype's `acorn@^6` dev dependency. The build is not affected.
 - The archetype's other Core proxies (carousel, tabs, form and so on) and unused policies (image, download) are still in the project. They are not allowed on the template.
@@ -365,5 +371,6 @@ None of the optional stretch work was attempted.
 | TypeScript | `ui.frontend` build | Apache 2.0 |
 | aem-clientlib-generator, aemsync | `ui.frontend` build | Apache 2.0 / MIT |
 | Cypress | `ui.tests` (archetype, unused) | MIT |
+| Bootstrap Icons 1.13.2 | Six footer social icons, copied as SVG paths into `_footer.scss` with the licence notice | MIT |
 
-The AEM SDK API (`aem-sdk-api`) is Adobe proprietary. It is used at compile time, and the AEM runtime provides it; it is not redistributed. All `ui.frontend` dependencies are the archetype's own, listed in `ui.frontend/package.json`. No new runtime dependencies were added.
+The AEM SDK API (`aem-sdk-api`) is Adobe proprietary. It is used at compile time, and the AEM runtime provides it; it is not redistributed. All `ui.frontend` dependencies are the archetype's own, listed in `ui.frontend/package.json`. No new runtime dependencies were added; the icons are not an npm dependency.

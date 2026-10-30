@@ -194,7 +194,7 @@ Keep item titles as short questions or statements, such as "Infants on domestic 
 
 ## Header and footer
 
-The header (logo and main navigation) and footer (footer links and copyright line) are **experience fragments**. They are shared by every page made from the Content Page template. You can't change them from a page.
+The header (logo and main navigation) and footer (back to top, logo, link columns, social links, legal links and acknowledgement) are **experience fragments**. They are shared by every page made from the Content Page template. You can't change them from a page.
 
 **To edit them:**
 
@@ -213,15 +213,47 @@ The header (logo and main navigation) and footer (footer links and copyright lin
 | **Navigation name** | A name that screen readers announce for the menu, for example "Main". Defaults to "Main". |
 | **Navigation links** | Three or four links. For each: **Label*** (link text), **Link*** (a page on this site or a full web address) and **Open in a new tab**. Drag the handle to reorder them. |
 
-![Footer dialog in the experience fragment editor](docs/images/dialog-footer.png)
-
 **Footer fields**
+
+The footer dialog has four tabs. Every part of the footer is hidden when its fields are empty.
+
+![Footer dialog, General tab](docs/images/dialog-footer.png)
+
+*General*
+
+| Field | What it does |
+|---|---|
+| **Show a "Back to top" link** | Adds "↑ Back to top" at the top right of the footer. |
+| **Back to top label** | The link text. Defaults to "Back to top". |
+| **Logo** | Drag the logo from the Assets panel. It's shown 40 pixels high. Without a logo, the **Logo text** is shown instead. |
+| **Logo text** | The brand name. Screen readers read it out as the logo. Defaults to "Anchora". |
+| **Logo link** | Usually the home page. Leave it blank for a logo without a link. |
+
+![Footer dialog, Link columns tab with a nested list of links in each column](docs/images/dialog-footer-columns.png)
+
+*Link columns*
 
 | Field | What it does |
 |---|---|
 | **Navigation name** | A name that screen readers announce for the footer links. Defaults to "Footer". |
-| **Footer links** | For each: **Label**, **Link** and **Open in a new tab**. A link with no label or no link isn't shown. |
+| **Columns** | Choose **Add** for each column. Give it a **Heading**, then add its **Links**: **Label***, **Link*** and **Open in a new tab**. Four columns fit next to the logo on a desktop; phones show two side by side. Drag the handles to reorder columns or links. |
+
+![Footer dialog, Social tab](docs/images/dialog-footer-social.png)
+
+*Social*
+
+| Field | What it does |
+|---|---|
+| **Heading** | Shown above the icons. Defaults to "Connect with us". |
+| **Social links** | For each: **Platform*** (Facebook, X, LinkedIn, TikTok, Instagram or YouTube), **Link*** (the full address of the profile) and **Open in a new tab**. The platform chooses the icon, and screen readers announce the platform name. |
+
+*Legal*
+
+| Field | What it does |
+|---|---|
+| **Legal links** | Small underlined links at the bottom, such as Privacy and Terms of use. For each: **Label***, **Link*** and **Open in a new tab**. |
 | **Copyright line** | Write `{year}` where the current year should appear, for example `© {year} Anchora. All rights reserved.` The year updates itself every January. |
+| **Acknowledgement** | Optional. Shown in a darker band across the bottom of the footer, for example an Acknowledgement of Country. |
 
 **What changes when you edit them**
 
@@ -246,7 +278,7 @@ The header (logo and main navigation) and footer (footer links and copyright lin
    - **Manage Publication** – lets you choose **Publish** or **Preview** (AEM as a Cloud Service's preview service, useful for review before going live), schedule a date and time, and check the page's **references**.
 3. The first time you publish, make sure the following are published too (Manage Publication lists them as references):
    - the images the page uses;
-   - the **header** and **footer** experience fragments;
+   - the **header** and **footer** experience fragments, and the footer logo;
    - the template and its policies (normally done once by a developer or template author).
 4. To take a page down, use **Manage Publication** › **Unpublish**.
 
@@ -266,4 +298,7 @@ Changes you make to the page later are only visible on the live site after you p
 | An image has no description for screen readers | Fill in **Alternative text**, or the image's **Description** in Assets, or tick **Image is decorative**. |
 | Accordion items are all open in the editor | That's expected in Edit mode. Switch to **Preview** to see them closed. |
 | A header or footer change isn't live | Publish the experience fragment. |
+| A footer column is missing | Give it a **Heading** or at least one link. A link needs both a **Label** and a **Link**. |
+| A social icon is missing | Choose a **Platform** and fill in the **Link**. |
+| The footer shows the logo text instead of the logo | Choose an image in **Logo** on the **General** tab. On the live site, also publish the image. |
 | A link to another website has disappeared from the published page | AEM hides links to addresses that return an error. Check that the web address works in a browser. |

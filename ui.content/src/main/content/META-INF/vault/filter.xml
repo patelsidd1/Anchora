@@ -6,6 +6,7 @@
         <exclude pattern="/content/dam/anchora(/.*)?"/>
         <include pattern="/content/dam/anchora/jcr:content(/.*)?"/>
     </filter>
+    <filter root="/content/dam/anchora/brand" mode="merge"/>
     <filter root="/content/dam/anchora/flying-with-children" mode="merge"/>
     <filter root="/content/experience-fragments/anchora" mode="merge"/>
 </workspaceFilter>
