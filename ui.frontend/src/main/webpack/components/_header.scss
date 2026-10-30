@@ -1,39 +1,370 @@
-.cmp-header {
-    display: flex;
-    flex-wrap: wrap;
+// Header: the logo and the action links (region, cart, log in) on top, the main navigation below.
+//
+// Phones:   logo / actions + Menu button / navigation
+// Tablets:  logo, actions and Menu button in one row / navigation
+// Desktops: logo and actions / navigation, always shown, with dropdown menus
+//
+// Below desktop the header script folds the navigation behind the Menu button and its menus open in place.
+// Without the script the button stays hidden and the navigation is always shown.
+
+/*! Header icons: Bootstrap Icons 1.13.2, Copyright (c) 2019-2024 The Bootstrap Authors, MIT licence,
+    https://github.com/twbs/icons/blob/main/LICENSE */
+$icon-cart: "M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2";
+$icon-person: "M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6";
+$icon-help: "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94";
+$icon-menu: "M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5";
+$icon-close: "M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z";
+
+@function header-icon($path) {
+    @return url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='#{$path}'/%3E%3C/svg%3E");
+}
+
+// Icons are masks filled with the text colour; each element sets --cmp-header-icon.
+@mixin icon($size) {
+    content: "";
+    flex-shrink: 0;
+    width: $size;
+    height: $size;
+    background-color: currentColor;
+    -webkit-mask: var(--cmp-header-icon) no-repeat center / contain;
+    mask: var(--cmp-header-icon) no-repeat center / contain;
+}
+
+//== Layout
+
+.cmp-header__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "brand brand"
+        "actions toggle"
+        "nav nav";
     align-items: center;
-    justify-content: space-between;
-    gap: 8px $gutter-wide;
+    gap: 12px $gutter;
     max-width: $content-max-width;
     margin: 0 auto;
     padding: 12px $gutter;
 
     @include tablet-up {
+        grid-template-columns: 1fr auto auto;
+        grid-template-areas:
+            "brand actions toggle"
+            "nav nav nav";
+        column-gap: $gutter-wide;
         padding: $gutter $gutter-wide;
     }
+
+    @include desktop-up {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "brand actions"
+            "nav nav";
+        row-gap: 4px;
+        padding-bottom: 0;
+    }
+}
+
+//== Logo and partner badge
+
+.cmp-header__brand-group {
+    grid-area: brand;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .cmp-header__brand {
     font-size: 1.5rem;
     font-weight: 700;
-    letter-spacing: .02em;
     color: $color-brand;
     text-decoration: none;
 }
 
-.cmp-header__nav-list {
+.cmp-header__logo {
+    display: block;
+    width: auto;
+    height: 32px;
+
+    @include tablet-up {
+        height: 40px;
+    }
+}
+
+.cmp-header__partner {
+    display: block;
+    width: 28px;
+    height: 28px;
+
+    @include tablet-up {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+//== Region, cart and log in
+
+.cmp-header__actions {
+    grid-area: actions;
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px 20px;
+    align-items: center;
+    gap: 12px;
     margin: 0;
     padding: 0;
     list-style: none;
+
+    @include tablet-up {
+        gap: 20px;
+    }
 }
 
-.cmp-header__nav-link {
-    display: inline-block;
-    padding: 4px 0;
+.cmp-header__region {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 1;
+    color: $color-foreground;
+    text-decoration: none;
+
+    &:hover .cmp-header__region-code {
+        text-decoration: underline;
+    }
+}
+
+.cmp-header__flag {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+// The bar between region and language is a border, so screen readers read "AU EN".
+.cmp-header__region-code + .cmp-header__region-code {
+    padding-left: 8px;
+    border-left: 1px solid $color-muted;
+}
+
+.cmp-header__cart,
+.cmp-header__login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    text-decoration: none;
+}
+
+.cmp-header__cart {
+    --cmp-header-icon: #{header-icon($icon-cart)};
+    width: 40px;
+    color: $color-foreground;
+    border-radius: 50%;
+
+    &::before {
+        @include icon(24px);
+    }
+
+    &:hover {
+        color: $color-brand;
+        background: $color-surface;
+    }
+}
+
+// A red pill with a person icon; a round icon button on phones, where its text is only read out.
+.cmp-header__login {
+    --cmp-header-icon: #{header-icon($icon-person)};
+    gap: 6px;
+    width: 40px;
+    font-size: .875rem;
+    font-weight: 700;
+    color: $color-background;
+    background: $color-accent-text;
+    border-radius: 999px;
+
+    &::before {
+        @include icon(18px);
+    }
+
+    &:hover {
+        color: $color-background;
+        text-decoration: underline;
+    }
+
+    @include tablet-up {
+        width: auto;
+        padding: 0 18px 0 14px;
+    }
+}
+
+.cmp-header__login-text {
+    @media (max-width: $bp-tablet - 1px) {
+        @include visually-hidden;
+    }
+}
+
+//== Menu button (phones and tablets)
+
+.cmp-header__toggle {
+    --cmp-header-icon: #{header-icon($icon-menu)};
+    grid-area: toggle;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 14px 0 10px;
+    font-weight: 700;
+    color: $color-brand;
+    background: $color-background;
+    border: 1px solid $color-border;
+    border-radius: 999px;
+    cursor: pointer;
+
+    &::before {
+        @include icon(22px);
+    }
+
+    &[aria-expanded="true"] {
+        --cmp-header-icon: #{header-icon($icon-close)};
+    }
+
+    &:hover {
+        border-color: $color-brand;
+    }
+
+    &[hidden] {
+        display: none;
+    }
+
+    @include desktop-up {
+        display: none;
+    }
+}
+
+//== Navigation
+
+.cmp-header__nav {
+    grid-area: nav;
+}
+
+@media (max-width: $bp-desktop - 1px) {
+    .cmp-header--collapsible:not(.cmp-header--open) .cmp-header__nav {
+        display: none;
+    }
+}
+
+.cmp-header__menus {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include desktop-up {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 28px;
+    }
+}
+
+// Phones and tablets: a list of menus that open in place.
+.cmp-header__menus-item {
+    border-top: 1px solid $color-border;
+
+    @include desktop-up {
+        border-top: 0;
+    }
+}
+
+.cmp-header__menus-item--help {
+    @include desktop-up {
+        margin-left: auto;
+    }
+}
+
+.cmp-header__menu {
+    @include desktop-up {
+        position: relative;
+    }
+}
+
+.cmp-header__menu-label,
+.cmp-header__help {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
     font-weight: 600;
+    color: $color-foreground;
+    cursor: pointer;
+
+    &:hover {
+        color: $color-brand;
+    }
+
+    // Desktop: a coral line under the open or hovered menu, on the header's bottom border.
+    @include desktop-up {
+        padding-bottom: 9px;
+        border-bottom: 3px solid transparent;
+
+        &:hover {
+            border-bottom-color: $color-accent;
+        }
+    }
+}
+
+.cmp-header__menu-label {
+    justify-content: space-between;
+    list-style: none;
+
+    &::-webkit-details-marker {
+        display: none;
+    }
+
+    &::after {
+        @include chevron(45deg);
+        margin: -4px 4px 0 0;
+    }
+
+    .cmp-header__menu[open] > & {
+        color: $color-brand;
+
+        &::after {
+            margin-top: 4px;
+            transform: rotate(-135deg);
+        }
+
+        @include desktop-up {
+            border-bottom-color: $color-accent;
+        }
+    }
+
+    @include desktop-up {
+        justify-content: flex-start;
+    }
+}
+
+.cmp-header__menu-list {
+    margin: 0;
+    padding: 0 0 12px $gutter;
+    list-style: none;
+
+    // Desktop: a dropdown panel over the page.
+    @include desktop-up {
+        position: absolute;
+        top: 100%;
+        left: -$gutter;
+        z-index: 10;
+        min-width: 260px;
+        margin-top: 1px;
+        padding: 8px 0;
+        background: $color-background;
+        border: 1px solid $color-border;
+        border-radius: 0 0 $radius $radius;
+        box-shadow: 0 8px 24px rgba($color-brand, .15);
+    }
+}
+
+.cmp-header__menu-link {
+    display: block;
+    padding: 8px 0;
     color: $color-foreground;
     text-decoration: none;
 
@@ -44,5 +375,22 @@
 
     &[target="_blank"]::after {
         @include new-tab-icon;
+    }
+
+    @include desktop-up {
+        padding: 8px $gutter;
+    }
+}
+
+.cmp-header__help {
+    --cmp-header-icon: #{header-icon($icon-help)};
+    text-decoration: none;
+
+    &::before {
+        @include icon(20px);
+    }
+
+    &:hover {
+        text-decoration: underline;
     }
 }

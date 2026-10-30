@@ -194,7 +194,7 @@ Keep item titles as short questions or statements, such as "Infants on domestic 
 
 ## Header and footer
 
-The header (logo and main navigation) and footer (back to top, logo, link columns, social links, legal links and acknowledgement) are **experience fragments**. They are shared by every page made from the Content Page template. You can't change them from a page.
+The header (logo, partner badge, region, cart, log in, dropdown menus and Help) and footer (back to top, logo, link columns, social links, legal links and acknowledgement) are **experience fragments**. They are shared by every page made from the Content Page template. You can't change them from a page.
 
 **To edit them:**
 
@@ -202,16 +202,52 @@ The header (logo and main navigation) and footer (back to top, logo, link column
 2. Open **header** or **footer**, then open its **master** variation.
 3. Select the Header or Footer component and choose **Configure** (wrench).
 
-![Header dialog in the experience fragment editor](docs/images/dialog-header.png)
-
 **Header fields**
+
+The header dialog has three tabs. Every part of the header is hidden when its fields are empty.
+
+![The header on a desktop, with the Travel menu open](docs/images/desktop-header-menu.png)
+
+![Header dialog, Logo tab](docs/images/dialog-header.png)
+
+*Logo*
 
 | Field | What it does |
 |---|---|
-| **Logo text** | The site name shown as the logo. Defaults to "Anchora". |
-| **Logo link** | The page the logo links to, usually the home page. |
-| **Navigation name** | A name that screen readers announce for the menu, for example "Main". Defaults to "Main". |
-| **Navigation links** | Three or four links. For each: **Label*** (link text), **Link*** (a page on this site or a full web address) and **Open in a new tab**. Drag the handle to reorder them. |
+| **Logo** | Drag the logo from the Assets panel. It's shown 40 pixels high (32 on phones). Without a logo, the **Logo text** is shown instead. |
+| **Logo text** | The brand name. Screen readers read it out as the logo. Defaults to "Anchora". |
+| **Logo link** | Usually the home page. Leave it blank for a logo without a link. |
+| **Partner badge** | Optional. A round badge next to the logo, such as an alliance membership. |
+| **Partner badge alternative text** | What the badge says, for screen readers, for example "Member of Horizon Alliance". Leave it blank to use the image's **Description** in Assets. |
+
+![Header dialog, Top links tab](docs/images/dialog-header-top-links.png)
+
+*Top links*
+
+| Field | What it does |
+|---|---|
+| **Region and language: Link** | The page where readers choose their region and language. Leave it blank to hide the flag and codes. |
+| **Flag** | Optional. A round flag shown before the region code. Screen readers skip it, because the code says the same. |
+| **Region**, **Language** | Short codes shown as "AU \| EN". |
+| **Screen reader text** | Hidden text that says what the region link does. Defaults to "Change region and language". |
+| **Cart: Link** | Shows the cart icon. Leave it blank to hide the icon. |
+| **Cart: Screen reader text** | The icon has no visible text, so screen readers read this instead. Defaults to "Cart". |
+| **Log in button: Link**, **Label** | The red button at the top right. Leave the link blank to hide it. The label defaults to "Log in". On phones only the person icon shows. |
+
+![Header dialog, Navigation tab with a nested list of links in each menu](docs/images/dialog-header-navigation.png)
+
+*Navigation*
+
+| Field | What it does |
+|---|---|
+| **Navigation name** | A name that screen readers announce for the menus, for example "Main". Defaults to "Main". |
+| **Menu button label** | The button that shows the menus on phones and tablets. Defaults to "Menu". |
+| **Menus** | Choose **Add** for each menu. Give it a **Menu label***, then add its **Links**: **Label***, **Link*** and **Open in a new tab**. Six short menus fit on one row on a desktop. Drag the handles to reorder menus or links. |
+| **Help link**, **Help label** | Shown with a question-mark icon at the end of the menus. Leave the link blank to hide it. The label defaults to "Help". |
+
+On phones and tablets, the menus are behind the **Menu** button and open one below the other:
+
+<img src="docs/images/mobile-header-menu.png" alt="The header on a phone with the menu open and Travel expanded" width="250">
 
 **Footer fields**
 
@@ -278,7 +314,7 @@ The footer dialog has four tabs. Every part of the footer is hidden when its fie
    - **Manage Publication** – lets you choose **Publish** or **Preview** (AEM as a Cloud Service's preview service, useful for review before going live), schedule a date and time, and check the page's **references**.
 3. The first time you publish, make sure the following are published too (Manage Publication lists them as references):
    - the images the page uses;
-   - the **header** and **footer** experience fragments, and the footer logo;
+   - the **header** and **footer** experience fragments, and their images (logo, partner badge and flag);
    - the template and its policies (normally done once by a developer or template author).
 4. To take a page down, use **Manage Publication** › **Unpublish**.
 
@@ -298,6 +334,9 @@ Changes you make to the page later are only visible on the live site after you p
 | An image has no description for screen readers | Fill in **Alternative text**, or the image's **Description** in Assets, or tick **Image is decorative**. |
 | Accordion items are all open in the editor | That's expected in Edit mode. Switch to **Preview** to see them closed. |
 | A header or footer change isn't live | Publish the experience fragment. |
+| A header menu is missing | Give it a **Menu label** and at least one link. A link needs both a **Label** and a **Link**. |
+| The flag, cart, log in button or Help is missing from the header | Fill in its **Link**. Each one is hidden when its link is empty. |
+| The header menus wrap onto two rows on a desktop | Shorten the menu labels or use fewer menus. Six short menus and Help fit on one row. |
 | A footer column is missing | Give it a **Heading** or at least one link. A link needs both a **Label** and a **Link**. |
 | A social icon is missing | Choose a **Platform** and fill in the **Link**. |
 | The footer shows the logo text instead of the logo | Choose an image in **Logo** on the **General** tab. On the live site, also publish the image. |

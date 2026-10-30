@@ -1,14 +1,63 @@
 <div data-sly-use.header="com.anchora.aem.core.models.Header" class="cmp-header">
-    <a class="cmp-header__brand" data-sly-test="${header.brandHref}" href="${header.brandHref}">${header.brandLabel}</a>
-    <span class="cmp-header__brand" data-sly-test="${!header.brandHref}">${header.brandLabel}</span>
-    <nav class="cmp-header__nav" data-sly-test="${header.links}" aria-label="${header.navLabel}">
-        <ul class="cmp-header__nav-list">
-            <li class="cmp-header__nav-item" data-sly-repeat.link="${header.links}">
-                <a class="cmp-header__nav-link"
-                   href="${link.href}"
-                   target="${link.target}"
-                   rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+    <div class="cmp-header__inner">
+        <div class="cmp-header__brand-group">
+            <a class="cmp-header__brand"
+               data-sly-element="${header.brandHref ? 'a' : 'div'}"
+               href="${header.brandHref}">
+                <img class="cmp-header__logo" data-sly-test="${header.logo}"
+                     src="${header.logo.src}"
+                     alt="${header.brandLabel}"
+                     width="${header.logo.width}"
+                     height="${header.logo.height}"/>
+                <sly data-sly-test="${!header.logo}">${header.brandLabel}</sly>
+            </a>
+            <img class="cmp-header__partner" data-sly-test.partner="${header.partnerLogo}"
+                 src="${partner.src}"
+                 alt="${partner.alt || true}"
+                 width="${partner.width}"
+                 height="${partner.height}"/>
+        </div>
+        <ul class="cmp-header__actions" data-sly-test="${header.regionLink || header.cartLink || header.loginLink}">
+            <li data-sly-test.region="${header.regionLink}">
+                <a class="cmp-header__region" href="${region.href}">
+                    <img class="cmp-header__flag" data-sly-test="${header.flag}" src="${header.flag.src}" alt=""
+                         width="24" height="24"/>
+                    <span class="cmp-header__region-code" data-sly-test="${header.region}">${header.region}</span>
+                    <span class="cmp-header__region-code" data-sly-test="${header.language}">${header.language}</span>
+                    <span class="cmp-link__screen-reader-only">${region.label}</span>
+                </a>
+            </li>
+            <li data-sly-test.cart="${header.cartLink}">
+                <a class="cmp-header__cart" href="${cart.href}"><span class="cmp-link__screen-reader-only">${cart.label}</span></a>
+            </li>
+            <li data-sly-test.login="${header.loginLink}">
+                <a class="cmp-header__login" href="${login.href}"><span class="cmp-header__login-text">${login.label}</span></a>
             </li>
         </ul>
-    </nav>
+        <sly data-sly-test="${header.menus || header.helpLink}">
+            <!--/* Hidden until the header script runs: without JavaScript the navigation is always shown. */-->
+            <button class="cmp-header__toggle" type="button" aria-expanded="false" hidden>${header.menuLabel}</button>
+            <nav class="cmp-header__nav" aria-label="${header.navLabel}">
+                <ul class="cmp-header__menus">
+                    <li class="cmp-header__menus-item" data-sly-repeat.menu="${header.menus}">
+                        <!--/* Elements with the same name form an exclusive group: opening one menu closes the other. */-->
+                        <details class="cmp-header__menu" name="cmp-header-menu">
+                            <summary class="cmp-header__menu-label">${menu.title}</summary>
+                            <ul class="cmp-header__menu-list">
+                                <li data-sly-repeat.link="${menu.links}">
+                                    <a class="cmp-header__menu-link"
+                                       href="${link.href}"
+                                       target="${link.target}"
+                                       rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li class="cmp-header__menus-item cmp-header__menus-item--help" data-sly-test.help="${header.helpLink}">
+                        <a class="cmp-header__help" href="${help.href}">${help.label}</a>
+                    </li>
+                </ul>
+            </nav>
+        </sly>
+    </div>
 </div>

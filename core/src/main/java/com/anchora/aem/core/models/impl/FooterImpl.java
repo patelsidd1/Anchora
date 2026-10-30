@@ -31,10 +31,8 @@ import com.anchora.aem.core.models.SocialLink;
 public class FooterImpl implements Footer {
 
     static final String RESOURCE_TYPE = "anchora/components/footer";
-    static final String NN_LINKS = "links";
     static final String NN_COLUMNS = "columns";
     static final String NN_SOCIAL_LINKS = "socialLinks";
-    static final String PN_TITLE = "title";
     static final String PN_PLATFORM = "platform";
     static final String DEFAULT_BACK_TO_TOP_LABEL = "Back to top";
     static final String DEFAULT_BRAND = "Anchora";
@@ -89,25 +87,9 @@ public class FooterImpl implements Footer {
     @PostConstruct
     protected void init() {
         logo = ResponsiveImages.from(request.getResourceResolver(), resource.getValueMap());
-        columns = readColumns(resource.getChild(NN_COLUMNS));
+        columns = Links.groupsFromMultifield(request, resource.getChild(NN_COLUMNS));
         socialLinks = readSocialLinks(resource.getChild(NN_SOCIAL_LINKS));
-        links = Links.fromMultifield(request, resource.getChild(NN_LINKS));
-    }
-
-    /** Each column item has a title and its own nested links multifield. */
-    private List<LinkGroup> readColumns(Resource multifield) {
-        if (multifield == null) {
-            return Collections.emptyList();
-        }
-        List<LinkGroup> result = new ArrayList<>();
-        for (Resource item : multifield.getChildren()) {
-            String title = StringUtils.trimToNull(item.getValueMap().get(PN_TITLE, String.class));
-            List<LinkItem> columnLinks = Links.fromMultifield(request, item.getChild(NN_LINKS));
-            if (title != null || !columnLinks.isEmpty()) {
-                result.add(new LinkGroup(title, columnLinks));
-            }
-        }
-        return Collections.unmodifiableList(result);
+        links = Links.fromMultifield(request, resource.getChild(Links.NN_LINKS));
     }
 
     /** The link label is the platform name, so unknown platforms have no label and are skipped. */

@@ -17,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import com.anchora.aem.core.models.Footer;
 import com.anchora.aem.core.models.Header;
 import com.anchora.aem.core.models.LinkGroup;
-import com.anchora.aem.core.models.LinkItem;
 import com.anchora.aem.core.models.ResponsiveImage;
 import com.anchora.aem.core.models.SocialLink;
 import com.anchora.aem.core.testcontext.AppAemContext;
@@ -44,37 +43,87 @@ class HeaderFooterImplTest {
     }
 
     @Test
-    void headerReadsBrandAndNavigation() {
-        Resource header = context.create().resource(ROOT + "/header",
-                "sling:resourceType", HeaderImpl.RESOURCE_TYPE,
-                "brandLabel", "Anchora Air", "brandLink", "/content/anchora/us/en", "navLabel", "Primary");
-        addLinks(header);
-        context.currentResource(header);
-
-        Header model = context.request().adaptTo(Header.class);
-
-        assertEquals("Anchora Air", model.getBrandLabel());
-        assertEquals("/content/anchora/us/en.html", model.getBrandHref());
-        assertEquals("Primary", model.getNavLabel());
-        List<LinkItem> links = model.getLinks();
-        assertEquals(2, links.size());
-        assertEquals("/content/anchora/us/en.html", links.get(0).getHref());
-        assertEquals("noopener noreferrer", links.get(1).getRel());
-    }
-
-    @Test
     void headerHasDefaults() {
         context.currentResource(context.create().resource(ROOT + "/header",
                 "sling:resourceType", HeaderImpl.RESOURCE_TYPE));
 
         Header model = context.request().adaptTo(Header.class);
 
+        assertNull(model.getLogo());
         assertEquals("Anchora", model.getBrandLabel());
         assertNull(model.getBrandHref());
+        assertNull(model.getPartnerLogo());
+        assertNull(model.getFlag());
+        assertNull(model.getRegion());
+        assertNull(model.getLanguage());
+        assertNull(model.getRegionLink(), "links without a target are not rendered");
+        assertNull(model.getCartLink());
+        assertNull(model.getLoginLink());
         assertEquals("Main", model.getNavLabel());
-        assertTrue(model.getLinks().isEmpty());
+        assertEquals("Menu", model.getMenuLabel());
+        assertTrue(model.getMenus().isEmpty());
+        assertNull(model.getHelpLink());
     }
 
+    @Test
+    void headerReadsTopRow() {
+        String logo = "/content/dam/anchora/brand/logo.png";
+        String badge = "/content/dam/anchora/brand/badge.png";
+        String flag = "/content/dam/anchora/brand/flag.png";
+        context.create().asset(logo, 400, 80, "image/png");
+        context.create().asset(badge, 68, 68, "image/png");
+        context.create().asset(flag, 48, 48, "image/png");
+        Resource header = context.create().resource(ROOT + "/header",
+                "sling:resourceType", HeaderImpl.RESOURCE_TYPE,
+                "fileReference", logo, "brandLabel", " Anchora Air ", "brandLink", "/content/anchora/us/en",
+                "region", " AU ", "language", "EN", "regionLink", "/content/anchora/us/en#region",
+                "cartLabel", " ", "cartLink", "https://www.example.com/cart",
+                "loginLabel", " Sign in ", "loginLink", "/content/anchora/us/en/login");
+        context.create().resource(header, "partner", "fileReference", badge, "alt", "Alliance member");
+        context.create().resource(header, "flag", "fileReference", flag);
+        context.currentResource(header);
+
+        Header model = context.request().adaptTo(Header.class);
+
+        assertEquals(logo, model.getLogo().getSrc());
+        assertEquals("Anchora Air", model.getBrandLabel());
+        assertEquals("/content/anchora/us/en.html", model.getBrandHref());
+        assertEquals(badge, model.getPartnerLogo().getSrc());
+        assertEquals("Alliance member", model.getPartnerLogo().getAlt());
+        assertEquals(flag, model.getFlag().getSrc());
+        assertEquals("AU", model.getRegion());
+        assertEquals("EN", model.getLanguage());
+        assertEquals("Change region and language", model.getRegionLink().getLabel());
+        assertEquals("/content/anchora/us/en.html#region", model.getRegionLink().getHref());
+        assertEquals("Cart", model.getCartLink().getLabel(), "a blank label falls back to the default");
+        assertEquals("https://www.example.com/cart", model.getCartLink().getHref());
+        assertEquals("Sign in", model.getLoginLink().getLabel());
+        assertEquals("/content/anchora/us/en/login.html", model.getLoginLink().getHref());
+    }
+
+    @Test
+    void headerReadsMenusAndHelp() {
+        Resource header = context.create().resource(ROOT + "/header",
+                "sling:resourceType", HeaderImpl.RESOURCE_TYPE,
+                "navLabel", "Primary", "menuLabel", "Browse", "helpLink", "https://www.example.com/help");
+        addLinks(context.create().resource(header, "menus/item0", "title", " Flights "));
+        context.create().resource(header, "menus/item1", "title", "Travel");
+        addLinks(context.create().resource(header, "menus/item2"));
+        context.currentResource(header);
+
+        Header model = context.request().adaptTo(Header.class);
+
+        assertEquals("Primary", model.getNavLabel());
+        assertEquals("Browse", model.getMenuLabel());
+        List<LinkGroup> menus = model.getMenus();
+        assertEquals(1, menus.size(), "menus without a label or without links are skipped");
+        assertEquals("Flights", menus.get(0).getTitle());
+        assertEquals(2, menus.get(0).getLinks().size());
+        assertEquals("/content/anchora/us/en.html", menus.get(0).getLinks().get(0).getHref());
+        assertEquals("noopener noreferrer", menus.get(0).getLinks().get(1).getRel());
+        assertEquals("Help", model.getHelpLink().getLabel());
+        assertEquals("https://www.example.com/help", model.getHelpLink().getHref());
+    }
     @Test
     void footerReplacesYearToken() {
         Resource footer = context.create().resource(ROOT + "/footer",

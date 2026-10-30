@@ -40,7 +40,7 @@ These rules apply to every change in this repository. Read `AGENTS.md` for the m
 - SCSS is mobile-first. Use the variables and mixins in `site/_variables.scss` (`tablet-up`, `desktop-up`, `focus-ring`, `chevron`, `arrow-icon`). Component styles go in `components/_<name>.scss`. Check at 375 px and 1280 px with no horizontal scroll.
 - Class names follow Core's BEM style: `cmp-<component>__<element>--<modifier>`.
 - Icons are SVG data URIs used as CSS masks (`arrow-icon`, `chevron`, and the footer's `$social-icons` map), so they take the text colour. Keep the licence comment when copying an icon from an icon set.
-- No custom JavaScript unless Core can't do it. The accordion uses the Core `accordion.v1` script.
+- No custom JavaScript unless Core and plain HTML can't do it. The accordion uses the Core `accordion.v1` script. The only custom script is `ui.frontend/src/main/webpack/components/header.ts` (the phone "Menu" button, Escape and click-outside for the header's `<details>` menus); the header must still work without it.
 
 ## Accessibility (WCAG 2.2 AA)
 

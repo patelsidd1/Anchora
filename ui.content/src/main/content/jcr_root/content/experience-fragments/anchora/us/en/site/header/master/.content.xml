@@ -18,26 +18,150 @@
                 sling:resourceType="anchora/components/header"
                 brandLabel="Anchora"
                 brandLink="/content/anchora/us/en"
-                navLabel="Main">
-                <links jcr:primaryType="nt:unstructured">
+                cartLink="https://www.example.com/"
+                fileName="anchora-logo.png"
+                fileReference="/content/dam/anchora/brand/anchora-logo.png"
+                helpLink="https://www.example.com/"
+                language="EN"
+                loginLink="https://www.example.com/"
+                navLabel="Main"
+                region="AU"
+                regionLink="https://www.example.com/">
+                <partner
+                    jcr:primaryType="nt:unstructured"
+                    alt="Member of Horizon Alliance"
+                    fileName="alliance-badge.png"
+                    fileReference="/content/dam/anchora/brand/alliance-badge.png"/>
+                <flag
+                    jcr:primaryType="nt:unstructured"
+                    fileName="flag-au.png"
+                    fileReference="/content/dam/anchora/brand/flag-au.png"/>
+                <menus jcr:primaryType="nt:unstructured">
                     <item0
                         jcr:primaryType="nt:unstructured"
-                        label="Home"
-                        link="/content/anchora/us/en"/>
+                        title="Flights">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Book a flight"
+                                link="https://www.example.com/"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Flight deals"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Manage a booking"
+                                link="https://www.example.com/"/>
+                            <item3
+                                jcr:primaryType="nt:unstructured"
+                                label="Check in online"
+                                link="https://www.example.com/"/>
+                            <item4
+                                jcr:primaryType="nt:unstructured"
+                                label="Flight status"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item0>
                     <item1
                         jcr:primaryType="nt:unstructured"
-                        label="Flying with children"
-                        link="/content/anchora/us/en/flying-infants-children"/>
+                        title="Travel">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Flying with infants and children"
+                                link="/content/anchora/us/en/flying-infants-children"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="In-flight entertainment"
+                                link="/content/anchora/us/en/inflight-entertainment"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Baggage"
+                                link="https://www.example.com/"/>
+                            <item3
+                                jcr:primaryType="nt:unstructured"
+                                label="Travel advice"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item1>
                     <item2
                         jcr:primaryType="nt:unstructured"
-                        label="Joey Club"
-                        link="/content/anchora/us/en/joey-club"/>
+                        title="Shop">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Gift cards"
+                                link="https://www.example.com/"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Travel essentials"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Holiday packages"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item2>
                     <item3
                         jcr:primaryType="nt:unstructured"
-                        label="Help"
-                        link="https://www.example.com/"
-                        newTab="{Boolean}true"/>
-                </links>
+                        title="Banking &amp; Insurance">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Travel insurance"
+                                link="https://www.example.com/"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Travel money card"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Credit cards"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item3>
+                    <item4
+                        jcr:primaryType="nt:unstructured"
+                        title="Frequent Flyer">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Joey Club for young travellers"
+                                link="/content/anchora/us/en/joey-club"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Join Frequent Flyer"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Earn points"
+                                link="https://www.example.com/"/>
+                            <item3
+                                jcr:primaryType="nt:unstructured"
+                                label="Use points"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item4>
+                    <item5
+                        jcr:primaryType="nt:unstructured"
+                        title="Anchora for Business">
+                        <links jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                label="Business travel"
+                                link="https://www.example.com/"/>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                label="Freight"
+                                link="https://www.example.com/"/>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                label="Corporate accounts"
+                                link="https://www.example.com/"/>
+                        </links>
+                    </item5>
+                </menus>
             </header>
         </root>
     </jcr:content>

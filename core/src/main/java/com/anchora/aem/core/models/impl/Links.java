@@ -9,6 +9,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 
+import com.anchora.aem.core.models.LinkGroup;
 import com.anchora.aem.core.models.LinkItem;
 
 /**
@@ -19,6 +20,8 @@ final class Links {
     static final String PN_LABEL = "label";
     static final String PN_LINK = "link";
     static final String PN_NEW_TAB = "newTab";
+    static final String PN_TITLE = "title";
+    static final String NN_LINKS = "links";
 
     private static final String CONTENT_ROOT = "/content/";
     private static final String DAM_ROOT = "/content/dam/";
@@ -74,6 +77,25 @@ final class Links {
             }
         }
         return Collections.unmodifiableList(links);
+    }
+
+    /**
+     * Reads a composite multifield whose items have a title and their own nested links multifield, such as the
+     * footer columns and the header menus. Items with no title and no links are skipped.
+     */
+    static List<LinkGroup> groupsFromMultifield(SlingHttpServletRequest request, Resource multifield) {
+        if (multifield == null) {
+            return Collections.emptyList();
+        }
+        List<LinkGroup> groups = new ArrayList<>();
+        for (Resource item : multifield.getChildren()) {
+            String title = StringUtils.trimToNull(item.getValueMap().get(PN_TITLE, String.class));
+            List<LinkItem> links = fromMultifield(request, item.getChild(NN_LINKS));
+            if (title != null || !links.isEmpty()) {
+                groups.add(new LinkGroup(title, links));
+            }
+        }
+        return Collections.unmodifiableList(groups);
     }
 
     private static boolean isInternalPagePath(String path) {

@@ -3,7 +3,7 @@ package com.anchora.aem.core.models;
 import java.util.List;
 
 /**
- * A heading with a list of links, such as one column of the footer.
+ * A heading with a list of links, such as one column of the footer or one dropdown menu of the header.
  */
 public final class LinkGroup {
 

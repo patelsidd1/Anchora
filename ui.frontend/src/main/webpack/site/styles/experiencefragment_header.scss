@@ -1,6 +1,9 @@
 //== Header experience fragment, used on the page template
 
+// Positioned above the page content, so the desktop dropdown menus can overlap it.
 header.experiencefragment {
-    border-bottom: 4px solid $color-accent;
+    position: relative;
+    z-index: 20;
     background: $color-background;
+    border-bottom: 1px solid $color-border;
 }

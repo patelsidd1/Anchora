@@ -2,5 +2,5 @@
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
     jcr:primaryType="cq:Component"
     jcr:title="Header"
-    jcr:description="Placeholder site header: text logo and main navigation links"
+    jcr:description="Site header: logo, partner badge, region, cart, log in, dropdown menus and help"
     componentGroup="Anchora - Structure"/>
