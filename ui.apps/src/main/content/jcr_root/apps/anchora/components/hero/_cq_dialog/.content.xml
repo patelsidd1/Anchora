@@ -46,7 +46,7 @@
                                 allowUpload="{Boolean}false"
                                 autoStart="{Boolean}false"
                                 class="cq-droptarget"
-                                fieldDescription="Drag an image from the Assets panel. Use a landscape image at least 1920 pixels wide."
+                                fieldDescription="Drag an image from the Assets panel. Use a wide image (about 3:1) at least 2400 pixels wide. Phones crop the left and right edges, and the introduction covers part of the bottom-left corner, so keep the subject in the middle."
                                 fieldLabel="Image"
                                 fileNameParameter="./fileName"
                                 fileReferenceParameter="./fileReference"
@@ -78,6 +78,13 @@
                         sling:resourceType="granite/ui/components/coral/foundation/container"
                         margin="{Boolean}true">
                         <items jcr:primaryType="nt:unstructured">
+                            <jumpLinksTitle
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="On this page"
+                                fieldDescription="Heading above the jump links. Leave blank to use &quot;On this page&quot;."
+                                fieldLabel="Heading"
+                                name="./jumpLinksTitle"/>
                             <links
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/multifield"

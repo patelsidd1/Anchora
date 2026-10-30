@@ -29,8 +29,8 @@ These rules apply to every change in this repository. Read `AGENTS.md` for the m
 - Heading levels come from policies, not dialogs. The Hero title is the only H1. Title is H2–H6; Teaser default H2; accordion section heading H2 and items H3.
 - Dialogs: short, plain-English labels and a `fieldDescription` that tells the author what to enter (sizes, examples). Mark truly required fields `required="{Boolean}true"`.
 - A layout choice made per component on the page (such as the teaser's image position) is a dialog field read by the model, with a safe default and a test. Keep the Style System for site-wide looks.
-- The page template `page-content` keeps header and footer as locked experience fragments, and one unlocked container that allows only hero, teaser, accordion, title and text. Change allowed components in the "Page Content" policy.
-- `ui.content` filters are `mode="merge"`. A redeploy won't overwrite existing nodes; delete the node first if the shipped version must replace it.
+- The page template `page-content` keeps header and footer as locked experience fragments, a Core breadcrumb (unlocked, "Page Breadcrumb" policy, `startLevel=3`) at the top of `<main>`, and one unlocked container that allows only hero, teaser, accordion, title and text. Change allowed components in the "Page Content" policy.
+- `ui.content` filters are `mode="merge"`. A redeploy won't overwrite existing nodes, and won't add new children written inside an existing node's `.content.xml` (for example a new policy). Delete the node that owns the file (the whole page or `policies` node) if the shipped version must replace it.
 - Placeholder external links must resolve (use `https://www.example.com/`). AEM's link checker removes anchors to URLs that return errors.
 
 ## Front end (`ui.frontend`)

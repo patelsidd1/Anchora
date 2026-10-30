@@ -1,81 +1,111 @@
-.cmp-hero {
-    display: grid;
-    gap: $gutter-wide;
-    padding: 24px $gutter;
-    background: $color-surface;
-    border-radius: $radius;
+//== Hero: the page title, a wide image with one rounded corner, an introduction panel
+// that overlaps the bottom-left of the image, and "On this page" jump links in two columns.
 
-    @include tablet-up {
-        padding: $gutter-wide;
-    }
+.cmp-hero__title {
+    margin-bottom: 24px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.15;
 
     @include desktop-up {
-        &.cmp-hero--with-image {
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 48px;
-        }
+        font-size: 3.5rem;
     }
 }
 
-.cmp-hero__title {
-    font-size: 2rem;
+// The asset is about 3:1. Phones show a 2:1 crop from the middle.
+.cmp-hero__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    border-top-right-radius: 32px;
 
     @include tablet-up {
-        font-size: 2.75rem;
+        aspect-ratio: 3 / 1;
+        border-top-right-radius: $radius-large;
     }
 }
 
 .cmp-hero__intro {
     max-width: 40em;
+    margin: 0;
     font-size: 1.125rem;
-    color: $color-muted;
+    font-weight: 300;
+    line-height: 1.6;
+
+    @include tablet-up {
+        font-size: 1.25rem;
+    }
+}
+
+// A white panel pulled up over the image; its rounded corner mirrors the image's.
+.cmp-hero--with-image .cmp-hero__intro {
+    position: relative;
+    margin: -40px 48px 0 0;
+    padding: 20px 20px 0 0;
+    background: $color-background;
+    border-top-right-radius: 32px;
+
+    @include tablet-up {
+        width: 70%;
+        max-width: none;
+        margin: -64px 0 0;
+        padding: 32px 48px 0 0;
+        border-top-right-radius: $radius-large;
+    }
 }
 
 .cmp-hero__jump-links {
-    margin-top: 24px;
+    margin-top: $gutter-wide;
+    padding-left: 20px;
+    border-left: 4px solid $color-accent;
+
+    @include tablet-up {
+        margin-top: 40px;
+    }
 }
 
 .cmp-hero__jump-links-title {
-    margin-bottom: .75em;
-    font-size: .875rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: $color-muted;
+    margin-bottom: 16px;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: $color-foreground;
 }
 
+// Two columns from tablet up, filled top to bottom like the Qantas page.
 .cmp-hero__jump-links-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
+
+    @include tablet-up {
+        column-count: 2;
+        column-gap: $gutter-wide;
+    }
+}
+
+.cmp-hero__jump-links-item {
+    padding-bottom: 12px;
+    break-inside: avoid;
 }
 
 .cmp-hero__jump-link {
     display: inline-flex;
-    align-items: center;
-    gap: .6em;
-    padding: 8px 16px;
-    font-weight: 600;
+    align-items: flex-start;
+    gap: .5em;
+    color: $color-foreground;
     text-decoration: none;
-    background: $color-background;
-    border: 1px solid $color-border;
-    border-radius: 999px;
 
-    &::after {
-        @include chevron(45deg);
-        margin-top: -.25em;
+    // The arrow points down: the links scroll to sections further down the page.
+    &::before {
+        @include arrow-icon;
+        flex-shrink: 0;
+        margin-top: .25em;
+        transform: rotate(90deg);
     }
 
     &:hover {
-        border-color: $color-brand;
+        text-decoration: underline;
     }
-}
-
-.cmp-hero__image {
-    display: block;
-    width: 100%;
-    border-radius: $radius;
 }

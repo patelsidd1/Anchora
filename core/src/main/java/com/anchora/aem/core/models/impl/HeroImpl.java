@@ -30,6 +30,7 @@ public class HeroImpl implements Hero {
     static final String RESOURCE_TYPE = "anchora/components/hero";
     static final String NN_JUMP_LINKS = "jumpLinks";
     static final String PN_ANCHOR = "anchor";
+    static final String DEFAULT_JUMP_LINKS_TITLE = "On this page";
 
     @SlingObject
     private Resource resource;
@@ -42,6 +43,9 @@ public class HeroImpl implements Hero {
 
     @ValueMapValue
     private String intro;
+
+    @ValueMapValue
+    private String jumpLinksTitle;
 
     private ResponsiveImage image;
     private List<LinkItem> jumpLinks;
@@ -83,6 +87,11 @@ public class HeroImpl implements Hero {
     @Override
     public ResponsiveImage getImage() {
         return image;
+    }
+
+    @Override
+    public String getJumpLinksTitle() {
+        return StringUtils.defaultIfBlank(StringUtils.trim(jumpLinksTitle), DEFAULT_JUMP_LINKS_TITLE);
     }
 
     @Override

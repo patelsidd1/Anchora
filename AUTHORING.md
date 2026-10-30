@@ -10,6 +10,7 @@ This guide is for content authors who know AEM but are new to this site. It expl
 2. [Creating the page](#creating-the-page)
 3. [Authoring each component](#authoring-each-component)
    - [Hero](#hero)
+   - [Breadcrumb](#breadcrumb)
    - [Teaser](#teaser)
    - [Accordion](#accordion)
    - [Title and Text](#title-and-text)
@@ -41,11 +42,12 @@ The new page already has the site header and footer. Between them is one empty c
 
 ### What the template allows
 
-![The template structure: locked header, the open content area, and locked footer](docs/images/template-structure.png)
+![The template structure: locked header, the breadcrumb, the open content area, and locked footer. In the template editor the breadcrumb shows the template's own name, "structure".](docs/images/template-structure.png)
 
 | Part of the page | Can you change it on the page? |
 |---|---|
 | Header | **No.** It is locked. It comes from the header experience fragment, see [Header and footer](#header-and-footer). |
+| Breadcrumb | **Its settings only.** It is always there and builds itself from the page's place in the site, see [Breadcrumb](#breadcrumb). |
 | Content area | **Yes.** You can add **Hero**, **Teaser**, **Accordion**, **Title** and **Text**. Other components aren't available here. |
 | Footer | **No.** It is locked. It comes from the footer experience fragment. |
 
@@ -66,20 +68,41 @@ To edit a component, select it and choose the wrench icon (**Configure**). Field
 
 ### Hero
 
-The large banner at the top of the page. Until you give it a title, it shows as an empty "Hero" box in the editor and doesn't appear on the published page.
+The large banner at the top of the page: the page heading, then a wide image with a large rounded top-right corner, then the introduction on a white panel that overlaps the bottom-left of the image, then the "On this page" links. Until you give it a title, it shows as an empty "Hero" box in the editor and doesn't appear on the published page.
 
 ![Hero dialog, Text tab](docs/images/dialog-hero.png)
 
 | Tab | Field | What it does |
 |---|---|---|
 | Text | **Title*** | The page heading. It's the only H1 on the page, so make it match what the page is about. Keep it short, for example "Flying with infants and children". |
-| Text | **Introduction** | One or two sentences under the title that say what the page covers. Plain text only. |
-| Image | **Image** | Drag an image in from the **Assets** tab of the side panel. Use a landscape image at least **1920 pixels wide**. The whole image is shown, never cropped: beside the text on wide screens and under it on phones. |
+| Text | **Introduction** | One or two sentences under the image that say what the page covers. Plain text only. |
+| Image | **Image** | Drag an image in from the **Assets** tab of the side panel. Use a wide image (about **3:1**) at least **2400 pixels wide**. It fills the full width of the page content. Phones show a narrower slice (2:1), so they cut off the left and right edges, and the introduction covers part of the bottom-left corner. Keep the subject in the middle. Without an image, the introduction sits straight under the title. |
 | Image | **Alternative text** | A description of the image for people who can't see it. If you leave it empty, AEM uses the **Description** from the image's metadata in Assets. See [Images and alternative text](#images-and-alternative-text). |
 | Image | **Image is decorative** | Tick this if the image is only for decoration. Screen readers then skip it, and any alternative text is ignored. |
-| On this page | **Jump links** | A short list of links to sections further down the page. Select **Add** for each link. Drag the handle to change the order. |
+| On this page | **Heading** | The heading above the jump links, which screen readers also announce as the name of the link list. Leave it empty to use "On this page". |
+| On this page | **Jump links** | A short list of links to sections further down the page. Select **Add** for each link. Drag the handle to change the order. On tablets and larger screens the links are shown in two columns, filled top to bottom. |
 | On this page | › **Label** | The link text, for example "Joey Club". |
 | On this page | › **Anchor** | The **ID** of the section to jump to, for example `joey-club`. You can type it with or without `#`. The ID is set on the Teaser (**Anchor ID**) or the Accordion (**Properties** › **ID**). A link with a missing label or anchor isn't shown. |
+
+![Hero dialog, On this page tab](docs/images/dialog-hero-jump-links.png)
+
+### Breadcrumb
+
+The trail of links above the Hero, for example "Home › Flying with infants and children". It is part of the template, so every new page has it and you can't delete or move it. It builds itself from where the page sits under **Sites** › Anchora › us › en, so moving a page changes its breadcrumb.
+
+- Each step shows the page's **Navigation Title** (Page Properties › Basic), or its title if that is empty. The site's top page has the Navigation Title "Home".
+- The last step is the current page. It isn't a link.
+- The Home page itself shows no breadcrumb, because its breadcrumb has **Hide current page** ticked.
+
+You normally don't need to edit it. If you do, select it and choose **Configure**:
+
+![Breadcrumb dialog](docs/images/dialog-breadcrumb.png)
+
+| Field | What it does |
+|---|---|
+| **Navigation Start Level** | Where the trail starts. Leave it at **3**, which is the Home page. A lower number adds site levels above Home that visitors don't need. |
+| **Show hidden navigation items** | Also show pages that have **Hide in Navigation** ticked in their Page Properties. |
+| **Hide current page** | Leave out the current page at the end of the trail. |
 
 ### Teaser
 
@@ -133,7 +156,7 @@ These are the standard AEM Title and Text components.
 
 | Component | Shape | Minimum width |
 |---|---|---|
-| Hero | Landscape (about 4:3 or wider) | 1920 pixels |
+| Hero | Wide (about 3:1), subject in the middle | 2400 pixels |
 | Teaser | Landscape (about 3:2) | 1280 pixels |
 
 Upload images to **Assets** › anchora › flying-with-children (or a folder next to it), then drag them from the side panel's Assets tab into the dialog. AEM automatically serves smaller copies to phones.
@@ -233,6 +256,8 @@ Changes you make to the page later are only visible on the live site after you p
 | A teaser image is above the text even though **Image position** is **Right** | That's expected on phones and narrow windows. The image moves to the side from tablet width up. |
 | A jump link doesn't scroll anywhere | The **Anchor** must exactly match the Teaser's **Anchor ID** or the Accordion's **ID** (without the `#`). |
 | The Hero doesn't show on the published page | Give it a **Title**. |
+| The edges of the Hero image are cut off on a phone | That's expected: phones show the middle of the image. Choose an image with the subject in the middle. |
+| The breadcrumb shows the wrong title for a page | Change the page's **Navigation Title** in Page Properties. |
 | An image has no description for screen readers | Fill in **Alternative text**, or the image's **Description** in Assets, or tick **Image is decorative**. |
 | Accordion items are all open in the editor | That's expected in Edit mode. Switch to **Preview** to see them closed. |
 | A header or footer change isn't live | Publish the experience fragment. |

@@ -8,14 +8,14 @@
         <metadata
             dam:Fileformat="JPEG"
             dam:MIMEtype="image/jpeg"
-            dam:size="{Long}57420"
+            dam:size="{Long}60415"
             dc:description="Illustration of a plane climbing through clouds on a sunny day"
             dc:format="image/jpeg"
             dc:title="Flying with children hero"
             jcr:mixinTypes="[cq:Taggable]"
             jcr:primaryType="nt:unstructured"
-            tiff:ImageLength="{Long}1200"
-            tiff:ImageWidth="{Long}1600"/>
+            tiff:ImageLength="{Long}800"
+            tiff:ImageWidth="{Long}2400"/>
         <related jcr:primaryType="nt:unstructured"/>
     </jcr:content>
 </jcr:root>

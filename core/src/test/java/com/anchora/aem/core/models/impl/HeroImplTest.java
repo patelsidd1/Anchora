@@ -79,6 +79,24 @@ class HeroImplTest {
     }
 
     @Test
+    void usesAuthoredJumpLinksTitle() {
+        Hero model = adapt(context.create().resource(HERO,
+                "sling:resourceType", HeroImpl.RESOURCE_TYPE,
+                "jcr:title", "Title", "jumpLinksTitle", "  In this guide "));
+
+        assertEquals("In this guide", model.getJumpLinksTitle());
+    }
+
+    @Test
+    void defaultsJumpLinksTitleWhenBlank() {
+        Hero model = adapt(context.create().resource(HERO,
+                "sling:resourceType", HeroImpl.RESOURCE_TYPE,
+                "jcr:title", "Title", "jumpLinksTitle", "   "));
+
+        assertEquals("On this page", model.getJumpLinksTitle());
+    }
+
+    @Test
     void rendersWithoutImageWhenAssetIsMissing() {
         Hero model = adapt(context.create().resource(HERO,
                 "sling:resourceType", HeroImpl.RESOURCE_TYPE,
