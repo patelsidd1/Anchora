@@ -1,4 +1,5 @@
-// Site stylesheet and the header script. Other component behaviour (accordion) comes from the AEM Core
-// Components clientlibs.
+// Site stylesheet and the scripts for the header and the accordion's "Expand all items" button.
+// Opening and closing accordion items comes from the AEM Core Components clientlibs.
 import "./main.scss";
 import "../components/header";
+import "../components/accordion";

@@ -7,14 +7,27 @@
         <components jcr:primaryType="nt:unstructured">
             <accordion jcr:primaryType="nt:unstructured">
                 <policy_accordion
-                    jcr:description="Items are Text components. Item titles are H3 under the H2 section heading. All items start collapsed."
+                    jcr:description="Items are Accordion item components (rich text and optional links). Item titles are H3 under the H2 section heading. All items start collapsed. The Tinted background style puts the section on a full-width light grey band."
                     jcr:primaryType="nt:unstructured"
                     jcr:title="Content Accordion"
                     sling:resourceType="wcm/core/components/policy/policy"
                     allowedHeadingElements="[h3]"
-                    components="[/apps/anchora/components/text]"
+                    components="[/apps/anchora/components/accordion-item]"
                     headingElement="h3">
                     <jcr:content jcr:primaryType="nt:unstructured"/>
+                    <cq:styleGroups jcr:primaryType="nt:unstructured">
+                        <item0
+                            jcr:primaryType="nt:unstructured"
+                            cq:styleGroupLabel="Background">
+                            <cq:styles jcr:primaryType="nt:unstructured">
+                                <item0
+                                    jcr:primaryType="nt:unstructured"
+                                    cq:styleClasses="cmp-accordion--tinted"
+                                    cq:styleId="accordion-tinted"
+                                    cq:styleLabel="Tinted background"/>
+                            </cq:styles>
+                        </item0>
+                    </cq:styleGroups>
                 </policy_accordion>
             </accordion>
             <breadcrumb jcr:primaryType="nt:unstructured">

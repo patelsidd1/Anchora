@@ -1,0 +1,12 @@
+<!--/* The rich text is Core Text's own script, found through the super type chain
+       (accordion-item > anchora/components/text > core/wcm/components/text/v2/text). The links follow it. */-->
+<sly data-sly-include="text.html"></sly>
+<sly data-sly-use.item="com.anchora.aem.core.models.AccordionItem"></sly>
+<ul class="cmp-accordion-item__links" data-sly-test="${item.links}">
+    <li class="cmp-accordion-item__links-item" data-sly-repeat.link="${item.links}">
+        <a class="cmp-accordion-item__link"
+           href="${link.href}"
+           target="${link.target}"
+           rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+    </li>
+</ul>

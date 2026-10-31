@@ -18,6 +18,8 @@ $color-link:            $color-brand;
 $color-focus:           #1a73e8;
 $color-footer:          #f3f2f0; // warm light grey; $color-muted text is 5.8:1 on it
 $color-footer-band:     #e4e2df; // acknowledgement band at the bottom of the footer
+$color-tint:            $color-footer; // "Tinted background" sections; $color-accent-text is 4.6:1 on it
+$color-tint-border:     #c9c6c1; // dividers on the tinted background
 
 //== Layout
 
@@ -90,4 +92,27 @@ $bp-desktop:            1024px;
     border-right: 2px solid currentColor;
     border-bottom: 2px solid currentColor;
     transform: rotate($rotate);
+}
+
+// Bold accent-coloured link with an arrow: the teaser link and the accordion item links.
+@mixin arrow-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .35em;
+    font-weight: 700;
+    color: $color-accent-text;
+    text-decoration: none;
+
+    &::after {
+        @include arrow-icon;
+    }
+
+    &[target="_blank"]::after {
+        @include new-tab-icon;
+    }
+
+    &:hover {
+        color: $color-accent-text;
+        text-decoration: underline;
+    }
 }

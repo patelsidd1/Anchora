@@ -51,7 +51,7 @@
                                 sling:resourceType="wcm/core/components/policies/mapping">
                                 <anchora jcr:primaryType="nt:unstructured">
                                     <components jcr:primaryType="nt:unstructured">
-                                        <text
+                                        <accordion-item
                                             cq:policy="anchora/components/text/policy_641562756958017"
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="wcm/core/components/policies/mapping"/>

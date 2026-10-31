@@ -64,27 +64,9 @@
 }
 
 .cmp-teaser__link {
-    display: inline-flex;
-    align-items: center;
-    gap: .35em;
     margin-top: 8px;
     font-size: 1.125rem;
-    font-weight: 700;
-    color: $color-accent-text;
-    text-decoration: none;
-
-    &::after {
-        @include arrow-icon;
-    }
-
-    &[target="_blank"]::after {
-        @include new-tab-icon;
-    }
-
-    &:hover {
-        color: $color-accent-text;
-        text-decoration: underline;
-    }
+    @include arrow-link;
 }
 
 // Spans the full row under the image and text. order: 2 keeps it last when the image is on the right (order: 1).

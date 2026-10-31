@@ -94,4 +94,22 @@ class SectionAccordionImplTest {
         assertNull(accordion.getSectionTitle());
         assertNull(accordion.getSectionIntro());
     }
+
+    @Test
+    void expandAllLabelsHaveDefaults() {
+        SectionAccordion accordion = adapt("sling:resourceType", SectionAccordionImpl.RESOURCE_TYPE,
+                "expandAllLabel", " ");
+
+        assertEquals("Expand all items", accordion.getExpandAllLabel());
+        assertEquals("Collapse all items", accordion.getCollapseAllLabel());
+    }
+
+    @Test
+    void expandAllLabelsAreAuthorable() {
+        SectionAccordion accordion = adapt("sling:resourceType", SectionAccordionImpl.RESOURCE_TYPE,
+                "expandAllLabel", " Open all ", "collapseAllLabel", "Close all");
+
+        assertEquals("Open all", accordion.getExpandAllLabel());
+        assertEquals("Close all", accordion.getCollapseAllLabel());
+    }
 }

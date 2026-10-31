@@ -1,10 +1,58 @@
+//== Accordion section (accordion.html)
+// Phones and tablets: heading, intro, "Expand all items" and the items in one column.
+// Desktop: heading and intro on the left, the items on the right.
+
+.cmp-accordion {
+    @include desktop-up {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        column-gap: 64px;
+        align-items: start;
+    }
+}
+
+.cmp-accordion__intro {
+    margin-bottom: 24px;
+}
+
 .cmp-accordion__section-title {
     font-size: 1.75rem;
+    font-weight: 300;
+
+    @include desktop-up {
+        font-size: 2.25rem;
+    }
 }
 
 .cmp-accordion__section-intro {
-    max-width: 40em;
+    margin-bottom: 0;
     color: $color-muted;
+}
+
+.cmp-accordion__body {
+    grid-column: 2;
+}
+
+// Small underlined text button above the items, on the right. Hidden until the site script shows it.
+.cmp-accordion__toggle-all {
+    display: block;
+    margin: 0 0 8px auto;
+    padding: 4px 0;
+    font-size: .875rem;
+    color: $color-accent-text;
+    text-decoration: underline;
+    text-underline-offset: .15em;
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration-thickness: 2px;
+    }
+
+    &[hidden] {
+        display: none;
+    }
 }
 
 .cmp-accordion__item {
@@ -26,10 +74,11 @@
     justify-content: space-between;
     gap: $gutter;
     width: 100%;
-    padding: $gutter 4px;
+    padding: 20px 4px;
     font-size: inherit;
-    font-weight: 700;
-    color: $color-brand;
+    font-weight: 600;
+    line-height: 1.4;
+    color: $color-foreground;
     text-align: left;
     background: none;
     border: 0;
@@ -40,29 +89,18 @@
     }
 }
 
-// Plus sign when collapsed, minus sign when expanded.
+// Chevron pointing down when collapsed and up when expanded.
 .cmp-accordion__icon {
-    position: relative;
+    display: flex;
     flex: none;
-    width: 28px;
-    height: 28px;
-    border: 2px solid currentColor;
-    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
 
-    &::before,
-    &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 12px;
-        height: 2px;
-        background: currentColor;
-        transform: translate(-50%, -50%);
-    }
-
-    &::after {
-        transform: translate(-50%, -50%) rotate(90deg);
+    &::before {
+        @include chevron(45deg);
+        margin-top: -4px;
         transition: transform .2s ease;
 
         @media (prefers-reduced-motion: reduce) {
@@ -71,25 +109,50 @@
     }
 }
 
-.cmp-accordion__button--expanded .cmp-accordion__icon::after {
-    transform: translate(-50%, -50%);
+.cmp-accordion__button--expanded .cmp-accordion__icon::before {
+    margin-top: 4px;
+    transform: rotate(-135deg);
 }
 
 .cmp-accordion__panel {
-    padding: 0 4px $gutter;
+    padding: 0 4px 24px;
 
-    ul {
+    .cmp-text ul {
         padding-left: 1.25em;
     }
 
-    p:last-child,
-    ul:last-child {
+    .cmp-text > :last-child {
         margin-bottom: 0;
     }
 }
 
+// Style System "Tinted background" (accordion policy). The class is on the component's wrapper <div>.
+// The box-shadow paints the band out to both edges of the window, and clip-path stops it spreading up and down.
+// Box shadows don't add to the page width, so there is no horizontal scroll.
+.cmp-accordion--tinted {
+    padding: $gutter-wide 0;
+    background: $color-tint;
+    box-shadow: 0 0 0 100vmax $color-tint;
+    clip-path: inset(0 -100vmax);
+
+    @include desktop-up {
+        padding: 64px 0;
+    }
+
+    .cmp-accordion__item,
+    .cmp-accordion__item:first-of-type {
+        border-color: $color-tint-border;
+    }
+}
+
 // AC-06: the page editor shows every item, so collapsed items can be edited in place.
-// Preview mode and publish keep the collapsed behaviour.
-.aem-AuthorLayer-Edit .cmp-accordion__panel--hidden {
-    display: block;
+// Preview mode and publish keep the collapsed behaviour. "Expand all items" has nothing to do in the editor.
+.aem-AuthorLayer-Edit {
+    .cmp-accordion__panel--hidden {
+        display: block;
+    }
+
+    .cmp-accordion__toggle-all {
+        display: none;
+    }
 }

@@ -134,7 +134,7 @@ A teaser without a title, subtitle, description or image doesn't appear on the p
 
 ### Accordion
 
-A section heading and introduction, followed by a list of items that open and close, like the "Booking for infants" questions on the example page. All items start closed when someone opens the page. Your readers can open them by clicking or with the keyboard.
+A section heading and introduction, followed by a list of items that open and close, like the "Booking for infants" questions on the example page. All items start closed when someone opens the page. Your readers can open them by clicking or with the keyboard, or open them all at once with the **Expand all items** button above the list. On a desktop, the heading and introduction sit on the left and the items on the right; on a phone, the items follow the introduction.
 
 ![Accordion dialog, Section tab](docs/images/dialog-accordion.png)
 
@@ -142,10 +142,16 @@ A section heading and introduction, followed by a list of items that open and cl
 |---|---|---|
 | Section | **Section heading*** | The heading above the items (an H2), for example "Booking for infants (under 2 years)". |
 | Section | **Introduction** | Optional. A short paragraph under the heading. |
+| Section | **Expand all label** | Optional. The text of the button that opens every item. Leave it empty to show "Expand all items". |
+| Section | **Collapse all label** | Optional. The button's text once every item is open. Leave it empty to show "Collapse all items". |
 | Items | (list of items) | The item titles. See [Managing accordion items](#managing-accordion-items). |
-| Properties | **Single item expansion** | Tick this if only one item should be open at a time. Opening an item then closes the one that was open. Leave it unticked to let readers open several items. |
+| Properties | **Single item expansion** | Tick this if only one item should be open at a time. Opening an item then closes the one that was open. Leave it unticked to let readers open several items. The **Expand all items** button only appears when this is unticked and there are at least two items. |
 | Properties | **Heading element** | Fixed at H3 so that item titles sit correctly under the section heading. |
 | Properties | **ID** | Optional. A short ID so a Hero jump link can point to this section, for example `booking-for-infants`. |
+
+**Grey background.** To put the section on a light grey band that runs the full width of the page, as on the example page, select the accordion, choose the paintbrush (**Styles**) in its toolbar and pick **Background › Tinted background**. Choose it again to remove it.
+
+![The Styles menu of the accordion, with Tinted background selected](docs/images/editor-accordion-styles.png)
 
 ### Title and Text
 
@@ -175,22 +181,23 @@ Upload images to **Assets** › anchora › flying-with-children (or a folder ne
 
 ## Managing accordion items
 
-Each accordion item is a title plus a Text component that holds the answer. In **Edit** mode, every item is shown open so you can see and edit all the answers. In **Preview** mode and on the live site, items start closed.
+Each accordion item is a title plus an **Accordion item** component that holds the answer: rich text, followed by optional links with an arrow (for example, "More about bassinets"). In **Edit** mode, every item is shown open so you can see and edit all the answers, and the **Expand all items** button is hidden. In **Preview** mode and on the live site, items start closed.
 
 ![Accordion toolbar in the page editor](docs/images/editor-accordion-toolbar.png)
 
 | To | Do this |
 |---|---|
-| **Add an item** | Select the accordion › **Configure** (wrench) › **Items** tab › **Add**. If AEM asks which component to use, choose **Text** (the only component allowed in an item). Type the item title and select **Done** (✓). The new item appears at the end with an empty answer. Then write its answer as described below. |
+| **Add an item** | Select the accordion › **Configure** (wrench) › **Items** tab › **Add**. If AEM asks which component to use, choose **Accordion item** (the only component allowed in an item). Type the item title and select **Done** (✓). The new item appears at the end with an empty answer. Then write its answer as described below. |
 | **Edit an item's title** | Change the title in the **Items** tab, then select **Done**. |
-| **Edit an item's answer** | Select the answer text on the page. Use **Edit** (pencil) to type directly on the page, or **Configure** (wrench) to open the full text editor shown below. |
+| **Edit an item's answer** | Select the answer text on the page. Use **Edit** (pencil) to type directly on the page, or **Configure** (wrench) to open the full text editor shown below. Double-clicking the answer also opens the full editor. |
+| **Add links under an answer** | Select the answer › **Configure** (wrench) › **Links** tab › **Add**. Fill in the **Label** (the words people click) and the **Link** (choose a page, or paste a web address), and tick **Open in a new tab** for other websites. Drag the handle (⋮⋮) to reorder the links. A link with no label or no target isn't shown. |
 | **Reorder items** | In the **Items** tab, drag an item by its handle (⋮⋮), then select **Done**. You can also select the accordion, choose **Select panel** in its toolbar, and drag items in the list that opens. |
-| **Remove an item** | In the **Items** tab, select the bin icon next to the item, then **Done**. This also deletes the item's answer, so copy the text first if you might need it again. |
+| **Remove an item** | In the **Items** tab, select the bin icon next to the item, then **Done**. This also deletes the item's answer and links, so copy the text first if you might need it again. |
 | **Go to an item** | Select the accordion › **Select panel** › choose the item. The editor scrolls to it and selects it. |
 
-![Editing an accordion item's answer](docs/images/dialog-accordion-item.png)
+![Accordion item dialog, Links tab](docs/images/dialog-accordion-item.png)
 
-Keep item titles as short questions or statements, such as "Infants on domestic flights", and put the detail in the answer.
+Keep item titles as short questions or statements, such as "Infants on domestic flights", and put the detail in the answer. Use the **Links** tab for "read more" links rather than typing them into the text, so they get the arrow and stay in the same place under every answer.
 
 ## Header and footer
 
@@ -333,6 +340,9 @@ Changes you make to the page later are only visible on the live site after you p
 | The breadcrumb shows the wrong title for a page | Change the page's **Navigation Title** in Page Properties. |
 | An image has no description for screen readers | Fill in **Alternative text**, or the image's **Description** in Assets, or tick **Image is decorative**. |
 | Accordion items are all open in the editor | That's expected in Edit mode. Switch to **Preview** to see them closed. |
+| The **Expand all items** button is missing | That's expected in Edit mode, when **Single item expansion** is ticked, and when the accordion has only one item. |
+| The accordion's grey band is missing | Choose **Background › Tinted background** in the accordion's **Styles** (paintbrush) menu. |
+| A link under an accordion answer is missing | Give it both a **Label** and a **Link** on the answer's **Links** tab. |
 | A header or footer change isn't live | Publish the experience fragment. |
 | A header menu is missing | Give it a **Menu label** and at least one link. A link needs both a **Label** and a **Link**. |
 | The flag, cart, log in button or Help is missing from the header | Fill in its **Link**. Each one is hidden when its link is empty. |

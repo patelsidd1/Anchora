@@ -37,6 +37,8 @@ import com.anchora.aem.core.models.SectionAccordion;
 public class SectionAccordionImpl implements SectionAccordion {
 
     static final String RESOURCE_TYPE = "anchora/components/accordion";
+    static final String DEFAULT_EXPAND_ALL_LABEL = "Expand all items";
+    static final String DEFAULT_COLLAPSE_ALL_LABEL = "Collapse all items";
 
     @Self(injectionStrategy = InjectionStrategy.REQUIRED)
     @Via(type = ResourceSuperType.class)
@@ -51,6 +53,12 @@ public class SectionAccordionImpl implements SectionAccordion {
     @ValueMapValue
     private String sectionIntro;
 
+    @ValueMapValue
+    private String expandAllLabel;
+
+    @ValueMapValue
+    private String collapseAllLabel;
+
     @Override
     public String getSectionTitle() {
         return StringUtils.trimToNull(sectionTitle);
@@ -59,6 +67,16 @@ public class SectionAccordionImpl implements SectionAccordion {
     @Override
     public String getSectionIntro() {
         return StringUtils.trimToNull(sectionIntro);
+    }
+
+    @Override
+    public String getExpandAllLabel() {
+        return StringUtils.defaultIfBlank(StringUtils.trim(expandAllLabel), DEFAULT_EXPAND_ALL_LABEL);
+    }
+
+    @Override
+    public String getCollapseAllLabel() {
+        return StringUtils.defaultIfBlank(StringUtils.trim(collapseAllLabel), DEFAULT_COLLAPSE_ALL_LABEL);
     }
 
     /** AC-04: every item starts collapsed, whatever was saved in the Core "expanded items" setting. */

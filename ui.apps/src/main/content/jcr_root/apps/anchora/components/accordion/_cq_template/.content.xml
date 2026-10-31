@@ -4,12 +4,12 @@
     sectionTitle="Section heading">
     <item_1 jcr:primaryType="nt:unstructured"
         cq:panelTitle="Item 1"
-        sling:resourceType="anchora/components/text"
+        sling:resourceType="anchora/components/accordion-item"
         text="&lt;p>Panel text&lt;/p>"
         textIsRich="true"/>
     <item_2 jcr:primaryType="nt:unstructured"
         cq:panelTitle="Item 2"
-        sling:resourceType="anchora/components/text"
+        sling:resourceType="anchora/components/accordion-item"
         text="&lt;p>Panel text&lt;/p>"
         textIsRich="true"/>
 </jcr:root>

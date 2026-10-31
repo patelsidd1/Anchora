@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Overlays the Core Accordion dialog through the Sling Resource Merger: only the differences are listed here.
-    - adds a "Section" tab for the section heading and introduction (AC-01);
+    - adds a "Section" tab for the section heading and introduction (AC-01), and the "Expand all" button labels;
     - hides the "Expanded items" selects, because every item starts collapsed (AC-04).
 -->
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
@@ -31,6 +31,20 @@
                                 fieldDescription="Optional short paragraph under the heading."
                                 fieldLabel="Introduction"
                                 name="./sectionIntro"/>
+                            <expandAllLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Expand all items"
+                                fieldDescription="Optional. Leave blank to use &quot;Expand all items&quot;. The button is only shown when more than one item can be open at a time and there are at least two items."
+                                fieldLabel="Expand all label"
+                                name="./expandAllLabel"/>
+                            <collapseAllLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Collapse all items"
+                                fieldDescription="Optional. Shown on the same button once every item is open. Leave blank to use &quot;Collapse all items&quot;."
+                                fieldLabel="Collapse all label"
+                                name="./collapseAllLabel"/>
                         </items>
                     </section>
                     <properties jcr:primaryType="nt:unstructured">

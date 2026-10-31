@@ -55,7 +55,7 @@ This repository rebuilds the [Qantas "Flying with infants and children"](https:/
    ```
 
    This single command does the following:
-   - compiles the `core` bundle and runs its 51 unit tests (the build stops if one fails);
+   - compiles the `core` bundle and runs its 55 unit tests (the build stops if one fails);
    - downloads Node and runs `npm ci` and the webpack production build in `ui.frontend`, then copies the client libraries into `ui.apps`;
    - packages everything into `all/target/anchora.all-1.0.0-SNAPSHOT.zip` and installs it on `localhost:4502` as `admin`/`admin`.
 
@@ -118,18 +118,18 @@ Only the modules below were changed. `ui.apps.structure`, `ui.config`, `all`, `i
 |---|---|---|
 | Root `pom.xml` | Pinned `aem.sdk.api`. Moved Node to v24.21.0 with its bundled npm. Removed the `junit-addons` test dependency. | Match the local SDK. Node 16 / npm 8 from the archetype are end of life. `junit-addons` was only used by the deleted sample tests. |
 | `core` | Removed the sample servlet, filter, listener, scheduler and HelloWorld model (and their tests). Added the models in `com.anchora.aem.core.models` (interfaces), `…models.impl` (implementations and helpers), and their tests. | All rendering logic lives in Sling Models behind interfaces (HB-05). |
-| `ui.apps` | Added `hero`, `teaser`, `header` and `footer`. Extended `accordion`. Added a favicon link to the page and XF page head. Removed `helloworld`. | The components the page needs (HB, TS, AC, PT). |
+| `ui.apps` | Added `hero`, `teaser`, `header`, `footer` and `accordion-item`. Extended `accordion`. Added a favicon link to the page and XF page head. Removed `helloworld`. | The components the page needs (HB, TS, AC, PT). |
 | `ui.content` | Template structure (including a Core breadcrumb) and policies. The Home, Flying with infants and children, Joey Club and Inflight entertainment pages. Header and footer experience fragments. Three DAM images, plus a placeholder logo, alliance badge and round flag (`/content/dam/anchora/brand`). Removed the sample asset. | The page ships with the code (EN-04), so a reviewer sees it after one install. |
-| `ui.frontend` | Site variables, base styles (skip link, focus, visually-hidden text), and component SCSS. One small script, `components/header.ts`, for the header menus. Removed unused sample styles and scripts. Fixed the `svgo` option in `webpack.prod.js`. | All CSS and JS ship as the `anchora.site` client library (PT-06). The accordion uses the Core Components script. The header script is the only custom JavaScript (see [Design decisions](#design-decisions)). |
+| `ui.frontend` | Site variables, base styles (skip link, focus, visually-hidden text), and component SCSS. Two small scripts: `components/header.ts` for the header menus, and `components/accordion.ts` for the accordion's "Expand all items" button. Removed unused sample styles and scripts. Fixed the `svgo` option in `webpack.prod.js`. | All CSS and JS ship as the `anchora.site` client library (PT-06). The accordion items open and close with the Core Components script. The two scripts are the only custom JavaScript (see [Design decisions](#design-decisions)). |
 
 Java code:
 
 ```
 core/src/main/java/com/anchora/aem/core/models/
-├── Hero.java, Teaser.java, SectionAccordion.java, Header.java, Footer.java   (model interfaces used by HTL)
+├── Hero.java, Teaser.java, SectionAccordion.java, AccordionItem.java, Header.java, Footer.java   (model interfaces used by HTL)
 ├── LinkItem.java, ResponsiveImage.java, LinkGroup.java, SocialLink.java   (simple value objects)
 └── impl/
-    ├── HeroImpl, TeaserImpl, SectionAccordionImpl, HeaderImpl, FooterImpl  (Sling Models)
+    ├── HeroImpl, TeaserImpl, SectionAccordionImpl, AccordionItemImpl, HeaderImpl, FooterImpl  (Sling Models)
     ├── Links.java             link resolution: internal page → .html, new tab → target + rel
     └── ResponsiveImages.java  image helper: srcset from DAM renditions, alt text fallback, decorative flag
 ```
@@ -142,7 +142,7 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 
 | Category | Contents | Loaded by |
 |---|---|---|
-| `anchora.site` | All site and component CSS, and the header menu script, built from `ui.frontend` | Page policy (`clientlibs`) |
+| `anchora.site` | All site and component CSS, and the header menu and accordion "Expand all items" scripts, built from `ui.frontend` | Page policy (`clientlibs`) |
 | `anchora.dependencies` | Archetype runtime dependencies (JS, in the head) | Page policy (`clientlibsJsHead`) |
 | `anchora.base` | Embeds Core Components clientlibs, including `core.wcm.components.accordion.v1` (accordion JS and keyboard support), and the grid | `page/customheaderlibs.html`, `page/customfooterlibs.html` |
 
@@ -177,11 +177,24 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 |---|---|
 | Build | **Extends Core Accordion v1** (`sling:resourceSuperType="core/wcm/components/accordion/v1/accordion"`) with the delegation pattern |
 | Group | Anchora - Content |
-| Sling Model | `SectionAccordion` (extends Core `Accordion`) → `SectionAccordionImpl`. It delegates to the Core model through `@Via(type = ResourceSuperType.class)` and adds `getSectionTitle()` and `getSectionIntro()`. `getExpandedItems()` always returns an empty array, so every item starts collapsed (AC-04). |
-| Dialog | Overlay of the Core dialog through the Sling Resource Merger. New **Section** tab: Section heading (`./sectionTitle`, required), Introduction (`./sectionIntro`). Core **Items** tab: add, remove, reorder and rename items (`cq:panelTitle`). Core **Properties** tab: Single item expansion (`./singleExpansion`), Heading element, ID. The two "Expanded items" selects are hidden. |
-| Other files | `accordion.html` (adapted from Core 2.28.0, Apache 2.0): renders the H2 section heading and intro, and `aria-expanded` on every button before the script runs. `_cq_template` starts a new accordion with a placeholder heading and two Text items. |
-| Policy | `anchora/components/accordion/policy_accordion` "Content Accordion": items can only be `anchora/components/text`; `headingElement=h3`, `allowedHeadingElements=[h3]` |
-| Behaviour | The Core `accordion.v1` script handles toggling and keyboard support (Enter, Space, arrow keys, Home, End). `_accordion.scss` shows every panel in the page editor (AC-06) and draws a `:focus-visible` outline. |
+| Sling Model | `SectionAccordion` (extends Core `Accordion`) → `SectionAccordionImpl`. It delegates to the Core model through `@Via(type = ResourceSuperType.class)` and adds `getSectionTitle()`, `getSectionIntro()`, `getExpandAllLabel()` and `getCollapseAllLabel()` (trimmed, with the defaults "Expand all items" and "Collapse all items"). `getExpandedItems()` always returns an empty array, so every item starts collapsed (AC-04). |
+| Dialog | Overlay of the Core dialog through the Sling Resource Merger. New **Section** tab: Section heading (`./sectionTitle`, required), Introduction (`./sectionIntro`), Expand all label (`./expandAllLabel`), Collapse all label (`./collapseAllLabel`). Core **Items** tab: add, remove, reorder and rename items (`cq:panelTitle`). Core **Properties** tab: Single item expansion (`./singleExpansion`), Heading element, ID. The two "Expanded items" selects are hidden. |
+| Other files | `accordion.html` (adapted from Core 2.28.0, Apache 2.0): renders the H2 section heading and intro in `cmp-accordion__intro`, then `cmp-accordion__body` with the "Expand all items" button and the items, and `aria-expanded` on every button before the script runs. The button is only rendered when several items can be open and there are at least two, and it starts `hidden` until the script shows it. `_cq_template` starts a new accordion with a placeholder heading and two Accordion items. |
+| Policy | `anchora/components/accordion/policy_accordion` "Content Accordion": items can only be `anchora/components/accordion-item`; `headingElement=h3`, `allowedHeadingElements=[h3]`. Style System group "Background" with one style, **Tinted background** (`cmp-accordion--tinted`). |
+| Behaviour | The Core `accordion.v1` script handles toggling and keyboard support (Enter, Space, arrow keys, Home, End). `accordion.ts` makes "Expand all items" open every item (or close them all), and changes its label to "Collapse all items" when all items are open. `_accordion.scss` shows every panel in the page editor and hides the button there (AC-06), and draws a `:focus-visible` outline. |
+| Layout | Phones: heading and intro, then the items. From 1024 px: heading and intro in a narrow left column, and the items in a wider right column with "Expand all items" above them on the right. Items are separated by thin lines, with a chevron that turns when an item opens. With **Tinted background**, the section sits on a light grey band that runs the full width of the window. |
+
+### Accordion item – `anchora/components/accordion-item`
+
+| | |
+|---|---|
+| Build | **Extends the Text proxy** (`sling:resourceSuperType="anchora/components/text"`, so Core Text v2). Only used inside the accordion. |
+| Group | Anchora - Content |
+| Sling Model | `AccordionItem` → `AccordionItemImpl` (uses `Links`) adds `getLinks()`. The text itself is rendered by Core Text. |
+| Dialog | The Core Text dialog (rich text, ID) through the Sling Resource Merger, plus a **Links** tab: a multifield (`./links`) of Label (`./label`), Link (`./link`, a page or an external URL) and Open in a new tab (`./newTab`). |
+| Markup | `accordion-item.html` includes Core's `text.html`, then a list of links (`cmp-accordion-item__links`). New-tab links get `target="_blank"`, `rel="noopener noreferrer"` and visually hidden "(opens in a new tab)" text. Links without a label or a target are skipped. |
+| Editing | Inline editing (the pencil) and the rich-text toolbar come from Core Text's edit config, so authors type the answer on the page as before. The links are only edited in the dialog. |
+| Layout | The links are bold, accent-coloured and end with an arrow, like the teaser link (shared `arrow-link` mixin). |
 
 ### Header – `anchora/components/header`
 
@@ -236,10 +249,13 @@ root (container, locked)
 | Teaser | **Custom, built from scratch** (TS-04) | The brief needs a narrow set of features: a policy-driven heading, simple link handling with `noopener noreferrer`, DAM alt fallback and a decorative flag. Core Teaser v2 also brings actions, pre-titles, inheriting the title and image from the linked page, and image rendering through a delegated Core Image with its own servlet. That is a lot of behaviour to override or explain for one card. The custom model is about 150 lines with 14 tests. The policy property is called `titleType`, like Core's, so switching to the Core Teaser later wouldn't need a content migration for the heading level. Trade-off: no Core data layer or Style System options on this component. |
 | Teaser image position | **One teaser with a dialog select**, not two components and not a Style System style | It is the same card either way, so a second component would only copy code. The side is a choice about each piece of content (for example, alternating cards down the page), so it belongs in the dialog next to the image rather than in the style menu, which is for site-wide looks set up by template authors. It is also a plain property that the model checks: anything other than `right` means `left`, and that is unit tested. |
 | Teaser "Back to top" | **A teaser option (checkbox and label)**, not a separate component, and a plain `href="#top"` link | On the reference page it closes each section, so it belongs to the card. Authors tick it per teaser instead of placing and lining up an extra component. Browsers scroll to the top of the page for `#top` without any JavaScript, and the site's smooth scrolling already turns off for users who prefer reduced motion. |
-| Accordion | **Extend Core Accordion v1** (AC-07) | Core already provides what is hard to get right: the panel-container editing (Items tab, "Select panel", insert and reorder), an accessible button/region pattern with full keyboard support, and the data layer. The extension only adds the section heading and intro, and forces everything to start collapsed. Trade-off: `accordion.html` is a copy of Core's, so it must be compared again when Core is upgraded. |
+| Accordion | **Extend Core Accordion v1** (AC-07) | Core already provides what is hard to get right: the panel-container editing (Items tab, "Select panel", insert and reorder), an accessible button/region pattern with full keyboard support, and the data layer. The extension only adds the section heading and intro and the "Expand all items" labels, and forces everything to start collapsed. Trade-off: `accordion.html` is a copy of Core's, so it must be compared again when Core is upgraded. |
+| Accordion item links | **A small component that extends Text and adds a Links multifield** (`accordion-item`), not links typed into the rich text and not a CSS rule that styles the last paragraph | The arrow links are a separate, repeatable part of each answer, so a multifield gives them the same `.html`, new-tab and skipping rules as every other link list, and the arrow can't be lost by editing the text. Extending Text keeps Core's rich text, inline editing and data layer without copying them. |
+| "Expand all items" | **A button that clicks the Core item buttons** (`accordion.ts`, about 40 lines), not a second copy of the open/closed state | Core stays in charge of each item, so its classes, `aria-expanded`, data layer events and keyboard support stay correct. The script only puts back what clicking changes as a side effect: focus returns to the button, and the URL keeps its address. The button is rendered `hidden`, so without JavaScript it never shows. The label changes ("Collapse all items") instead of using `aria-expanded`, because it controls several regions, not one. |
+| Accordion tinted band | **Style System style "Tinted background"** on the accordion policy, not a dialog field | The grey band is a site-wide look chosen by template authors, not a per-item content choice (the teaser image side is a dialog field for the opposite reason). The band runs full width with `box-shadow` and `clip-path`, so it needs no wrapper and causes no horizontal scrolling. |
 | Header / footer | **Custom components inside experience fragments**, placed by locked Core XF components in the template structure (PT-02) | Each is authored once, appears on every page from the template, and can't be edited from the page. Core Navigation was not used because it builds menus from the page tree, while this site needs a short, hand-picked list of links. |
 | Footer link columns, header menus | **A composite multifield with a nested Links multifield**, read by one helper (`Links.groupsFromMultifield`) | Authors add, reorder and fill whole columns or menus in one dialog, and the count isn't fixed. The nested links reuse `Links.fromMultifield`, so they get the same `.html`, new-tab and skipping rules as every other link list. |
-| Header dropdowns | **`<details>`/`<summary>` plus a small script** (`header.ts`, about 40 lines), not Core Navigation and not a custom ARIA menu | `<details>` gives a button with the right expanded state and keyboard support for free, and a shared `name` makes only one menu open at a time. The script only adds what HTML can't: the phone "Menu" button, Escape to close, and closing on a click elsewhere. This is the one exception to "no custom JavaScript". Without it, every menu still works and is always visible. |
+| Header dropdowns | **`<details>`/`<summary>` plus a small script** (`header.ts`, about 40 lines), not Core Navigation and not a custom ARIA menu | `<details>` gives a button with the right expanded state and keyboard support for free, and a shared `name` makes only one menu open at a time. The script only adds what HTML can't: the phone "Menu" button, Escape to close, and closing on a click elsewhere. With `accordion.ts`, this is one of the two exceptions to "no custom JavaScript". Without it, every menu still works and is always visible. |
 | Footer social icons | **A platform select plus CSS mask icons** (Bootstrap Icons, MIT, inlined in `_footer.scss`) | Authors only pick a platform and paste a URL, and can't upload an icon in the wrong size or colour. The model only accepts the six known platforms and uses the platform name as the link's accessible name. The icons inherit the link colour, so hover and focus work like any other link, with no icon font or extra request. |
 | Title / Text | **Core proxies with policies** | No custom behaviour needed. Policies keep H1 for the hero and limit the rich-text tools. |
 | Breadcrumb | **Core Breadcrumb v3 in the template structure**, not part of the hero | Every content page needs it, and Core already builds the trail from the page tree with the right `nav`/`aria-current` markup. Putting it in the structure means authors can't forget or delete it, but it stays unlocked so a page can change its settings (the Home page hides itself). Only SCSS was added. |
@@ -255,13 +271,14 @@ mvn -pl core test          # unit tests only
 mvn clean install          # full build; also runs the tests and fails if any test fails (EN-03)
 ```
 
-There are 51 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
+There are 55 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
 
 | Test class | Tests | What it checks |
 |---|---|---|
 | `HeroImplTest` | 5 | Reads title, intro, image and jump links (with or without `#`, incomplete items skipped). Empty without a title. Renders with no image when the asset is missing. The jump-links heading is trimmed, and defaults to "On this page" when blank. |
 | `TeaserImplTest` | 14 | Reads authored content, including a trimmed subtitle. Image position defaults to left, and an unknown value falls back to left. Heading defaults to H2 without a policy, comes from the policy when set, and can't be made H1. New-tab external link has `noopener`. A link with no label isn't rendered. Back to top is off by default, uses a trimmed authored label, and falls back to "Back to top" when the label is blank. Empty, image-only and subtitle-only states. |
-| `SectionAccordionImplTest` | 5 | Section heading and intro. Items, single-expansion and heading element are delegated to Core. All items start collapsed even when expanded items were saved. Exports its own resource type. Section fields are optional. |
+| `SectionAccordionImplTest` | 7 | Section heading and intro. Items, single-expansion and heading element are delegated to Core. All items start collapsed even when expanded items were saved. Exports its own resource type. Section fields are optional. The "Expand all" and "Collapse all" labels are trimmed and fall back to their defaults when blank. |
+| `AccordionItemImplTest` | 2 | Links are read in order, with internal pages getting `.html`, new-tab links getting `target`, and incomplete links skipped. An item without links has an empty list. |
 | `HeaderFooterImplTest` | 9 | Header defaults; logo, partner badge, flag, region and the cart and log in links; menus with nested links (incomplete menus skipped) and Help. Footer `{year}` replacement and the no-copyright case. Footer defaults; logo, back to top and acknowledgement; nested link columns (empty columns skipped); social links (unknown platforms and missing links skipped). |
 | `LinksTest` | 9 | Internal paths get `.html` (fragment and query kept). External, `mailto:` and blank links. `target` and `rel` for new tabs. Multifield reading, order and skipping. |
 | `ResponsiveImagesTest` | 9 | Missing asset. srcset built from renditions, never wider than the original, and the original used when there are no renditions. Authored alt, DAM fallback, decorative, and no alt available. Fitted-width maths. |
@@ -277,6 +294,9 @@ They don't test HTL output, dialogs, policies, the template, CSS, or the Core ac
 - the breadcrumb reads "Home › Flying with infants and children", and the Home page has none;
 - the hero intro panel overlaps the image only when there is one, the jump links are in two columns from 768 px, and every jump link points to an anchor that exists on the page;
 - the accordion opens and closes with Enter, Space, the arrow keys, Home and End, and has a visible focus outline;
+- "Expand all items" opens every item and changes to "Collapse all items"; closing one item changes it back; focus stays on the button and the address doesn't change; it is hidden in the page editor, where every item is shown open;
+- the accordion sits in one column at 375 px and 768 px and in two columns at 1024 px and 1280 px, and its tinted band runs the full width without horizontal scrolling;
+- an accordion item's text can still be edited on the page with the pencil, its links come from the **Links** tab, and the accordion's **+** offers only "Accordion item";
 - no horizontal scrolling at 375 px;
 - teaser images sit above the text at 375 px and on the chosen side at 768 px and 1280 px, and changing **Image position** in the dialog moves the image;
 - each teaser's "Back to top" link sits under both columns at the teaser's left edge at every width, and clicking it scrolls back to the top of the page;
@@ -304,7 +324,7 @@ Paths are shortened: `apps/…` means `ui.apps/src/main/content/jcr_root/apps/an
 | TS-04 | Met | Built from scratch; see [Design decisions](#design-decisions) |
 | TS-05 | Met | `content/anchora/us/en/flying-infants-children/.content.xml` (teaser) links to `content/anchora/us/en/joey-club` |
 | AC-01 | Met | Accordion dialog "Section" tab; `SectionAccordionImpl`; `accordion.html` |
-| AC-02 | Met | Core panel container: dialog Items tab and the editor's "Select panel"; the policy limits items to Text (rich text) |
+| AC-02 | Met | Core panel container: dialog Items tab and the editor's "Select panel"; the policy limits items to Accordion item (rich text plus optional links, `AccordionItemImpl`) |
 | AC-03 | Met | `flying-infants-children/.content.xml`: six items titled as on the reference page |
 | AC-04 | Met | Core "Single item expansion" setting; `SectionAccordionImpl.getExpandedItems()`; expanded-items fields hidden in the dialog |
 | AC-05 | Met | `accordion.html` (`<button aria-expanded aria-controls>`); Core `accordion.v1` script; `_accordion.scss` (`:focus-visible`) |
@@ -318,7 +338,7 @@ Paths are shortened: `apps/…` means `ui.apps/src/main/content/jcr_root/apps/an
 | PT-06 | Met | All CSS and JS come from `ui.frontend` → `anchora.site`; no `style` attributes or `<script>` blocks in our HTL |
 | EN-01 | Met | [Archetype](#archetype); `archetype.properties` |
 | EN-02 | Met | `mvn clean install -PautoInstallSinglePackage` passes and installs. It was tested on my local SDK, which also hosts other projects, not on a brand-new instance. |
-| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (51 tests) cover every model |
+| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (55 tests) cover every model |
 | EN-04 | Met | `ui.content` ships the pages, experience fragments, template, policies, DAM images and logo |
 | EN-05 | Met | Commits on `feature/flying-infants-children`, merged to `main` through a pull request |
 | EN-06 | Met | Checked as listed under [Testing](#testing) |
@@ -334,7 +354,7 @@ None of the optional stretch work was attempted.
 
 - **Content.** All copy is paraphrased and shortened from the reference page, not copied. The brand is "Anchora", and the images and logo are made for this exercise. The header's alliance badge ("Horizon Alliance") is fictional, and the header menus are a short made-up set. The copy hasn't been checked against any airline's actual policy.
 - **Placeholder links.** The header's region, cart, log in and Help links, most header menu links, and Accessibility, Privacy, "contact us" and most footer links point to `https://www.example.com/`. The footer's social links go to each platform's home page. Deeper example.com paths return 404, and AEM's link checker removes links that fail, so they would disappear from the published page.
-- **Scope of the page.** Only the hero, the Joey Club and inflight entertainment teasers, and the "Booking for infants" accordion from the reference page were rebuilt. The "Back to top" link that ends each reference section is a Teaser option, so the accordion section doesn't have one. From the reference hero, the information box under the jump links, the "Travel information" breadcrumb level (it would add a level to every URL), and the image running wider than the text column were also not added. The template allows only Hero, Teaser, Accordion, Title and Text, and accordion items can only be Text.
+- **Scope of the page.** Only the hero, the Joey Club and inflight entertainment teasers, and the "Booking for infants" accordion from the reference page were rebuilt. The "Back to top" link that ends each reference section is a Teaser option, so the accordion section doesn't have one. From the reference hero, the information box under the jump links, the "Travel information" breadcrumb level (it would add a level to every URL), and the image running wider than the text column were also not added. The template allows only Hero, Teaser, Accordion, Title and Text, and accordion items can only be Accordion items.
 - **Headings.** The section heading is H2 and item titles are fixed at H3 by policy. Authors don't choose heading levels.
 - **Collapsed state.** All items always start collapsed, so the Core "Expanded items" settings are hidden rather than ignored silently.
 - **Site path.** `/content/anchora/us/en`, from the archetype defaults (see [Archetype](#archetype)).
@@ -356,7 +376,7 @@ None of the optional stretch work was attempted.
 1. Turn the manual Playwright checks into `ui.tests` with an axe-core scan and the accordion keyboard tests (stretch option 2).
 2. Set up a local publish instance and Dispatcher, and check the page end to end (stretch option 1).
 3. Move images to AEMaaCS web-optimised image delivery (or Dynamic Media), so widths aren't limited to stored renditions.
-4. Remove the unused archetype proxies and policies, and add Style System options for site-wide looks (for example, a tinted background behind a teaser).
+4. Remove the unused archetype proxies and policies, and add more Style System options for site-wide looks (the accordion has a tinted background; a teaser could have one too).
 5. Add an i18n dictionary for the "(opens in a new tab)" text and an `en-au` site. (The "On this page" heading is now an authored field.)
 
 ## Open-source libraries and licences
