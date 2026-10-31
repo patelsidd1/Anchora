@@ -50,7 +50,7 @@
                         fileReference="/content/dam/anchora/flying-with-children/joey-club.jpg"
                         id="joey-club"
                         imagePosition="left"
-                        isDecorative="{Boolean}true"
+                        isDecorative="{Boolean}false"
                         linkLabel="Find out about the Joey Club"
                         linkNewTab="{Boolean}false"
                         linkURL="/content/anchora/us/en/joey-club"
@@ -64,7 +64,7 @@
                         fileReference="/content/dam/anchora/flying-with-children/inflight-entertainment.jpg"
                         id="inflight-entertainment"
                         imagePosition="right"
-                        isDecorative="{Boolean}true"
+                        isDecorative="{Boolean}false"
                         linkLabel="Explore inflight entertainment"
                         linkNewTab="{Boolean}false"
                         linkURL="/content/anchora/us/en/inflight-entertainment"/>

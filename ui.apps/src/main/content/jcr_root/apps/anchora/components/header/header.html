@@ -38,7 +38,7 @@
             <!--/* Hidden until the header script runs: without JavaScript the navigation is always shown. */-->
             <button class="cmp-header__toggle" type="button" aria-expanded="false" hidden>${header.menuLabel}</button>
             <nav class="cmp-header__nav" aria-label="${header.navLabel}">
-                <ul class="cmp-header__menus">
+                <ul class="cmp-header__menus" data-sly-test="${header.menus}">
                     <li class="cmp-header__menus-item" data-sly-repeat.menu="${header.menus}">
                         <!--/* Elements with the same name form an exclusive group: opening one menu closes the other. */-->
                         <details class="cmp-header__menu" name="cmp-header-menu">
@@ -53,10 +53,9 @@
                             </ul>
                         </details>
                     </li>
-                    <li class="cmp-header__menus-item cmp-header__menus-item--help" data-sly-test.help="${header.helpLink}">
-                        <a class="cmp-header__help" href="${help.href}">${help.label}</a>
-                    </li>
                 </ul>
+                <!--/* Outside the list, so on desktops a long label never pushes Help onto a row of its own. */-->
+                <a class="cmp-header__help" data-sly-test.help="${header.helpLink}" href="${help.href}">${help.label}</a>
             </nav>
         </sly>
     </div>

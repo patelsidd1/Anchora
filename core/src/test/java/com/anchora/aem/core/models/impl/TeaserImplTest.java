@@ -75,6 +75,12 @@ class TeaserImplTest {
     }
 
     @Test
+    void spacesInTheAnchorIdBecomeHyphens() {
+        assertEquals("Find-out-more", adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE,
+                "jcr:title", "T", "id", " Find  out more ").getId());
+    }
+
+    @Test
     void unknownImagePositionFallsBackToLeft() {
         assertEquals("left", adapt("sling:resourceType", TeaserImpl.RESOURCE_TYPE,
                 "fileReference", ASSET, "imagePosition", "top").getImagePosition());

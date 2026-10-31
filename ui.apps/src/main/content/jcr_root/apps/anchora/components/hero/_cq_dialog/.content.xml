@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
     xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
     jcr:primaryType="nt:unstructured"
     jcr:title="Hero"
-    sling:resourceType="cq/gui/components/authoring/dialog">
+    sling:resourceType="cq/gui/components/authoring/dialog"
+    extraClientlibs="[anchora.dialog]">
     <content
         jcr:primaryType="nt:unstructured"
         sling:resourceType="granite/ui/components/coral/foundation/container">
@@ -59,13 +61,15 @@
                             <alt
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                fieldDescription="Describe what the image shows. Leave blank to use the Description from the asset's DAM metadata."
+                                emptyText="Uses the asset's Description from Assets"
+                                fieldDescription="Describe what the image shows. Screen readers read it out; it is not shown on the page. Leave blank to use the Description from the asset's DAM metadata."
                                 fieldLabel="Alternative text"
                                 name="./alt"/>
                             <isDecorative
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
-                                fieldDescription="Tick when the image adds no information. Screen readers skip it and any alternative text is ignored."
+                                granite:class="anchora-decorative"
+                                fieldDescription="Tick when the image adds no information. Screen readers skip it, and Alternative text is hidden and ignored."
                                 name="./isDecorative"
                                 text="Image is decorative"
                                 uncheckedValue="{Boolean}false"
@@ -105,7 +109,7 @@
                                         <anchor
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                            fieldDescription="The ID of the target component, for example joey-club. The # is optional."
+                                            fieldDescription="The Anchor ID of the target component, for example joey-club. The # is optional, and spaces become hyphens."
                                             fieldLabel="Anchor"
                                             name="./anchor"
                                             required="{Boolean}true"/>

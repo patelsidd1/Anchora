@@ -12,7 +12,7 @@ These rules apply to every change in this repository. Read `AGENTS.md` for the m
 
 - All rendering logic lives in Sling Models. HTL only reads getters; no business logic, string building or conditions beyond `data-sly-test` on a getter.
 - Each model has a public interface in `com.anchora.aem.core.models` and an implementation in `…models.impl`. Adapt from `SlingHttpServletRequest`, set `resourceType`, and use `DefaultInjectionStrategy.OPTIONAL` with sensible defaults.
-- Reuse the helpers `Links` (internal page → `.html`, new tab → `target="_blank"` and `rel="noopener noreferrer"`) and `ResponsiveImages` (srcset from `cq5dam.web.*` renditions, alt text falling back to `dc:description`, decorative flag). Don't add a second way of doing either.
+- Reuse the helpers `Links` (internal page → `.html`, new tab → `target="_blank"` and `rel="noopener noreferrer"`, `anchorId` for authored IDs with spaces turned into hyphens) and `ResponsiveImages` (srcset from `cq5dam.web.*` renditions, alt text falling back to `dc:description`, decorative flag). Don't add a second way of doing either.
 - To extend a Core Component, use the delegation pattern (`@Self @Via(type = ResourceSuperType.class)`), as `SectionAccordionImpl` does.
 - No new runtime dependencies without asking. Compile against the `aem-sdk-api` version pinned in the root `pom.xml`.
 
@@ -36,7 +36,7 @@ These rules apply to every change in this repository. Read `AGENTS.md` for the m
 
 ## Front end (`ui.frontend`)
 
-- All CSS comes from `ui.frontend` and ships as the `anchora.site` client library. No inline `style` attributes, no `<script>` blocks, no CSS or JS in `ui.apps` except Core clientlibs embedded in `anchora.base`.
+- All CSS comes from `ui.frontend` and ships as the `anchora.site` client library. No inline `style` attributes, no `<script>` blocks, no CSS or JS in `ui.apps` except Core clientlibs embedded in `anchora.base` and the author-only dialog scripts in `anchora.dialog` (`clientlibs/clientlib-dialog`, loaded with `extraClientlibs`).
 - SCSS is mobile-first. Use the variables and mixins in `site/_variables.scss` (`tablet-up`, `desktop-up`, `focus-ring`, `chevron`, `arrow-icon`, `arrow-link`). Component styles go in `components/_<name>.scss`. Check at 375 px and 1280 px with no horizontal scroll.
 - Class names follow Core's BEM style: `cmp-<component>__<element>--<modifier>`.
 - Icons are SVG data URIs used as CSS masks (`arrow-icon`, `chevron`, and the footer's `$social-icons` map), so they take the text colour. Keep the licence comment when copying an icon from an icon set.

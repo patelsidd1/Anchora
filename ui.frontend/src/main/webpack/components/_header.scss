@@ -242,8 +242,15 @@ $icon-close: "M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .
 
 //== Navigation
 
+// Desktop: the menus on the left, continuing on a second row if they must, and Help at the right of the first row.
 .cmp-header__nav {
     grid-area: nav;
+
+    @include desktop-up {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 28px;
+    }
 }
 
 @media (max-width: $bp-desktop - 1px) {
@@ -264,18 +271,13 @@ $icon-close: "M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .
     }
 }
 
-// Phones and tablets: a list of menus that open in place.
-.cmp-header__menus-item {
+// Phones and tablets: a list of menus that open in place, then Help.
+.cmp-header__menus-item,
+.cmp-header__help {
     border-top: 1px solid $color-border;
 
     @include desktop-up {
         border-top: 0;
-    }
-}
-
-.cmp-header__menus-item--help {
-    @include desktop-up {
-        margin-left: auto;
     }
 }
 
@@ -392,5 +394,11 @@ $icon-close: "M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .
 
     &:hover {
         text-decoration: underline;
+    }
+
+    @include desktop-up {
+        flex-shrink: 0;
+        margin-left: auto;
+        white-space: nowrap;
     }
 }

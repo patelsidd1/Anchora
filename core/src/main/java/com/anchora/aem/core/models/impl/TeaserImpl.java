@@ -92,7 +92,7 @@ public class TeaserImpl implements Teaser {
 
     @Override
     public String getId() {
-        return StringUtils.trimToNull(id);
+        return Links.anchorId(id);
     }
 
     @Override

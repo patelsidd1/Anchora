@@ -77,12 +77,12 @@ The large banner at the top of the page: the page heading, then a wide image wit
 | Text | **Title*** | The page heading. It's the only H1 on the page, so make it match what the page is about. Keep it short, for example "Flying with infants and children". |
 | Text | **Introduction** | One or two sentences under the image that say what the page covers. Plain text only. |
 | Image | **Image** | Drag an image in from the **Assets** tab of the side panel. Use a wide image (about **3:1**) at least **2400 pixels wide**. It fills the full width of the page content. Phones show a narrower slice (2:1), so they cut off the left and right edges, and the introduction covers part of the bottom-left corner. Keep the subject in the middle. Without an image, the introduction sits straight under the title. |
-| Image | **Alternative text** | A description of the image for people who can't see it. If you leave it empty, AEM uses the **Description** from the image's metadata in Assets. See [Images and alternative text](#images-and-alternative-text). |
-| Image | **Image is decorative** | Tick this if the image is only for decoration. Screen readers then skip it, and any alternative text is ignored. |
+| Image | **Alternative text** | A description of the image for people who can't see it. It isn't shown on the page: screen readers read it out, and you can check it with the browser's **Inspect** (the `alt` of the image). If you leave it empty, AEM uses the **Description** from the image's metadata in Assets. See [Images and alternative text](#images-and-alternative-text). |
+| Image | **Image is decorative** | Tick this if the image is only for decoration. Screen readers then skip it. While it is ticked, the **Alternative text** field is hidden and its text is ignored. |
 | On this page | **Heading** | The heading above the jump links, which screen readers also announce as the name of the link list. Leave it empty to use "On this page". |
 | On this page | **Jump links** | A short list of links to sections further down the page. Select **Add** for each link. Drag the handle to change the order. On tablets and larger screens the links are shown in two columns, filled top to bottom. |
 | On this page | › **Label** | The link text, for example "Joey Club". |
-| On this page | › **Anchor** | The **ID** of the section to jump to, for example `joey-club`. You can type it with or without `#`. The ID is set on the Teaser (**Anchor ID**) or the Accordion (**Properties** › **ID**). A link with a missing label or anchor isn't shown. |
+| On this page | › **Anchor** | The **ID** of the section to jump to, for example `joey-club`. You can type it with or without `#`, and spaces become hyphens. The ID is set on the Teaser (**Anchor ID**) or the Accordion (**Properties** › **ID**). A link with a missing label or anchor isn't shown. |
 
 ![Hero dialog, On this page tab](docs/images/dialog-hero-jump-links.png)
 
@@ -117,7 +117,7 @@ On tablets and larger screens the image and the text sit side by side. On phones
 | Text | **Title** | The card heading. You can't choose the heading level. The template sets it (H2 on this site), so headings stay in the right order. |
 | Text | **Subtitle** | Optional. One short line under the title, for example "A club made just for kids.". Plain text only. |
 | Text | **Description** | The card text. You can use bold, italic, links, and bulleted or numbered lists. Keep it to a short paragraph. |
-| Text | **Anchor ID** | Optional. A short ID so a Hero jump link can point to this card, for example `joey-club`. Use lower-case letters, numbers and hyphens, and don't reuse an ID on the same page. |
+| Text | **Anchor ID** | Optional. A short ID so a Hero jump link can point to this card, for example `joey-club`. It isn't shown on the page; it becomes the card's `id`, so `…/page.html#joey-club` scrolls to it. Use lower-case letters, numbers and hyphens, and don't reuse an ID on the same page. Spaces are turned into hyphens ("Find out" becomes `Find-out`), because an ID can't contain spaces. |
 | Link | **Link target** | Pick a page on this site, or type a full web address starting with `https://`. |
 | Link | **Link label** | The link text. Say where the link goes, for example "Find out about the Joey Club", not "Click here". **The link isn't shown while this is empty.** |
 | Link | **Open in a new tab** | Use only for other websites. Screen readers announce "(opens in a new tab)" for these links. |
@@ -144,7 +144,7 @@ A section heading and introduction, followed by a list of items that open and cl
 | Section | **Introduction** | Optional. A short paragraph under the heading. |
 | Section | **Expand all label** | Optional. The text of the button that opens every item. Leave it empty to show "Expand all items". |
 | Section | **Collapse all label** | Optional. The button's text once every item is open. Leave it empty to show "Collapse all items". |
-| Items | (list of items) | The item titles. See [Managing accordion items](#managing-accordion-items). |
+| Items | (list of items) | The item titles. The answers and their links aren't edited here: select an answer on the page and choose **Configure** › **Links**. See [Managing accordion items](#managing-accordion-items). |
 | Properties | **Single item expansion** | Tick this if only one item should be open at a time. Opening an item then closes the one that was open. Leave it unticked to let readers open several items. The **Expand all items** button only appears when this is unticked and there are at least two items. |
 | Properties | **Heading element** | Fixed at H3 so that item titles sit correctly under the section heading. |
 | Properties | **ID** | Optional. A short ID so a Hero jump link can point to this section, for example `booking-for-infants`. |
@@ -236,9 +236,9 @@ The header dialog has three tabs. Every part of the header is hidden when its fi
 | **Region and language: Link** | The page where readers choose their region and language. Leave it blank to hide the flag and codes. |
 | **Flag** | Optional. A round flag shown before the region code. Screen readers skip it, because the code says the same. |
 | **Region**, **Language** | Short codes shown as "AU \| EN". |
-| **Screen reader text** | Hidden text that says what the region link does. Defaults to "Change region and language". |
+| **Screen reader text (not shown on the page)** | Hidden text that says what the region link does. Only screen readers read it out, so you won't see it on the page. Defaults to "Change region and language". |
 | **Cart: Link** | Shows the cart icon. Leave it blank to hide the icon. |
-| **Cart: Screen reader text** | The icon has no visible text, so screen readers read this instead. Defaults to "Cart". |
+| **Cart: Screen reader text (not shown on the page)** | The icon has no visible text, so screen readers read this instead. Defaults to "Cart". |
 | **Log in button: Link**, **Label** | The red button at the top right. Leave the link blank to hide it. The label defaults to "Log in". On phones only the person icon shows. |
 
 ![Header dialog, Navigation tab with a nested list of links in each menu](docs/images/dialog-header-navigation.png)
@@ -247,10 +247,10 @@ The header dialog has three tabs. Every part of the header is hidden when its fi
 
 | Field | What it does |
 |---|---|
-| **Navigation name** | A name that screen readers announce for the menus, for example "Main". Defaults to "Main". |
-| **Menu button label** | The button that shows the menus on phones and tablets. Defaults to "Menu". |
+| **Navigation name (screen readers only)** | A name that screen readers announce for the menus, for example "Main". It isn't shown on the page. Defaults to "Main". |
+| **Menu button label (phones and tablets)** | The button that shows the menus on screens narrower than 1024 pixels. Desktops always show the menus, so the button is hidden there. Defaults to "Menu". |
 | **Menus** | Choose **Add** for each menu. Give it a **Menu label***, then add its **Links**: **Label***, **Link*** and **Open in a new tab**. Six short menus fit on one row on a desktop. Drag the handles to reorder menus or links. |
-| **Help link**, **Help label** | Shown with a question-mark icon at the end of the menus. Leave the link blank to hide it. The label defaults to "Help". |
+| **Help link**, **Help label** | Shown with a question-mark icon at the right end of the first menu row. Leave the link blank to hide it. The label defaults to "Help". A long label never wraps or drops to the next row; instead, the last menus move to a second row. |
 
 On phones and tablets, the menus are behind the **Menu** button and open one below the other:
 
@@ -334,11 +334,16 @@ Changes you make to the page later are only visible on the live site after you p
 | The teaser link is missing | Fill in **Link label** as well as **Link target**. |
 | A teaser has no "Back to top" link | Tick **Show a "Back to top" link under the teaser** on the **Link** tab. A label on its own doesn't show the link. |
 | A teaser image is above the text even though **Image position** is **Right** | That's expected on phones and narrow windows. The image moves to the side from tablet width up. |
-| A jump link doesn't scroll anywhere | The **Anchor** must exactly match the Teaser's **Anchor ID** or the Accordion's **ID** (without the `#`). |
+| A jump link doesn't scroll anywhere | The **Anchor** must exactly match the Teaser's **Anchor ID** or the Accordion's **ID** (without the `#`). Spaces become hyphens in both, so "Find out" matches `Find-out`. |
 | The Hero doesn't show on the published page | Give it a **Title**. |
 | The edges of the Hero image are cut off on a phone | That's expected: phones show the middle of the image. Choose an image with the subject in the middle. |
 | The breadcrumb shows the wrong title for a page | Change the page's **Navigation Title** in Page Properties. |
 | An image has no description for screen readers | Fill in **Alternative text**, or the image's **Description** in Assets, or tick **Image is decorative**. |
+| I typed **Alternative text** but can't see it on the page | That's expected: only screen readers read it out. Check it with the browser's **Inspect** (the image's `alt`). If it is still empty there, untick **Image is decorative**. |
+| The **Alternative text** field has disappeared from the dialog | **Image is decorative** is ticked. Untick it to show the field again. |
+| An accordion answer has no **Links** tab | The item was added before the Accordion item component existed, or as a plain Text component. Remove the item and add it again from the **Items** tab, choosing **Accordion item**. |
+| The region's screen reader text or the navigation name isn't on the page | That's expected: both are only read out by screen readers. |
+| The **Menu** button is missing on a desktop | That's expected: it only appears on screens narrower than 1024 pixels. |
 | Accordion items are all open in the editor | That's expected in Edit mode. Switch to **Preview** to see them closed. |
 | The **Expand all items** button is missing | That's expected in Edit mode, when **Single item expansion** is ticked, and when the accordion has only one item. |
 | The accordion's grey band is missing | Choose **Background › Tinted background** in the accordion's **Styles** (paintbrush) menu. |
@@ -346,7 +351,7 @@ Changes you make to the page later are only visible on the live site after you p
 | A header or footer change isn't live | Publish the experience fragment. |
 | A header menu is missing | Give it a **Menu label** and at least one link. A link needs both a **Label** and a **Link**. |
 | The flag, cart, log in button or Help is missing from the header | Fill in its **Link**. Each one is hidden when its link is empty. |
-| The header menus wrap onto two rows on a desktop | Shorten the menu labels or use fewer menus. Six short menus and Help fit on one row. |
+| The header menus wrap onto two rows on a desktop | Shorten the menu labels, the **Help label**, or use fewer menus. Six short menus and Help fit on one row. Help always stays at the right end of the first row. |
 | A footer column is missing | Give it a **Heading** or at least one link. A link needs both a **Label** and a **Link**. |
 | A social icon is missing | Choose a **Platform** and fill in the **Link**. |
 | The footer shows the logo text instead of the logo | Choose an image in **Logo** on the **General** tab. On the live site, also publish the image. |

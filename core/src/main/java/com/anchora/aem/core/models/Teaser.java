@@ -5,7 +5,7 @@ package com.anchora.aem.core.models;
  */
 public interface Teaser {
 
-    /** Optional HTML id, used as an "On this page" anchor target. */
+    /** Optional HTML id, used as an "On this page" anchor target. Spaces are replaced with hyphens. */
     String getId();
 
     String getTitle();

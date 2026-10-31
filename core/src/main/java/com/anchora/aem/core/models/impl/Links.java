@@ -60,6 +60,16 @@ final class Links {
     }
 
     /**
+     * Makes an authored ID safe to use as an HTML id and a "#" link target. An id cannot contain
+     * spaces, so they become hyphens ("Joey club" becomes "Joey-club"), as in the Core Components.
+     *
+     * @return the ID, or null when it is blank
+     */
+    static String anchorId(String id) {
+        return StringUtils.replace(StringUtils.normalizeSpace(StringUtils.trimToNull(id)), " ", "-");
+    }
+
+    /**
      * Reads a composite multifield ({@code item0}, {@code item1}...) with label, link and newTab
      * properties. Incomplete items are skipped.
      */

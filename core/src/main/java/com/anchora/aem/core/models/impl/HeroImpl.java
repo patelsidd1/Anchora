@@ -65,7 +65,7 @@ public class HeroImpl implements Hero {
         for (Resource item : multifield.getChildren()) {
             ValueMap props = item.getValueMap();
             String label = StringUtils.trimToNull(props.get(Links.PN_LABEL, String.class));
-            String anchor = StringUtils.trimToNull(StringUtils.removeStart(
+            String anchor = Links.anchorId(StringUtils.removeStart(
                     StringUtils.trim(props.get(PN_ANCHOR, String.class)), "#"));
             if (label != null && anchor != null) {
                 links.add(new LinkItem(label, "#" + anchor, false));

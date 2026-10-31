@@ -53,6 +53,7 @@ class HeroImplTest {
         context.create().resource(hero, "jumpLinks/item1", "label", "Booking for infants",
                 "anchor", "booking-for-infants");
         context.create().resource(hero, "jumpLinks/item2", "label", "No anchor");
+        context.create().resource(hero, "jumpLinks/item3", "label", "Child fares", "anchor", " # Child  fares ");
 
         Hero model = adapt(hero);
 
@@ -62,10 +63,11 @@ class HeroImplTest {
         assertNotNull(model.getImage());
         assertEquals("A paper plane", model.getImage().getAlt());
         List<LinkItem> links = model.getJumpLinks();
-        assertEquals(2, links.size());
+        assertEquals(3, links.size());
         assertEquals("Joey Club", links.get(0).getLabel());
         assertEquals("#joey-club", links.get(0).getHref());
         assertEquals("#booking-for-infants", links.get(1).getHref());
+        assertEquals("#Child-fares", links.get(2).getHref());
     }
 
     @Test

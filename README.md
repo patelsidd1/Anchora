@@ -55,7 +55,7 @@ This repository rebuilds the [Qantas "Flying with infants and children"](https:/
    ```
 
    This single command does the following:
-   - compiles the `core` bundle and runs its 55 unit tests (the build stops if one fails);
+   - compiles the `core` bundle and runs its 56 unit tests (the build stops if one fails);
    - downloads Node and runs `npm ci` and the webpack production build in `ui.frontend`, then copies the client libraries into `ui.apps`;
    - packages everything into `all/target/anchora.all-1.0.0-SNAPSHOT.zip` and installs it on `localhost:4502` as `admin`/`admin`.
 
@@ -118,7 +118,7 @@ Only the modules below were changed. `ui.apps.structure`, `ui.config`, `all`, `i
 |---|---|---|
 | Root `pom.xml` | Pinned `aem.sdk.api`. Moved Node to v24.21.0 with its bundled npm. Removed the `junit-addons` test dependency. | Match the local SDK. Node 16 / npm 8 from the archetype are end of life. `junit-addons` was only used by the deleted sample tests. |
 | `core` | Removed the sample servlet, filter, listener, scheduler and HelloWorld model (and their tests). Added the models in `com.anchora.aem.core.models` (interfaces), `…models.impl` (implementations and helpers), and their tests. | All rendering logic lives in Sling Models behind interfaces (HB-05). |
-| `ui.apps` | Added `hero`, `teaser`, `header`, `footer` and `accordion-item`. Extended `accordion`. Added a favicon link to the page and XF page head. Removed `helloworld`. | The components the page needs (HB, TS, AC, PT). |
+| `ui.apps` | Added `hero`, `teaser`, `header`, `footer` and `accordion-item`. Extended `accordion`. Added the `anchora.dialog` clientlib (`clientlibs/clientlib-dialog`). Added a favicon link to the page and XF page head. Removed `helloworld`. | The components the page needs (HB, TS, AC, PT), and a dialog script that hides Alternative text while Image is decorative is ticked. |
 | `ui.content` | Template structure (including a Core breadcrumb) and policies. The Home, Flying with infants and children, Joey Club and Inflight entertainment pages. Header and footer experience fragments. Three DAM images, plus a placeholder logo, alliance badge and round flag (`/content/dam/anchora/brand`). Removed the sample asset. | The page ships with the code (EN-04), so a reviewer sees it after one install. |
 | `ui.frontend` | Site variables, base styles (skip link, focus, visually-hidden text), and component SCSS. Two small scripts: `components/header.ts` for the header menus, and `components/accordion.ts` for the accordion's "Expand all items" button. Removed unused sample styles and scripts. Fixed the `svgo` option in `webpack.prod.js`. | All CSS and JS ship as the `anchora.site` client library (PT-06). The accordion items open and close with the Core Components script. The two scripts are the only custom JavaScript (see [Design decisions](#design-decisions)). |
 
@@ -130,7 +130,7 @@ core/src/main/java/com/anchora/aem/core/models/
 ├── LinkItem.java, ResponsiveImage.java, LinkGroup.java, SocialLink.java   (simple value objects)
 └── impl/
     ├── HeroImpl, TeaserImpl, SectionAccordionImpl, AccordionItemImpl, HeaderImpl, FooterImpl  (Sling Models)
-    ├── Links.java             link resolution: internal page → .html, new tab → target + rel
+    ├── Links.java             link resolution: internal page → .html, new tab → target + rel; anchorId() turns spaces into hyphens
     └── ResponsiveImages.java  image helper: srcset from DAM renditions, alt text fallback, decorative flag
 ```
 
@@ -145,6 +145,7 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 | `anchora.site` | All site and component CSS, and the header menu and accordion "Expand all items" scripts, built from `ui.frontend` | Page policy (`clientlibs`) |
 | `anchora.dependencies` | Archetype runtime dependencies (JS, in the head) | Page policy (`clientlibsJsHead`) |
 | `anchora.base` | Embeds Core Components clientlibs, including `core.wcm.components.accordion.v1` (accordion JS and keyboard support), and the grid | `page/customheaderlibs.html`, `page/customfooterlibs.html` |
+| `anchora.dialog` | Author-only dialog script (`clientlib-dialog/js/decorative-image.js`): hides the **Alternative text** field while **Image is decorative** (`granite:class="anchora-decorative"`) is ticked. AEM has a show/hide helper for dropdowns but not for checkboxes. | `extraClientlibs` on the hero and teaser dialogs |
 
 ### Hero – `anchora/components/hero`
 
@@ -153,7 +154,7 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 | Build | Custom; no supertype |
 | Group | Anchora - Content |
 | Sling Model | `Hero` → `HeroImpl` (uses `ResponsiveImages`) |
-| Dialog | **Text**: Title (`./jcr:title`, required), Introduction (`./intro`). **Image**: Image (`./fileReference`, dragged from Assets), Alternative text (`./alt`), Image is decorative (`./isDecorative`). **On this page**: Heading (`./jumpLinksTitle`, default "On this page"), Jump links multifield (`./jumpLinks`) of Label (`./label`) and Anchor (`./anchor`). |
+| Dialog | **Text**: Title (`./jcr:title`, required), Introduction (`./intro`). **Image**: Image (`./fileReference`, dragged from Assets), Alternative text (`./alt`), Image is decorative (`./isDecorative`; hides Alternative text while ticked). **On this page**: Heading (`./jumpLinksTitle`, default "On this page"), Jump links multifield (`./jumpLinks`) of Label (`./label`) and Anchor (`./anchor`; a leading `#` is removed and spaces become hyphens). |
 | Policy | None needed |
 | Markup | `<h1>`, then the image (`<img srcset sizes width height fetchpriority="high">`), then the intro, then `<nav>` with the authored heading as its `aria-label` and `<h2>`, and a list of `#anchor` links. Shows the Core placeholder in the editor when there is no title (HB-06). The root gets `cmp-hero--with-image` or `cmp-hero--text-only`. |
 | Layout | A wide image (2:1 on phones, 3:1 from 768 px, `object-fit: cover`) with a large rounded top-right corner. When there is an image, the intro sits on a white panel that overlaps its bottom-left corner. The jump links have an accent bar on the left, a down arrow before each link, and two columns from 768 px. The source image should be about 3:1 and at least 2400 px wide (see [AUTHORING.md](AUTHORING.md#hero)). |
@@ -165,7 +166,7 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 | Build | Custom; no supertype (see [Design decisions](#design-decisions)) |
 | Group | Anchora - Content |
 | Sling Model | `Teaser` → `TeaserImpl` (uses `Links` and `ResponsiveImages`) |
-| Dialog | **Text**: Title (`./jcr:title`), Subtitle (`./subtitle`, plain text), Description (`./description`, rich text: bold, italic, link, lists), Anchor ID (`./id`). **Link**: Link target (`./linkURL`, a page or an external URL), Link label (`./linkLabel`), Open in a new tab (`./linkNewTab`), Show a "Back to top" link (`./backToTop`), Back to top label (`./backToTopLabel`, default "Back to top"). **Image**: Image (`./fileReference`), Alternative text (`./alt`), Image is decorative (`./isDecorative`), Image position (`./imagePosition`: `left`, the default, or `right`). |
+| Dialog | **Text**: Title (`./jcr:title`), Subtitle (`./subtitle`, plain text), Description (`./description`, rich text: bold, italic, link, lists), Anchor ID (`./id`; spaces become hyphens, as in Core Components). **Link**: Link target (`./linkURL`, a page or an external URL), Link label (`./linkLabel`), Open in a new tab (`./linkNewTab`), Show a "Back to top" link (`./backToTop`), Back to top label (`./backToTopLabel`, default "Back to top"). **Image**: Image (`./fileReference`), Alternative text (`./alt`), Image is decorative (`./isDecorative`; hides Alternative text while ticked), Image position (`./imagePosition`: `left`, the default, or `right`). |
 | Design dialog | Title heading level (`titleType`, H2–H6) |
 | Policy | `anchora/components/teaser/policy_1575031387650` "Content Teaser": `titleType=h2` (TS-02) |
 | Markup | Heading at the policy level (only H2–H6 are accepted; anything else falls back to H2), optional subtitle `<p>`, HTML description, link with an arrow icon, `rel="noopener noreferrer"` and visually hidden "(opens in a new tab)" text when opened in a new tab, and a lazy-loaded image. The root gets `cmp-teaser--image-left` or `cmp-teaser--image-right`. When ticked, a last `<a class="cmp-teaser__back-to-top" href="#top">` with an up-arrow icon. |
@@ -203,8 +204,8 @@ All components are in `ui.apps/src/main/content/jcr_root/apps/anchora/components
 | Build | Custom; no supertype. Used only inside the header experience fragment. |
 | Group | Anchora - Structure |
 | Sling Model | `Header` → `HeaderImpl` |
-| Dialog | **Logo**: Logo (`./fileReference`), Logo text (`./brandLabel`, default "Anchora"; the logo's alt text, or shown as text when there is no logo), Logo link (`./brandLink`), Partner badge (`./partner/fileReference`) and its alt text (`./partner/alt`). **Top links**: Region link (`./regionLink`), Flag (`./flag/fileReference`, decorative), Region (`./region`, for example "AU"), Language (`./language`, for example "EN"), Screen reader text (`./regionLabel`, default "Change region and language"), Cart link and label (`./cartLink`, `./cartLabel`, default "Cart"), Log in link and label (`./loginLink`, `./loginLabel`, default "Log in"). **Navigation**: Navigation name (`./navLabel`, default "Main", becomes the `<nav>` `aria-label`), Menu button label (`./menuLabel`, default "Menu"), Menus multifield (`./menus`: Menu label, and a nested Links multifield with Label, Link, Open in a new tab), Help link and label (`./helpLink`, `./helpLabel`, default "Help"). |
-| Markup | The logo and partner badge, then a list of the top links (region, cart, log in), then a "Menu" button, then one `<nav>`. Each menu is a `<details>`/`<summary>` with a list of links; Help is the last item. The cart is an icon whose name is its label in visually hidden text. Each part is left out when it has no link or content. |
+| Dialog | **Logo**: Logo (`./fileReference`), Logo text (`./brandLabel`, default "Anchora"; the logo's alt text, or shown as text when there is no logo), Logo link (`./brandLink`), Partner badge (`./partner/fileReference`) and its alt text (`./partner/alt`). **Top links**: Region link (`./regionLink`), Flag (`./flag/fileReference`, decorative), Region (`./region`, for example "AU"), Language (`./language`, for example "EN"), Screen reader text (`./regionLabel`, default "Change region and language"; visually hidden), Cart link and label (`./cartLink`, `./cartLabel`, default "Cart"; visually hidden), Log in link and label (`./loginLink`, `./loginLabel`, default "Log in"). **Navigation**: Navigation name (`./navLabel`, default "Main", becomes the `<nav>` `aria-label`), Menu button label (`./menuLabel`, default "Menu"; the button only shows below 1024 px), Menus multifield (`./menus`: Menu label, and a nested Links multifield with Label, Link, Open in a new tab), Help link and label (`./helpLink`, `./helpLabel`, default "Help"). The dialog labels of the hidden-text fields say they aren't shown on the page. |
+| Markup | The logo and partner badge, then a list of the top links (region, cart, log in), then a "Menu" button, then one `<nav>`. Inside the `<nav>`, each menu is a `<details>`/`<summary>` in a list, and Help is a separate link after the list. On desktop the `<nav>` is a flex row: Help doesn't shrink or wrap and stays at the right end of the first row, so with long labels the last menus move to a second row instead of Help. The cart is an icon whose name is its label in visually hidden text. Each part is left out when it has no link or content. |
 | Behaviour | Desktop (1024 px and wider): the menus sit in a row under the logo and open as dropdowns. Below 1024 px, the "Menu" button shows and hides the menus, which open as an accordion. Below 768 px the log in button is an icon. The menus share a `name`, so opening one closes the others, with no script. `header.ts` adds the "Menu" button, Escape to close (focus returns to the menu or button), and closing open menus on a click elsewhere. Without JavaScript, the menus are always shown. |
 | Policy | The XF template's root container ("XF Root") allows only `header` and `footer`. On the page, the XF component uses the "Page Header" policy, which renders it as `<header>`. |
 
@@ -246,7 +247,7 @@ root (container, locked)
 | Component | Choice | Reason |
 |---|---|---|
 | Hero | **Custom** | Core has no hero. Making a Core Teaser behave like a hero (H1, jump-link list, DAM alt fallback) would take more overrides than a small model does. |
-| Teaser | **Custom, built from scratch** (TS-04) | The brief needs a narrow set of features: a policy-driven heading, simple link handling with `noopener noreferrer`, DAM alt fallback and a decorative flag. Core Teaser v2 also brings actions, pre-titles, inheriting the title and image from the linked page, and image rendering through a delegated Core Image with its own servlet. That is a lot of behaviour to override or explain for one card. The custom model is about 150 lines with 14 tests. The policy property is called `titleType`, like Core's, so switching to the Core Teaser later wouldn't need a content migration for the heading level. Trade-off: no Core data layer or Style System options on this component. |
+| Teaser | **Custom, built from scratch** (TS-04) | The brief needs a narrow set of features: a policy-driven heading, simple link handling with `noopener noreferrer`, DAM alt fallback and a decorative flag. Core Teaser v2 also brings actions, pre-titles, inheriting the title and image from the linked page, and image rendering through a delegated Core Image with its own servlet. That is a lot of behaviour to override or explain for one card. The custom model is about 150 lines with 15 tests. The policy property is called `titleType`, like Core's, so switching to the Core Teaser later wouldn't need a content migration for the heading level. Trade-off: no Core data layer or Style System options on this component. |
 | Teaser image position | **One teaser with a dialog select**, not two components and not a Style System style | It is the same card either way, so a second component would only copy code. The side is a choice about each piece of content (for example, alternating cards down the page), so it belongs in the dialog next to the image rather than in the style menu, which is for site-wide looks set up by template authors. It is also a plain property that the model checks: anything other than `right` means `left`, and that is unit tested. |
 | Teaser "Back to top" | **A teaser option (checkbox and label)**, not a separate component, and a plain `href="#top"` link | On the reference page it closes each section, so it belongs to the card. Authors tick it per teaser instead of placing and lining up an extra component. Browsers scroll to the top of the page for `#top` without any JavaScript, and the site's smooth scrolling already turns off for users who prefer reduced motion. |
 | Accordion | **Extend Core Accordion v1** (AC-07) | Core already provides what is hard to get right: the panel-container editing (Items tab, "Select panel", insert and reorder), an accessible button/region pattern with full keyboard support, and the data layer. The extension only adds the section heading and intro and the "Expand all items" labels, and forces everything to start collapsed. Trade-off: `accordion.html` is a copy of Core's, so it must be compared again when Core is upgraded. |
@@ -271,12 +272,12 @@ mvn -pl core test          # unit tests only
 mvn clean install          # full build; also runs the tests and fails if any test fails (EN-03)
 ```
 
-There are 55 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
+There are 56 JUnit 5 tests using wcm.io AEM Mocks (`AppAemContext`), the Core Components AEM Mocks plugin, and Mockito:
 
 | Test class | Tests | What it checks |
 |---|---|---|
-| `HeroImplTest` | 5 | Reads title, intro, image and jump links (with or without `#`, incomplete items skipped). Empty without a title. Renders with no image when the asset is missing. The jump-links heading is trimmed, and defaults to "On this page" when blank. |
-| `TeaserImplTest` | 14 | Reads authored content, including a trimmed subtitle. Image position defaults to left, and an unknown value falls back to left. Heading defaults to H2 without a policy, comes from the policy when set, and can't be made H1. New-tab external link has `noopener`. A link with no label isn't rendered. Back to top is off by default, uses a trimmed authored label, and falls back to "Back to top" when the label is blank. Empty, image-only and subtitle-only states. |
+| `HeroImplTest` | 5 | Reads title, intro, image and jump links (with or without `#`, spaces in the anchor become hyphens, incomplete items skipped). Empty without a title. Renders with no image when the asset is missing. The jump-links heading is trimmed, and defaults to "On this page" when blank. |
+| `TeaserImplTest` | 15 | Reads authored content, including a trimmed subtitle. Spaces in the Anchor ID become hyphens. Image position defaults to left, and an unknown value falls back to left. Heading defaults to H2 without a policy, comes from the policy when set, and can't be made H1. New-tab external link has `noopener`. A link with no label isn't rendered. Back to top is off by default, uses a trimmed authored label, and falls back to "Back to top" when the label is blank. Empty, image-only and subtitle-only states. |
 | `SectionAccordionImplTest` | 7 | Section heading and intro. Items, single-expansion and heading element are delegated to Core. All items start collapsed even when expanded items were saved. Exports its own resource type. Section fields are optional. The "Expand all" and "Collapse all" labels are trimmed and fall back to their defaults when blank. |
 | `AccordionItemImplTest` | 2 | Links are read in order, with internal pages getting `.html`, new-tab links getting `target`, and incomplete links skipped. An item without links has an empty list. |
 | `HeaderFooterImplTest` | 9 | Header defaults; logo, partner badge, flag, region and the cart and log in links; menus with nested links (incomplete menus skipped) and Help. Footer `{year}` replacement and the no-copyright case. Footer defaults; logo, back to top and acknowledgement; nested link columns (empty columns skipped); social links (unknown platforms and missing links skipped). |
@@ -300,9 +301,10 @@ They don't test HTL output, dialogs, policies, the template, CSS, or the Core ac
 - no horizontal scrolling at 375 px;
 - teaser images sit above the text at 375 px and on the chosen side at 768 px and 1280 px, and changing **Image position** in the dialog moves the image;
 - each teaser's "Back to top" link sits under both columns at the teaser's left edge at every width, and clicking it scrolls back to the top of the page;
-- the header has no horizontal scrolling at 375, 768, 1024 and 1280 px, keeps all six menus and Help on one row at 1024 px, opens one dropdown at a time, closes it with Escape (focus goes back to the menu) or a click elsewhere, and below 1024 px the "Menu" button shows the menus and updates `aria-expanded`; the tab order follows the visual order;
+- the header has no horizontal scrolling at 375, 768, 1024 and 1280 px, keeps all six menus and Help on one row at 1024 px, keeps Help on the first row (no wrapping, no horizontal scrolling) with a 34-character Help label at 1024, 1280 and 1440 px, opens one dropdown at a time, closes it with Escape (focus goes back to the menu) or a click elsewhere, and below 1024 px the "Menu" button shows the menus and updates `aria-expanded`; the tab order follows the visual order;
 - the footer shows two link columns on phones and four next to the logo on desktop, keeps the six social icons on one row at 375 px, gives each icon the platform name as its accessible name, and shows the focus outline when tabbing through its links;
-- every dialog opens, and each container allows only the expected components.
+- every dialog opens, and each container allows only the expected components;
+- ticking **Image is decorative** in the hero and teaser dialogs hides **Alternative text**, and unticking it shows the field again.
 
 `it.tests` and `ui.tests` (Cypress) are the archetype's defaults, and I didn't extend them.
 
@@ -338,7 +340,7 @@ Paths are shortened: `apps/…` means `ui.apps/src/main/content/jcr_root/apps/an
 | PT-06 | Met | All CSS and JS come from `ui.frontend` → `anchora.site`; no `style` attributes or `<script>` blocks in our HTL |
 | EN-01 | Met | [Archetype](#archetype); `archetype.properties` |
 | EN-02 | Met | `mvn clean install -PautoInstallSinglePackage` passes and installs. It was tested on my local SDK, which also hosts other projects, not on a brand-new instance. |
-| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (55 tests) cover every model |
+| EN-03 | Met | `core/src/test/…/models/impl/*Test.java` (56 tests) cover every model |
 | EN-04 | Met | `ui.content` ships the pages, experience fragments, template, policies, DAM images and logo |
 | EN-05 | Met | Commits on `feature/flying-infants-children`, merged to `main` through a pull request |
 | EN-06 | Met | Checked as listed under [Testing](#testing) |

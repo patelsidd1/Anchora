@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
     xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
     jcr:primaryType="nt:unstructured"
     jcr:title="Teaser"
-    sling:resourceType="cq/gui/components/authoring/dialog">
+    sling:resourceType="cq/gui/components/authoring/dialog"
+    extraClientlibs="[anchora.dialog]">
     <content
         jcr:primaryType="nt:unstructured"
         sling:resourceType="granite/ui/components/coral/foundation/container">
@@ -62,7 +64,7 @@
                             <id
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                fieldDescription="Optional. Lets a hero jump link point here, for example joey-club. Use lower-case letters, numbers and hyphens."
+                                fieldDescription="Optional. A name for this teaser, for example joey-club, so a hero jump link with the same Anchor can scroll here. Spaces become hyphens. Not shown on the page."
                                 fieldLabel="Anchor ID"
                                 name="./id"/>
                         </items>
@@ -135,13 +137,15 @@
                             <alt
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                fieldDescription="Describe what the image shows. Leave blank to use the Description from the asset's DAM metadata."
+                                emptyText="Uses the asset's Description from Assets"
+                                fieldDescription="Describe what the image shows. Screen readers read it out; it is not shown on the page. Leave blank to use the Description from the asset's DAM metadata."
                                 fieldLabel="Alternative text"
                                 name="./alt"/>
                             <isDecorative
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
-                                fieldDescription="Tick when the image adds no information. Screen readers skip it and any alternative text is ignored."
+                                granite:class="anchora-decorative"
+                                fieldDescription="Tick when the image adds no information. Screen readers skip it, and Alternative text is hidden and ignored."
                                 name="./isDecorative"
                                 text="Image is decorative"
                                 uncheckedValue="{Boolean}false"

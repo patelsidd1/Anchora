@@ -2,6 +2,7 @@
 <!--
     Overlays the Core Accordion dialog through the Sling Resource Merger: only the differences are listed here.
     - adds a "Section" tab for the section heading and introduction (AC-01), and the "Expand all" button labels;
+    - adds a hint under the Items list that answers and links are edited in each Accordion item;
     - hides the "Expanded items" selects, because every item starts collapsed (AC-04).
 -->
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
@@ -47,6 +48,22 @@
                                 name="./collapseAllLabel"/>
                         </items>
                     </section>
+                    <containerItems jcr:primaryType="nt:unstructured">
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns jcr:primaryType="nt:unstructured">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <column jcr:primaryType="nt:unstructured">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <linksHint
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/text"
+                                                text="Answers and their links are edited on the page: close this dialog, select an item's answer and choose Configure (wrench), then the Links tab."/>
+                                        </items>
+                                    </column>
+                                </items>
+                            </columns>
+                        </items>
+                    </containerItems>
                     <properties jcr:primaryType="nt:unstructured">
                         <items jcr:primaryType="nt:unstructured">
                             <columns jcr:primaryType="nt:unstructured">
