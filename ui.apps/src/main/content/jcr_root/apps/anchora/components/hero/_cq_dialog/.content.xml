@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Hero"
+    sling:resourceType="cq/gui/components/authoring/dialog"
+    extraClientlibs="[anchora.dialog]">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <text
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Text"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <title
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldDescription="The page heading. It is rendered as the only H1 on the page."
+                                fieldLabel="Title"
+                                name="./jcr:title"
+                                required="{Boolean}true"/>
+                            <intro
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                                fieldDescription="One or two sentences shown under the title."
+                                fieldLabel="Introduction"
+                                name="./intro"/>
+                        </items>
+                    </text>
+                    <image
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Image"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <file
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                                allowUpload="{Boolean}false"
+                                autoStart="{Boolean}false"
+                                class="cq-droptarget"
+                                fieldDescription="Drag an image from the Assets panel. Use a wide image (about 3:1) at least 2400 pixels wide. Phones crop the left and right edges, and the introduction covers part of the bottom-left corner, so keep the subject in the middle."
+                                fieldLabel="Image"
+                                fileNameParameter="./fileName"
+                                fileReferenceParameter="./fileReference"
+                                mimeTypes="[image/gif,image/jpeg,image/png,image/webp]"
+                                multiple="{Boolean}false"
+                                name="./file"
+                                title="Drag an image asset here"
+                                uploadUrl="${suffix.path}"
+                                useHTML5="{Boolean}true"/>
+                            <alt
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Uses the asset's Description from Assets"
+                                fieldDescription="Describe what the image shows. Screen readers read it out; it is not shown on the page. Leave blank to use the Description from the asset's DAM metadata."
+                                fieldLabel="Alternative text"
+                                name="./alt"/>
+                            <isDecorative
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                granite:class="anchora-decorative"
+                                fieldDescription="Tick when the image adds no information. Screen readers skip it, and Alternative text is hidden and ignored."
+                                name="./isDecorative"
+                                text="Image is decorative"
+                                uncheckedValue="{Boolean}false"
+                                value="{Boolean}true"/>
+                        </items>
+                    </image>
+                    <jumpLinks
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="On this page"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <jumpLinksTitle
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="On this page"
+                                fieldDescription="Heading above the jump links. Leave blank to use &quot;On this page&quot;."
+                                fieldLabel="Heading"
+                                name="./jumpLinksTitle"/>
+                            <links
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                composite="{Boolean}true"
+                                fieldDescription="Links to sections further down the page. Drag the handle to reorder."
+                                fieldLabel="Jump links">
+                                <field
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container"
+                                    name="./jumpLinks">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <label
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Label"
+                                            name="./label"
+                                            required="{Boolean}true"/>
+                                        <anchor
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldDescription="The Anchor ID of the target component, for example joey-club. The # is optional, and spaces become hyphens."
+                                            fieldLabel="Anchor"
+                                            name="./anchor"
+                                            required="{Boolean}true"/>
+                                    </items>
+                                </field>
+                            </links>
+                        </items>
+                    </jumpLinks>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

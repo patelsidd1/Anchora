@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Header"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <logo
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Logo"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <file
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                                allowUpload="{Boolean}false"
+                                autoStart="{Boolean}false"
+                                class="cq-droptarget"
+                                fieldDescription="Optional. Drag the logo from the Assets panel. It is shown 40 pixels high (32 on phones), so use an image at least 80 pixels high. Without a logo the logo text is shown instead."
+                                fieldLabel="Logo"
+                                fileNameParameter="./fileName"
+                                fileReferenceParameter="./fileReference"
+                                mimeTypes="[image/gif,image/jpeg,image/png,image/svg+xml,image/webp]"
+                                multiple="{Boolean}false"
+                                name="./file"
+                                title="Drag an image asset here"
+                                uploadUrl="${suffix.path}"
+                                useHTML5="{Boolean}true"/>
+                            <brandLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Anchora"
+                                fieldDescription="The brand name. Screen readers read it as the logo's alternative text. Shown as text when there is no logo."
+                                fieldLabel="Logo text"
+                                name="./brandLabel"/>
+                            <brandLink
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                fieldDescription="Optional. Usually the home page. Leave blank for a logo without a link."
+                                fieldLabel="Logo link"
+                                name="./brandLink"
+                                rootPath="/content"/>
+                            <partner
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                                allowUpload="{Boolean}false"
+                                autoStart="{Boolean}false"
+                                class="cq-droptarget"
+                                fieldDescription="Optional. A round badge shown next to the logo, such as an alliance membership. It is shown 34 pixels wide (28 on phones)."
+                                fieldLabel="Partner badge"
+                                fileNameParameter="./partner/fileName"
+                                fileReferenceParameter="./partner/fileReference"
+                                mimeTypes="[image/gif,image/jpeg,image/png,image/svg+xml,image/webp]"
+                                multiple="{Boolean}false"
+                                name="./partner/file"
+                                title="Drag an image asset here"
+                                uploadUrl="${suffix.path}"
+                                useHTML5="{Boolean}true"/>
+                            <partnerAlt
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldDescription="What the badge says, for screen readers, for example &quot;Member of Horizon Alliance&quot;. Leave blank to use the asset's description."
+                                fieldLabel="Partner badge alternative text"
+                                name="./partner/alt"/>
+                        </items>
+                    </logo>
+                    <actions
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Top links"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <regionHeading
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                level="{Long}3"
+                                text="Region and language"/>
+                            <regionLink
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                fieldDescription="The page where readers choose their region and language. Leave blank to hide the region and language."
+                                fieldLabel="Link"
+                                name="./regionLink"
+                                rootPath="/content"/>
+                            <flag
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                                allowUpload="{Boolean}false"
+                                autoStart="{Boolean}false"
+                                class="cq-droptarget"
+                                fieldDescription="Optional. A round flag, shown 24 pixels wide. Screen readers skip it because the region code says the same."
+                                fieldLabel="Flag"
+                                fileNameParameter="./flag/fileName"
+                                fileReferenceParameter="./flag/fileReference"
+                                mimeTypes="[image/gif,image/jpeg,image/png,image/svg+xml,image/webp]"
+                                multiple="{Boolean}false"
+                                name="./flag/file"
+                                title="Drag an image asset here"
+                                uploadUrl="${suffix.path}"
+                                useHTML5="{Boolean}true"/>
+                            <region
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="AU"
+                                fieldDescription="Short region code shown next to the flag."
+                                fieldLabel="Region"
+                                name="./region"/>
+                            <language
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="EN"
+                                fieldDescription="Short language code shown after the region."
+                                fieldLabel="Language"
+                                name="./language"/>
+                            <regionLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Change region and language"
+                                fieldDescription="Not shown on the page: screen readers read it out to say what the link does, while sighted readers see the flag and codes. Leave blank to use &quot;Change region and language&quot;."
+                                fieldLabel="Screen reader text (not shown on the page)"
+                                name="./regionLabel"/>
+                            <cartHeading
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                level="{Long}3"
+                                text="Cart"/>
+                            <cartLink
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                fieldDescription="Leave blank to hide the cart icon."
+                                fieldLabel="Link"
+                                name="./cartLink"
+                                rootPath="/content"/>
+                            <cartLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Cart"
+                                fieldDescription="Not shown on the page: the icon has no visible text, so screen readers read this instead. Leave blank to use &quot;Cart&quot;."
+                                fieldLabel="Screen reader text (not shown on the page)"
+                                name="./cartLabel"/>
+                            <loginHeading
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                level="{Long}3"
+                                text="Log in button"/>
+                            <loginLink
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                fieldDescription="Leave blank to hide the button."
+                                fieldLabel="Link"
+                                name="./loginLink"
+                                rootPath="/content"/>
+                            <loginLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Log in"
+                                fieldDescription="Leave blank to use &quot;Log in&quot;."
+                                fieldLabel="Label"
+                                name="./loginLabel"/>
+                        </items>
+                    </actions>
+                    <navigation
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Navigation"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <navLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Main"
+                                fieldDescription="Not shown on the page: screen readers announce it, followed by the word &quot;navigation&quot;, so keep it short. Leave blank to use &quot;Main&quot;."
+                                fieldLabel="Navigation name (screen readers only)"
+                                name="./navLabel"/>
+                            <menuLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Menu"
+                                fieldDescription="Text of the button that opens the navigation on screens narrower than 1024 pixels. Desktops always show the menus, so the button is hidden there. Leave blank to use &quot;Menu&quot;."
+                                fieldLabel="Menu button label (phones and tablets)"
+                                name="./menuLabel"/>
+                            <menus
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                composite="{Boolean}true"
+                                fieldDescription="Each menu opens a dropdown list of links. Menus without a label or without links are not shown. Drag the handle to reorder."
+                                fieldLabel="Menus">
+                                <field
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container"
+                                    name="./menus">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Menu label"
+                                            name="./title"
+                                            required="{Boolean}true"/>
+                                        <links
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                            composite="{Boolean}true"
+                                            fieldLabel="Links">
+                                            <field
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/container"
+                                                name="./links">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <label
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                        fieldLabel="Label"
+                                                        name="./label"
+                                                        required="{Boolean}true"/>
+                                                    <link
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                        fieldDescription="A page in this site or a full external URL."
+                                                        fieldLabel="Link"
+                                                        name="./link"
+                                                        required="{Boolean}true"
+                                                        rootPath="/content"/>
+                                                    <newTab
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                        name="./newTab"
+                                                        text="Open in a new tab"
+                                                        uncheckedValue="{Boolean}false"
+                                                        value="{Boolean}true"/>
+                                                </items>
+                                            </field>
+                                        </links>
+                                    </items>
+                                </field>
+                            </menus>
+                            <helpLink
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                fieldDescription="Shown with a question mark icon at the end of the navigation. Leave blank to hide it."
+                                fieldLabel="Help link"
+                                name="./helpLink"
+                                rootPath="/content"/>
+                            <helpLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                emptyText="Help"
+                                fieldDescription="Leave blank to use &quot;Help&quot;. On desktops it stays at the right end of the first menu row; when a long label leaves too little room, the last menus move to a second row."
+                                fieldLabel="Help label"
+                                name="./helpLabel"/>
+                        </items>
+                    </navigation>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

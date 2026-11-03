@@ -118,8 +118,8 @@
           <artifactId>frontend-maven-plugin</artifactId>
           <version>${frontend-maven-plugin.version}</version>
           <configuration>
-            <nodeVersion>v16.17.0</nodeVersion>
-            <npmVersion>8.15.0</npmVersion>
+            <nodeVersion>v24.21.0</nodeVersion>
+            <npmVersion>provided</npmVersion>
           </configuration>
           <executions>
             <execution>
@@ -546,12 +546,6 @@ Bundle-DocURL:
         <groupId>org.mockito</groupId>
         <artifactId>mockito-junit-jupiter</artifactId>
         <version>4.1.0</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>junit-addons</groupId>
-        <artifactId>junit-addons</artifactId>
-        <version>1.4</version>
         <scope>test</scope>
       </dependency>
       <dependency>

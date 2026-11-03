@@ -5,28 +5,43 @@
     <rep:policy/>
     <anchora jcr:primaryType="nt:unstructured">
         <components jcr:primaryType="nt:unstructured">
-            <form jcr:primaryType="nt:unstructured">
-                <container jcr:primaryType="nt:unstructured">
-                    <form-container
-                        jcr:description="Allows the form components to be dropped into this core form container."
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Content Form"
-                        sling:resourceType="wcm/core/components/policy/policy"
-                        components="[/apps/anchora/components/form/button,/apps/anchora/components/form/hidden,/apps/anchora/components/form/options,/apps/anchora/components/form/text]">
-                        <jcr:content jcr:primaryType="nt:unstructured"/>
-                    </form-container>
-                </container>
-            </form>
-            <languagenavigation jcr:primaryType="nt:unstructured">
-                <policy_xfm
+            <accordion jcr:primaryType="nt:unstructured">
+                <policy_accordion
+                    jcr:description="Items are Accordion item components (rich text and optional links). Item titles are H3 under the H2 section heading. All items start collapsed. The Tinted background style puts the section on a full-width light grey band."
                     jcr:primaryType="nt:unstructured"
-                    jcr:title="Anchora Language Navigation - Experience Fragment"
+                    jcr:title="Content Accordion"
                     sling:resourceType="wcm/core/components/policy/policy"
-                    navigationRoot="/content/anchora"
-                    structureDepth="1">
+                    allowedHeadingElements="[h3]"
+                    components="[/apps/anchora/components/accordion-item]"
+                    headingElement="h3">
                     <jcr:content jcr:primaryType="nt:unstructured"/>
-                </policy_xfm>
-            </languagenavigation>
+                    <cq:styleGroups jcr:primaryType="nt:unstructured">
+                        <item0
+                            jcr:primaryType="nt:unstructured"
+                            cq:styleGroupLabel="Background">
+                            <cq:styles jcr:primaryType="nt:unstructured">
+                                <item0
+                                    jcr:primaryType="nt:unstructured"
+                                    cq:styleClasses="cmp-accordion--tinted"
+                                    cq:styleId="accordion-tinted"
+                                    cq:styleLabel="Tinted background"/>
+                            </cq:styles>
+                        </item0>
+                    </cq:styleGroups>
+                </policy_accordion>
+            </accordion>
+            <breadcrumb jcr:primaryType="nt:unstructured">
+                <policy_breadcrumb
+                    jcr:description="Starts at the language root (level 3), so the trail reads Home, then the current page. Pages hidden in navigation are skipped."
+                    jcr:primaryType="nt:unstructured"
+                    jcr:title="Page Breadcrumb"
+                    sling:resourceType="wcm/core/components/policy/policy"
+                    hideCurrent="{Boolean}false"
+                    showHidden="{Boolean}false"
+                    startLevel="{Long}3">
+                    <jcr:content jcr:primaryType="nt:unstructured"/>
+                </policy_breadcrumb>
+            </breadcrumb>
             <image jcr:primaryType="nt:unstructured">
                 <policy_651483963895698
                     jcr:description="- Enable lazy loading for faster page loading.&#xd;&#xa;- Define allowed image widths for automatic loading of the image in the most optimal resolution, given the size at which each image is displayed on the page, and the visitor's pixel density.&#xd;&#xa;- Disallow direct asset upload, to force authors to first upload the images to Assets."
@@ -166,18 +181,8 @@
                 </policy_641562756958017>
             </text>
             <title jcr:primaryType="nt:unstructured">
-                <policy_641475696923109
-                    jcr:description="Allows only H1 and disallows links for the main page title."
-                    jcr:primaryType="nt:unstructured"
-                    jcr:title="Page Title"
-                    sling:resourceType="wcm/core/components/policy/policy"
-                    allowedTypes="h1"
-                    linkDisabled="true"
-                    type="h1">
-                    <jcr:content jcr:primaryType="nt:unstructured"/>
-                </policy_641475696923109>
                 <policy_641528232375303
-                    jcr:description="Allows all sizes, but not H1, which is reserved for the main page title."
+                    jcr:description="Allows H2 to H6. H1 is reserved for the hero title."
                     jcr:primaryType="nt:unstructured"
                     jcr:title="Content Title"
                     sling:resourceType="wcm/core/components/policy/policy"
@@ -207,64 +212,20 @@
             </experiencefragment>
             <container jcr:primaryType="nt:unstructured">
                 <policy_1574694950110
-                    jcr:description="Allows the template components and defines the component mapping (this configures what components should be automatically created when authors drop assets from the content finder to the page editor)."
+                    jcr:description="Template structure only: the locked header and footer experience fragments and the main container."
                     jcr:primaryType="nt:unstructured"
                     jcr:title="Page Root"
                     sling:resourceType="wcm/core/components/policy/policy"
-                    components="[group:Anchora - Content,/apps/anchora/components/form/container,group:Anchora - Structure]">
+                    components="[/apps/anchora/components/container,/apps/anchora/components/experiencefragment]">
                     <jcr:content jcr:primaryType="nt:unstructured"/>
-                    <cq:authoring jcr:primaryType="nt:unstructured">
-                        <assetToComponentMapping jcr:primaryType="nt:unstructured">
-                            <mapping_1575024218483
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="media"
-                                assetMimetype="image/*"
-                                droptarget="image"
-                                resourceType="anchora/components/image"/>
-                            <mapping_1575030843388
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="content"
-                                assetMimetype="text/html"
-                                droptarget="experiencefragment"
-                                resourceType="anchora/components/experiencefragment"/>
-                            <mapping_1575030853128
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="media"
-                                assetMimetype="[text/html,application/vnd.adobe.contentfragment]"
-                                droptarget="contentfragment"
-                                resourceType="anchora/components/contentfragment"/>
-                        </assetToComponentMapping>
-                    </cq:authoring>
                 </policy_1574694950110>
                 <policy_1574695586800
-                    jcr:description="Allows the page components and defines the component mapping (this configures what components should be automatically created when authors drop assets from the content finder to the page editor)."
+                    jcr:description="The only components authors can add to a content page."
                     jcr:primaryType="nt:unstructured"
                     jcr:title="Page Content"
                     sling:resourceType="wcm/core/components/policy/policy"
-                    components="[group:Anchora - Content,/apps/anchora/components/form/container]">
+                    components="[/apps/anchora/components/hero,/apps/anchora/components/teaser,/apps/anchora/components/accordion,/apps/anchora/components/title,/apps/anchora/components/text]">
                     <jcr:content jcr:primaryType="nt:unstructured"/>
-                    <cq:authoring jcr:primaryType="nt:unstructured">
-                        <assetToComponentMapping jcr:primaryType="nt:unstructured">
-                            <mapping_1575030255082
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="media"
-                                assetMimetype="image/*"
-                                droptarget="image"
-                                resourceType="anchora/components/image"/>
-                            <mapping_1575030260142
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="content"
-                                assetMimetype="text/html"
-                                droptarget="experiencefragment"
-                                resourceType="anchora/components/experiencefragment"/>
-                            <mapping_1575030269139
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="media"
-                                assetMimetype="[text/html,application/vnd.adobe.contentfragment]"
-                                droptarget="contentfragment"
-                                resourceType="anchora/components/contentfragment"/>
-                        </assetToComponentMapping>
-                    </cq:authoring>
                 </policy_1574695586800>
                 <policy_649128221558427
                     cq:styleDefaultElement="main"
@@ -275,43 +236,21 @@
                     <jcr:content jcr:primaryType="nt:unstructured"/>
                 </policy_649128221558427>
                 <policy_1575040440977
-                    jcr:description="Allows the template components and defines the component mapping (this configures what components should be automatically created when authors drop assets from the content finder to the page editor)."
+                    jcr:description="Experience fragments hold the site header and footer only."
                     jcr:primaryType="nt:unstructured"
                     jcr:title="XF Root"
                     sling:resourceType="wcm/core/components/policy/policy"
-                    components="[group:Anchora - Content,/apps/anchora/components/form/container]">
+                    components="[/apps/anchora/components/header,/apps/anchora/components/footer]">
                     <jcr:content jcr:primaryType="nt:unstructured"/>
-                    <cq:authoring jcr:primaryType="nt:unstructured">
-                        <assetToComponentMapping jcr:primaryType="nt:unstructured">
-                            <mapping_1575024218483
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="media"
-                                assetMimetype="image/*"
-                                droptarget="image"
-                                resourceType="anchora/components/image"/>
-                            <mapping_1575030843388
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="content"
-                                assetMimetype="text/html"
-                                droptarget="experiencefragment"
-                                resourceType="anchora/components/experiencefragment"/>
-                            <mapping_1575030853128
-                                jcr:primaryType="nt:unstructured"
-                                assetGroup="media"
-                                assetMimetype="[text/html,application/vnd.adobe.contentfragment]"
-                                droptarget="contentfragment"
-                                resourceType="anchora/components/contentfragment"/>
-                        </assetToComponentMapping>
-                    </cq:authoring>
                 </policy_1575040440977>
             </container>
             <teaser jcr:primaryType="nt:unstructured">
                 <policy_1575031387650
-                    jcr:description="Sets the title size to H3."
+                    jcr:description="Title is H2 by default (TS-02). Change the level here, not in the dialog."
                     jcr:primaryType="nt:unstructured"
                     jcr:title="Content Teaser"
                     sling:resourceType="wcm/core/components/policy/policy"
-                    titleType="h3">
+                    titleType="h2">
                     <jcr:content jcr:primaryType="nt:unstructured"/>
                 </policy_1575031387650>
             </teaser>
@@ -331,12 +270,13 @@
             </download>
             <page jcr:primaryType="nt:unstructured">
                 <policy
-                    jcr:description="Includes the required client libraries."
+                    jcr:description="Includes the client libraries and the skip link to the main content."
                     jcr:primaryType="nt:unstructured"
                     jcr:title="Generic Page"
                     sling:resourceType="wcm/core/components/policy/policy"
                     clientlibs="[anchora.dependencies,anchora.site]"
-                    clientlibsJsHead="anchora.dependencies">
+                    clientlibsJsHead="anchora.dependencies"
+                    mainContentSelector="main-content">
                     <jcr:content jcr:primaryType="nt:unstructured"/>
                 </policy>
             </page>

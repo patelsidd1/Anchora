@@ -2,82 +2,47 @@
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
-        pageTitle="Anchora"
-        jcr:primaryType="cq:PageContent"
-        jcr:title="en"
         cq:contextHubPath="/etc/cloudsettings/default/contexthub"
         cq:contextHubSegmentsPath="/etc/segmentation/contexthub"
         cq:template="/conf/anchora/settings/wcm/templates/page-content"
-        sling:resourceType="anchora/components/page"
-    >
+        jcr:primaryType="cq:PageContent"
+        jcr:title="en"
+        navTitle="Home"
+        pageTitle="Anchora"
+        sling:resourceType="anchora/components/page">
         <root
             jcr:primaryType="nt:unstructured"
             sling:resourceType="anchora/components/container"
             layout="responsiveGrid">
             <container
                 jcr:primaryType="nt:unstructured"
-                sling:resourceType="anchora/components/container">
-                <title
+                sling:resourceType="anchora/components/container"
+                layout="responsiveGrid">
+                <breadcrumb
                     jcr:primaryType="nt:unstructured"
-                    sling:resourceType="anchora/components/title"/>
+                    sling:resourceType="anchora/components/breadcrumb"
+                    hideCurrent="{Boolean}true"/>
                 <container
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="anchora/components/container"
                     layout="responsiveGrid">
+                    <hero
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Anchora"
+                        sling:resourceType="anchora/components/hero"
+                        intro="Placeholder home page for the Anchora AEM technical exercise."/>
                     <teaser
-                        jcr:description="&lt;p>Don't stop half way, go for the top!&lt;/p>&#xd;&#xa;"
+                        description="&lt;p>Booking, seating and travel information for families flying with babies and young children.&lt;/p>"
                         jcr:primaryType="nt:unstructured"
-                        jcr:title="Epic Journey"
+                        jcr:title="Flying with infants and children"
                         sling:resourceType="anchora/components/teaser"
-                        actionsEnabled="false"
-                        descriptionFromPage="false"
-                        textIsRich="true"
-                        titleFromPage="false">
-                        <cq:responsive jcr:primaryType="nt:unstructured">
-                            <default
-                                jcr:primaryType="nt:unstructured"
-                                offset="0"
-                                width="4"/>
-                        </cq:responsive>
-                    </teaser>
-                    <teaser_copy
-                        jcr:description="&lt;p>Don't stop half way, go for the top!&lt;/p>&#xd;&#xa;"
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Epic Journey"
-                        sling:resourceType="anchora/components/teaser"
-                        actionsEnabled="false"
-                        descriptionFromPage="false"
-                        textIsRich="true"
-                        titleFromPage="false">
-                        <cq:responsive jcr:primaryType="nt:unstructured">
-                            <default
-                                jcr:primaryType="nt:unstructured"
-                                offset="0"
-                                width="4"/>
-                        </cq:responsive>
-                    </teaser_copy>
-                    <teaser_copy_1579324932
-                        jcr:description="&lt;p>Don't stop half way, go for the top!&lt;/p>&#xd;&#xa;"
-                        jcr:primaryType="nt:unstructured"
-                        jcr:title="Epic Journey"
-                        sling:resourceType="anchora/components/teaser"
-                        actionsEnabled="false"
-                        descriptionFromPage="false"
-                        textIsRich="true"
-                        titleFromPage="false">
-                        <cq:responsive jcr:primaryType="nt:unstructured">
-                            <default
-                                jcr:primaryType="nt:unstructured"
-                                offset="0"
-                                width="4"/>
-                        </cq:responsive>
-                    </teaser_copy_1579324932>
-                    <helloworld
-                        jcr:primaryType="nt:unstructured"
-                        sling:resourceType="anchora/components/helloworld"
-                        text="lalala :)"/>
+                        linkLabel="Read the guide"
+                        linkURL="/content/anchora/us/en/flying-infants-children"/>
                 </container>
             </container>
         </root>
     </jcr:content>
+    <flying-infants-children/>
+    <joey-club/>
+    <inflight-entertainment/>
 </jcr:root>

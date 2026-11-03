@@ -1,0 +1,15 @@
+//== Accordion item (accordion-item.html): Core Text's rich text, then the optional links
+
+.cmp-accordion-item__links {
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cmp-accordion-item__links-item + .cmp-accordion-item__links-item {
+    margin-top: 8px;
+}
+
+.cmp-accordion-item__link {
+    @include arrow-link;
+}

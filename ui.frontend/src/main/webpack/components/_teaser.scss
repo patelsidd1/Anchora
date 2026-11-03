@@ -1,9 +1,94 @@
-.cmp-teaser {}
-.cmp-teaser__image {}
-.cmp-teaser__content {}
-.cmp-teaser__pretitle {}
-.cmp-teaser__title {}
-.cmp-teaser__title-link {}
-.cmp-teaser__description {}
-.cmp-teaser__action-container {}
-.cmp-teaser__action-link {}
+// Image and text side by side from tablet width up. Authors choose the image side (imagePosition);
+// on phones the image always sits above the text. The DOM order never changes, only the visual order.
+.cmp-teaser {
+    display: grid;
+    gap: 24px;
+
+    @include tablet-up {
+        &.cmp-teaser--with-image {
+            grid-template-columns: 1fr 1fr;
+            align-items: start;
+            gap: $gutter-wide;
+        }
+
+        &.cmp-teaser--with-image.cmp-teaser--image-right .cmp-teaser__media {
+            order: 1;
+        }
+    }
+
+    @include desktop-up {
+        &.cmp-teaser--with-image {
+            gap: 64px;
+        }
+    }
+}
+
+// The large rounded corner always faces the text.
+.cmp-teaser__image {
+    display: block;
+    width: 100%;
+    border-radius: $radius $radius $radius-large $radius;
+
+    @include tablet-up {
+        .cmp-teaser--image-right & {
+            border-radius: $radius $radius $radius $radius-large;
+        }
+    }
+}
+
+.cmp-teaser__title {
+    margin-bottom: .4em;
+    font-size: 2.25rem;
+    font-weight: 300;
+    line-height: 1.15;
+
+    @include desktop-up {
+        font-size: 3.25rem;
+    }
+}
+
+.cmp-teaser__subtitle {
+    margin-bottom: 1em;
+    font-size: 1.375rem;
+    font-weight: 300;
+    line-height: 1.3;
+
+    @include desktop-up {
+        font-size: 1.875rem;
+    }
+}
+
+.cmp-teaser__description {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+}
+
+.cmp-teaser__link {
+    margin-top: 8px;
+    font-size: 1.125rem;
+    @include arrow-link;
+}
+
+// Spans the full row under the image and text. order: 2 keeps it last when the image is on the right (order: 1).
+// href="#top" scrolls to the top of the document without any JavaScript.
+.cmp-teaser__back-to-top {
+    display: inline-flex;
+    grid-column: 1 / -1;
+    order: 2;
+    justify-self: start;
+    align-items: center;
+    gap: .35em;
+    font-size: 1rem;
+    color: $color-accent-text;
+    text-decoration: none;
+
+    &::before {
+        @include arrow-icon;
+        transform: rotate(-90deg);
+    }
+
+    &:hover {
+        color: $color-accent-text;
+        text-decoration: underline;
+    }
+}

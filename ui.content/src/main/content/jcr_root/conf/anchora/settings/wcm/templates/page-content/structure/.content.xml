@@ -17,10 +17,11 @@
             <container
                 jcr:primaryType="nt:unstructured"
                 sling:resourceType="anchora/components/container"
+                id="main-content"
                 layout="responsiveGrid">
-                <title
+                <breadcrumb
                     jcr:primaryType="nt:unstructured"
-                    sling:resourceType="anchora/components/title"
+                    sling:resourceType="anchora/components/breadcrumb"
                     editable="{Boolean}true"/>
                 <container
                     jcr:primaryType="nt:unstructured"

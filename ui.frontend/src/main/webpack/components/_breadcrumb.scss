@@ -1,5 +1,36 @@
-.cmp-breadcrumb {}
-.cmp-breadcrumb__list {}
-.cmp-breadcrumb__item {}
-.cmp-breadcrumb__item--active {}
-.cmp-breadcrumb__item-link {}
+//== Breadcrumb (Core Breadcrumb v3, placed in the page template above the content)
+
+.cmp-breadcrumb {
+    font-size: .875rem;
+}
+
+.cmp-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cmp-breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+    color: $color-muted;
+
+    // Decorative separator: drawn in CSS so screen readers only hear the list of links.
+    & + &::before {
+        @include chevron(-45deg);
+        width: .4em;
+        height: .4em;
+        margin: 0 .75em 0 .5em;
+    }
+}
+
+.cmp-breadcrumb__item-link {
+    color: $color-muted;
+}
+
+.cmp-breadcrumb__item--active {
+    font-weight: 700;
+    color: $color-foreground;
+}

@@ -1,0 +1,58 @@
+<div data-sly-use.footer="com.anchora.aem.core.models.Footer" class="cmp-footer">
+    <div class="cmp-footer__inner">
+        <div class="cmp-footer__top" data-sly-test="${footer.backToTop}">
+            <a class="cmp-footer__back-to-top" href="#top">${footer.backToTopLabel}</a>
+        </div>
+        <div class="cmp-footer__main">
+            <a class="cmp-footer__brand"
+               data-sly-element="${footer.brandHref ? 'a' : 'div'}"
+               href="${footer.brandHref}">
+                <img class="cmp-footer__logo" data-sly-test="${footer.logo}"
+                     src="${footer.logo.src}"
+                     alt="${footer.brandLabel}"
+                     width="${footer.logo.width}"
+                     height="${footer.logo.height}"
+                     loading="lazy"/>
+                <sly data-sly-test="${!footer.logo}">${footer.brandLabel}</sly>
+            </a>
+            <nav class="cmp-footer__nav" data-sly-test="${footer.columns}" aria-label="${footer.navLabel}">
+                <div class="cmp-footer__column" data-sly-repeat.column="${footer.columns}">
+                    <h2 class="cmp-footer__heading" data-sly-test="${column.title}">${column.title}</h2>
+                    <ul class="cmp-footer__list" data-sly-test="${column.links}">
+                        <li class="cmp-footer__item" data-sly-repeat.link="${column.links}">
+                            <a class="cmp-footer__link"
+                               href="${link.href}"
+                               target="${link.target}"
+                               rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="cmp-footer__social" data-sly-test="${footer.socialLinks}">
+            <h2 class="cmp-footer__heading">${footer.socialTitle}</h2>
+            <ul class="cmp-footer__social-list">
+                <li class="cmp-footer__social-item" data-sly-repeat.social="${footer.socialLinks}">
+                    <a class="cmp-footer__social-link cmp-footer__social-link--${social.platform}"
+                       href="${social.link.href}"
+                       target="${social.link.target}"
+                       rel="${social.link.rel}"><span class="cmp-link__screen-reader-only">${social.link.label}<sly data-sly-test="${social.link.newTab}"> ${'(opens in a new tab)' @ i18n}</sly></span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="cmp-footer__legal" data-sly-test="${footer.links || footer.copyright}">
+            <ul class="cmp-footer__legal-list" data-sly-test="${footer.links}">
+                <li class="cmp-footer__legal-item" data-sly-repeat.link="${footer.links}">
+                    <a class="cmp-footer__legal-link"
+                       href="${link.href}"
+                       target="${link.target}"
+                       rel="${link.rel}">${link.label}<span class="cmp-link__screen-reader-only" data-sly-test="${link.newTab}"> ${'(opens in a new tab)' @ i18n}</span></a>
+                </li>
+            </ul>
+            <p class="cmp-footer__copyright" data-sly-test="${footer.copyright}">${footer.copyright}</p>
+        </div>
+    </div>
+    <div class="cmp-footer__acknowledgement" data-sly-test="${footer.acknowledgement}">
+        <p class="cmp-footer__acknowledgement-text">${footer.acknowledgement}</p>
+    </div>
+</div>

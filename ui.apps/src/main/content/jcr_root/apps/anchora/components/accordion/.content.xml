@@ -3,5 +3,6 @@
     cq:isContainer="{Boolean}true"
     jcr:primaryType="cq:Component"
     jcr:title="Accordion"
+    jcr:description="Section heading with expandable items. All items start collapsed."
     sling:resourceSuperType="core/wcm/components/accordion/v1/accordion"
     componentGroup="Anchora - Content"/>
